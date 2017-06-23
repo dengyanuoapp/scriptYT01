@@ -31,6 +31,8 @@ all :help01
 help01:
 	@echo
 	@echo "c clean : $(xxYT)"
+	@echo "vo video_only :"
+	@echo "ao audio_only :"
 	@echo
 
 m :
@@ -60,6 +62,7 @@ freq:=24000
 cmd01:=LC_CTYPE=en_US.UTF-8 \
 	nice -n 19 \
 	youtube-dl   \
+	--ignore-errors   \
 	--no-check-certificate   \
 	-o '%(upload_date)s_%(title)s_%(id)s.%(ext)s' \
 	--no-overwrites \
@@ -82,13 +85,14 @@ t2:
 define YTtemplate1
 $(eval dd$(1):=$(1))
 $(eval ddYT += dd$(1))
-$(eval xx$(1):=$(1)/yy$($(1)).txt)
+$(eval xx$(1):=$(1)/yy_$($(1)).txt)
 $(eval xxYT += $(xx$(1)))
 $(1): $(xx$(1))
 $(xx$(1)):
 	mkdir -p $(1)/
 	#cd $(1) && ld_youtube_dl2.sh  "$(uri01)/$(1)"
-	cd $(1) && $(cmd01)  "$(uri01)/$(1)"
+	cd $(1) && touch 00_$(1).ogg && touch zz_$(1).ogg
+	-cd $(1) && $(cmd01)  "$(uri01)/$(1)"
 	touch $$@
 
 endef
