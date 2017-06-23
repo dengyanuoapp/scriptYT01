@@ -30,6 +30,7 @@ all :help01
 
 help01:
 	@echo
+	@echo "  new_add_gen1.txt "
 	@echo "c clean : $(xxYT)"
 	@echo "vo video_only :"
 	@echo "ao audio_only :"
@@ -56,21 +57,33 @@ XX2:=
 endif
 endif
 
+ifneq (,$(DD))
+DD11:=$(shell date                  +%Y%m%d)
+DD12:=$(shell date -d '-$(DD) day'  +%Y%m%d)
+DD00:=$(shell date -d '+16 hour'    +%Y%m%d__%H%M%p)
+
+DD21:= --datebefore $(DD11)
+DD22:= --dateafter $(DD12)
+endif
+
 
 rate:=16k
 freq:=24000
 cmd01:=LC_CTYPE=en_US.UTF-8 \
 	nice -n 19 \
 	youtube-dl   \
+	--force-ipv4  \
 	--ignore-errors   \
 	--no-check-certificate   \
 	-o '%(upload_date)s_%(title)s_%(id)s.%(ext)s' \
 	--no-overwrites \
 	--prefer-ffmpeg \
 	--no-post-overwrites  \
-	$$(XX1) \
 	-v \
-	--exec 'ld_rename_opus2ogg_delete_space_genOGG.sh {} xx $$(XX2) ' 
+	$$(DD21)  \
+	$$(DD22)  \
+	--exec 'ld_rename_opus2ogg_delete_space_genOGG.sh {} $$(XX2) '   \
+	$$(XX1) 
 obj01:= "https://www.youtube.com/watch?v=CYi6Ir9nKOY"
 obj01:= "https://www.youtube.com/watch?v=UNuNTcMu_Vk"
 obj01:= "https://www.youtube.com/watch?v=ozvjYzyW7Uc"
@@ -92,7 +105,7 @@ $(xx$(1)):
 	mkdir -p $(1)/
 	#cd $(1) && ld_youtube_dl2.sh  "$(uri01)/$(1)"
 	cd $(1) && touch 00_$($(1)).ogg && touch zz_$($(1)).ogg
-	-cd $(1) && ( $(cmd01)  "$(uri01)/$(1)" )
+	-cd $(1) && ( $(cmd01)  "$(uri01)/$(1)" & pid1=$$$$! ; echo $$$${pid1} > ../now_yt_pid.txt ; wait $$$${pid1} ; sleep 8 )
 	touch $$@
 
 endef
@@ -113,22 +126,28 @@ c clean :
 	rm -f $(wildcard $(xxYT)) nohup.out
 
 up:
-	nice -n 19 git push -u origin master
-#	nice -n 19 git push 
+	nice -n 15 git push -u origin master
+#	nice -n 15 git push 
 gs:
-	nice -n 19 git status
+	nice -n 15 git status
 gc:
-	nice -n 19 git commit -a
+	nice -n 15 git commit -a
 t1:
-	       make $(uri81) XX=$(XX)
-	@echo "make $(uri81) XX=$(XX)"
+	echo -n > new_add_gen1.txt
+	       make $(uri81) XX=$(XX)  DD=$(DD) 
+	@echo "make $(uri81) XX=$(XX)  DD=$(DD)  "
 #	make UCEtI-CRaNx6kiXMrVjnXe8w
 
 ao audio_only :
 	@echo 'BEGIN1 == $@'
-	make t1 XX=aoo
+	make t1 XX=aoo DD=$(DD)
 	@echo 'END1 == $@'
 vo video_only :
 	@echo 'BEGIN1 == $@'
-	make t1 XX=voo
+	make t1 XX=voo DD=$(DD)
 	@echo 'END1 == $@'
+
+ao3:
+	make ao DD=3
+vo3:
+	make vo DD=3
