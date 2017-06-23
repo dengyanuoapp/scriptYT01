@@ -91,8 +91,8 @@ $(1): $(xx$(1))
 $(xx$(1)):
 	mkdir -p $(1)/
 	#cd $(1) && ld_youtube_dl2.sh  "$(uri01)/$(1)"
-	cd $(1) && touch 00_$(1).ogg && touch zz_$(1).ogg
-	-cd $(1) && $(cmd01)  "$(uri01)/$(1)"
+	cd $(1) && touch 00_$($(1)).ogg && touch zz_$($(1)).ogg
+	-cd $(1) && ( $(cmd01)  "$(uri01)/$(1)" )
 	touch $$@
 
 endef
@@ -110,7 +110,7 @@ endif
 
 
 c clean : 
-	rm -f $(wildcard $(xxYT))
+	rm -f $(wildcard $(xxYT)) nohup.out
 
 up:
 	nice -n 19 git push -u origin master
