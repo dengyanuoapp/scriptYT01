@@ -151,3 +151,31 @@ ao3:
 	make ao DD=3
 vo3:
 	make vo DD=3
+
+
+ldXX :=
+ldXX += ld_ffmpeg_1_origin.sh
+ldXX += ld_ffmpeg_2_aac.sh
+ldXX += ld_ffmpeg_3_mp2.sh
+ldXX += ld_ffmpeg_4_opus.sh
+ldXX += ld_ffmpeg_5_ogg01.sh
+ldXX += ld_ffmpeg_6_ogg02.sh
+ldXX += ld_ffmpeg_7_mp4.sh
+ldXX += ld_rename_opus2ogg_delete_space_genOGG.sh
+ldXX += ld_rename_opus2ogg_delete_space_noGEN.sh
+ldXX += ld_run.sh
+ldXX += ld_youtube_dl1__video.sh
+ldXX += ld_youtube_dl2__audio.sh
+
+define LDtemplate1
+$(eval $(1)1:=ld_/$(1))
+$(eval $(1)2:=/bin/$(1))
+$(eval ldYY += $($(1)1))
+$($(1)1): $($(1)2)
+	cp $$^ $$@
+
+endef
+$(info $(foreach ld1,$(ldXX), $(eval $(call LDtemplate1,$(ld1)))))
+
+$(info --- $(ldYY) )
+ld : $(ldYY)
