@@ -1,0 +1,15 @@
+#!/bin/sh
+
+echo "# bug02 : sound only " >> README.md
+git init
+git add README.md
+git commit -m "first commit"
+git remote add origin https://github.com/youtube01/bug02.git
+git push -u origin master
+
+
+~/.netrc 
+
+machine github.com
+    login <user>
+    password <password>

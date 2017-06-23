@@ -1,0 +1,37 @@
+
+nowSUM:=842d4b139343f3cf23ef1f9aaf651c8aa34e36f675fe45b16d50e960e71ee027
+
+all: help01
+
+help01:
+	@echo
+	@echo " gp get_prog           download prog "
+	@echo " vs verify_sum "
+	@echo
+	@echo " re renew              get_prog   verify_sum "
+	@echo " h help                gen the help list"
+	@echo
+
+
+re renew : get_prog   get_gpg    
+m:
+	vim Makefile
+
+gp get_prog : 
+	-chmod 755    ./youtube-dl
+	wget https://yt-dl.org/downloads/latest/youtube-dl \
+		-O ./youtube-dl
+	chmod 755    ./youtube-dl
+vs verify_sum : 
+	@vk2=`cat ./youtube-dl |sha256sum |awk '{print $$1}'` \
+		&& [ "$${vk2}" = $(nowSUM) ] \
+		&& echo && echo " checksum ok : $(nowSUM)" && echo \
+		|| ( echo ; echo "$${vk2} don't equals to  $(nowSUM)" ; echo ; exit 33)
+
+
+h help :
+	./youtube-dl --help                              > help.00.top.txt
+	./youtube-dl --dump-user-agent                   > help.11.yt.agent.txt
+	./youtube-dl --list-extractors                   > help.21.list_extractor.txt
+	./youtube-dl --extractor-descriptions            > help.31.extractor_descript.txt
+	./youtube-dl --dump-user-agent                   > help.41.agent.txt
