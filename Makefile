@@ -163,7 +163,7 @@ ao3:
 vo3:
 	make vo DD=3
 
-
+ifneq (,$(wildcard ld_/))
 ldXX :=
 ldXX += ld_ffmpeg_1_origin.sh
 ldXX += ld_ffmpeg_2_aac.sh
@@ -192,6 +192,10 @@ $(eval $(foreach ld1,$(ldXX), $(eval $(call LDtemplate1,$(ld1)))))
 
 ld : $(ldYY)
 #	echo $^
+else
+ld :
+	@echo ; echo ' no ld target exist.' ; echo
+endif
 
 du1:
 	@$(foreach aa1,$(uri81),du -sh $(aa1)/ $(EOL))
