@@ -38,6 +38,9 @@ audio_skiped=0
 conv_mkv=0
 conv_ogg=1
 
+git_vo=
+git_ao=
+
 ## if specified 2nd para as mkv , or , the origin file less than 150M , then , gen an x265 mkv file.
 [ "$2" = 'mkv' ]                              && conv_mkv=1
 [ -n "${bb2}" -a "${bb2}" -lt "${size1}" ]    && conv_mkv=1
@@ -89,7 +92,8 @@ then
                     nice -n 19 ffmpeg -i  "${bb1}"  -vcodec libx265 -r 12 -vf  scale="${pp4}"  -acodec libopus -ac 1 -maxrate ${rate} -ar ${freq} -ab ${rate} -y  "${bb4}"
             echo "change from <$1>  to <${bb4}> "
             ls -l "${bb4}" 
-            [ -f ../new_add_gen1.txt ] && echo "$(basename ${PWD})/${bb4}" >> ../new_add_gen1.txt 
+            [ -f ../New_add_gen1.txt ] && echo "$(basename ${PWD})/${bb4}" >> ../New_add_gen1.txt 
+            git_vo="${bb4}" 
         fi
         echo "------------${pp1}, ${pp2}, ${pp3}, ${pp4}-----------"
     fi
@@ -107,9 +111,30 @@ then
                 nice -n 19 ffmpeg -vn -i  "${bb1}"  -ac 1 -maxrate ${rate} -ar ${freq} -f opus -ab ${rate} -y  "${bb4}"
         echo "change from <$1>  to <${bb4}> "
         ls -l "${bb4}" 
-        [ -f ../new_add_gen1.txt ] && echo "$(basename ${PWD})/${bb4}" >> ../new_add_gen1.txt 
+        [ -f ../New_add_gen1.txt ] && echo "$(basename ${PWD})/${bb4}" >> ../New_add_gen1.txt 
+        git_ao="${bb4}" 
     fi
 fi
+
+if [ -f ../.git/COMMIT_EDITMSG ]
+then
+    echo ' trying git_up'
+    git_up=
+    [ -n "${git_vo}" ] && git_up=1 && git add "${git_vo}" && git commit -m "${git_vo}" 
+    [ -n "${git_ao}" ] && git_up=1 && git add "${git_ao}" && git commit -m "${git_ao}" 
+    echo " git_up ${git_up} , git_vo ${git_vo} , git_ao ${git_ao} " 
+    if [ -n "${git_up}" ] 
+    then
+        echo " real git_up "
+        nice -n 15 git status
+        nice -n 15 git push -u origin master
+    else
+        echo " no file gen , skip git_up "
+    fi
+else
+    echo ' skip git_up'
+fi
+
 
 
 #delete the origin file
@@ -129,8 +154,8 @@ else
     if [ "${audio_skiped}" = '1' -o "${video_skiped}" = '1' ]
     then
         echo " skiped needed, try to kill "
-        grep '' ../now_yt_pid.txt
-        kill `cat ../now_yt_pid.txt`
+        grep '' ../pid_now_yt.txt
+        kill `cat ../pid_now_yt.txt`
     else
         echo " no skiped , no need to kill "
     fi

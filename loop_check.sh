@@ -10,5 +10,6 @@ do
     echo -n	" $(cat nohup.out |grep Duration|tail -n 1|sed -e 's;^.*Duration: ;;g' -e 's;\..*$;;g' ) "
     echo -n	`cat nohup.out |grep Input\ |tail -n 1|sed -e "s;^[^']*';;g" -e 's;^[0-9_]*;;g' -e "s;'[^']*$;;g" -e "s;[ _\.\-];;g" `
 	echo
+    grep -q END1\  nohup.out && echo &&echo&&grep END1 nohup.out && date -d '+16 hour'    +%Y%m%d__%H%M%p && echo && exit 3
 	sleep 5
 done

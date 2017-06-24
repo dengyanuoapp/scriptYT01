@@ -2,27 +2,34 @@
 uri01:=https://www.youtube.com/channel
 uri81:=
 
-UCcBXM1hhamn9Su_bEQ1lVzA:=政論郭寶勝
-UCO3pO3ykAUybrjv3RBbXEHw:=郭文贵
-UC2VwgzDzUNvfRDqQ6LJxTXA:=《平论》
-UC3lyWHqUY9IiP4en5jnY6vA:=MingjingTV
-UCeBfK3zzgqDQLhBovmguOuQ:=唐柏桥
-UCUTYYuGRa_Xzu0FlcM1UvHQ:=透視中國
-UCEtI-CRaNx6kiXMrVjnXe8w:=Lee洪宽
+
+UCyDCC5CcIqMqBbzMVENoKVQ:=趙岩
 UCHjTK8jOPMM3zIz_y8lwNXA:=Gang_Liu
 UCdKyM0XmuvQrD0o5TNhUtkQ:=Mingjing_Huopai
+UCcBXM1hhamn9Su_bEQ1lVzA:=政論郭寶勝
+UC2VwgzDzUNvfRDqQ6LJxTXA:=《平论》
+UChRE0pMeij_O5FqWrSKBF-Q:=書齋夜話
+UCO3pO3ykAUybrjv3RBbXEHw:=郭文贵
+UCKt9OVBD71w4eGQEkLdn6NA:=History_Channel_Mingjing
+UC6xKvXKdFxPYjZGc5idYycA:=明鏡廣播電台
+UCUTYYuGRa_Xzu0FlcM1UvHQ:=透視中國
+UCEtI-CRaNx6kiXMrVjnXe8w:=Lee洪宽
+UC3lyWHqUY9IiP4en5jnY6vA:=MingjingTV
+UCeBfK3zzgqDQLhBovmguOuQ:=唐柏桥
 
-
-uri81 += UC2VwgzDzUNvfRDqQ6LJxTXA
-uri81 += UCO3pO3ykAUybrjv3RBbXEHw
-
-uri81 += UCcBXM1hhamn9Su_bEQ1lVzA
-uri81 += UC3lyWHqUY9IiP4en5jnY6vA
-uri81 += UCeBfK3zzgqDQLhBovmguOuQ
-uri81 += UCUTYYuGRa_Xzu0FlcM1UvHQ
-uri81 += UCEtI-CRaNx6kiXMrVjnXe8w
+uri81 += UCyDCC5CcIqMqBbzMVENoKVQ
 uri81 += UCHjTK8jOPMM3zIz_y8lwNXA
 uri81 += UCdKyM0XmuvQrD0o5TNhUtkQ
+uri81 += UCcBXM1hhamn9Su_bEQ1lVzA
+uri81 += UC2VwgzDzUNvfRDqQ6LJxTXA
+uri81 += UChRE0pMeij_O5FqWrSKBF-Q
+uri81 += UCO3pO3ykAUybrjv3RBbXEHw
+uri81 += UCKt9OVBD71w4eGQEkLdn6NA
+uri81 += UC6xKvXKdFxPYjZGc5idYycA
+uri81 += UCUTYYuGRa_Xzu0FlcM1UvHQ
+uri81 += UCEtI-CRaNx6kiXMrVjnXe8w
+uri81 += UC3lyWHqUY9IiP4en5jnY6vA
+uri81 += UCeBfK3zzgqDQLhBovmguOuQ
 
 
 
@@ -30,7 +37,7 @@ all :help01
 
 help01:
 	@echo
-	@echo "  new_add_gen1.txt "
+	@echo "  New_add_gen1.txt "
 	@echo "c clean : $(xxYT)"
 	@echo "vo video_only :"
 	@echo "ao audio_only :"
@@ -92,6 +99,10 @@ t2:
 		$(obj01)
 
 
+define EOL
+
+
+endef
 
 
 #$(foreach aa1,$(uri81),$(eval $(call 
@@ -105,7 +116,7 @@ $(xx$(1)):
 	mkdir -p $(1)/
 	#cd $(1) && ld_youtube_dl2.sh  "$(uri01)/$(1)"
 	cd $(1) && touch 00_$($(1)).ogg && touch zz_$($(1)).ogg
-	-cd $(1) && ( $(cmd01)  "$(uri01)/$(1)" & pid1=$$$$! ; echo $$$${pid1} > ../now_yt_pid.txt ; wait $$$${pid1} ; sleep 8 )
+	-cd $(1) && ( $(cmd01)  "$(uri01)/$(1)" & pid1=$$$$! ; echo $$$${pid1} > ../pid_now_yt.txt ; wait $$$${pid1} ; sleep 8 )
 	touch $$@
 
 endef
@@ -133,7 +144,7 @@ gs:
 gc:
 	nice -n 15 git commit -a
 t1:
-	echo -n > new_add_gen1.txt
+	echo -n > New_add_gen1.txt
 	       make $(uri81) XX=$(XX)  DD=$(DD) 
 	@echo "make $(uri81) XX=$(XX)  DD=$(DD)  "
 #	make UCEtI-CRaNx6kiXMrVjnXe8w
@@ -175,7 +186,12 @@ $($(1)1): $($(1)2)
 	cp $$^ $$@
 
 endef
-$(info $(foreach ld1,$(ldXX), $(eval $(call LDtemplate1,$(ld1)))))
 
-$(info --- $(ldYY) )
+$(eval $(foreach ld1,$(ldXX), $(eval $(call LDtemplate1,$(ld1)))))
+#$(info --- $(ldYY) )
+
 ld : $(ldYY)
+#	echo $^
+
+du1:
+	@$(foreach aa1,$(uri81),du -sh $(aa1)/ $(EOL))
