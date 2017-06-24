@@ -38,7 +38,12 @@ all :help01
 help01:
 	@echo
 	@echo "  New_add_gen1.txt "
+	@echo "  Cpu_limit.txt    "
+	@echo "  skip_kill.txt"
+	@echo "  pid_now_yt.txt"
+	@echo
 	@echo "c clean : $(xxYT)"
+	@echo
 	@echo "vo video_only :"
 	@echo "ao audio_only :"
 	@echo
@@ -143,6 +148,8 @@ gs:
 	nice -n 15 git status
 gc:
 	nice -n 15 git commit -a
+gd:
+	nice -n 15 git diff
 t1:
 	echo -n > New_add_gen1.txt
 	       make $(uri81) XX=$(XX)  DD=$(DD) 
