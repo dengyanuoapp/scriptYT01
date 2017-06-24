@@ -5,10 +5,10 @@ echo
 echo 
 echo 
 
-#cat  tmp3/nohup.out  |cut -c 1-150 |tail -n 10 
-cat  tmp3/nohup.out  |tail -n 10 |sed -e 's;[\r\n]; ;g' -e 's;^.*size=;;g' 
+#cat  nohup.out  |cut -c 1-150 |tail -n 10 
+cat  nohup.out  |tail -n 10 |sed -e 's;[\r\n]; ;g' -e 's;^.*size=;;g' 
 
-for aa1 in tmp3/U* ; do
+for aa1 in U* ; do
 
     echo
     ls -l ${aa1}/ |sed -e '1d' |head -n 3 

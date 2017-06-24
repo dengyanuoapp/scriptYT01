@@ -86,6 +86,7 @@ then
                 fi
                 pp4="${pp3}${scale92}"
             fi
+            cput1=$(date +%s)
             #echo   "nice -n 19 ffmpeg -i \"${bb1}\" -vcodec libx265 -r 12 -vf scale='trunc(oh*a/2)*2:360' -acodec libopus -ac 1 -maxrate ${rate} -ar ${freq} -ab ${rate} -y \"${bb4}\""
             #        nice -n 19 ffmpeg -i  "${bb1}"  -vcodec libx265 -r 12 -vf scale='trunc(oh*a/2)*2:360' -acodec libopus -ac 1 -maxrate ${rate} -ar ${freq} -ab ${rate} -y  "${bb4}"
             #echo   "nice -n 19 ffmpeg -i \"${bb1}\" -vcodec libx265 -r 12 -vf scale=\"${pp4}\" -acodec libopus -ac 1 -maxrate ${rate} -ar ${freq} -ab ${rate} -y \"${bb4}\""
@@ -96,6 +97,15 @@ then
             ls -l "${bb4}" 
             [ -f ../New_add_gen1.txt ] && echo "$(basename ${PWD})/${bb4}" >> ../New_add_gen1.txt 
             git_vo="${bb4}" 
+            if [ -f ../Cpu_limit.txt ] ; then
+                cput2=$(date +%s)
+                cput3=$((${cput2} - ${cput1}))
+                cput4=$((${cput3} * 2))
+                echo " need to limit cpu , sleep : ${cput1} ${cput2} ${cput3} ${cput4} "
+                sleep ${cput4}
+            else
+                echo " don't need to limit cpu "
+            fi
         fi
         echo "------------${pp1}, ${pp2}, ${pp3}, ${pp4}-----------"
     fi
@@ -109,6 +119,7 @@ then
         echo " already exist . skip ${bb4}"
         audio_skiped=1
     else 
+        cput1=$(date +%s)
         #echo   "nice -n 19 ffmpeg -vn -i \"${bb1}\" -ac 1 -maxrate ${rate} -ar ${freq} -f opus -ab ${rate} -y \"${bb4}\""
         #        nice -n 19 ffmpeg -vn -i  "${bb1}"  -ac 1 -maxrate ${rate} -ar ${freq} -f opus -ab ${rate} -y  "${bb4}"
         echo   "nice -n 19 ffmpeg -vn -i \"${bb1}\" -af \"pan=mono|c0=FL\" -maxrate ${rate} -ar ${freq} -f opus -ab ${rate} -y \"${bb4}\""
@@ -117,6 +128,15 @@ then
         ls -l "${bb4}" 
         [ -f ../New_add_gen1.txt ] && echo "$(basename ${PWD})/${bb4}" >> ../New_add_gen1.txt 
         git_ao="${bb4}" 
+        if [ -f ../Cpu_limit.txt ] ; then
+            cput2=$(date +%s)
+            cput3=$((${cput2} - ${cput1}))
+            cput4=$((${cput3} * 2))
+            echo " need to limit cpu , sleep : ${cput1} ${cput2} ${cput3} ${cput4} "
+            sleep ${cput4}
+        else
+            echo " don't need to limit cpu "
+        fi
     fi
 fi
 
