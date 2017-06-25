@@ -157,18 +157,22 @@ t1:
 #	make UCEtI-CRaNx6kiXMrVjnXe8w
 
 ao audio_only :
-	@echo 'BEGIN1 == $@'
+	@echo "BEGIN1 == `date` : `date +%s` $@"
 	make t1 XX=aoo DD=$(DD)
-	@echo 'END1 == $@'
+	@echo "END1   == `date` : `date +%s` $@"
 vo video_only :
-	@echo 'BEGIN1 == $@'
+	@echo "BEGIN1 == `date` : `date +%s` $@"
 	make t1 XX=voo DD=$(DD)
-	@echo 'END1 == $@'
+	@echo "END1   == `date` : `date +%s` $@"
 
 ao3:
+	echo "`date` : `date +%s` : BEGIN $@"
 	make ao DD=3
+	echo "`date` : `date +%s` : END $@"
 vo3:
+	echo "`date` : `date +%s` : BEGIN $@"
 	make vo DD=3
+	echo "`date` : `date +%s` : END $@"
 
 ifneq (,$(wildcard ld_/))
 ldXX :=
@@ -206,3 +210,5 @@ endif
 
 du1:
 	@$(foreach aa1,$(uri81),du -sh $(aa1)/ $(EOL))
+loopAO3:
+	while [ 1 ] ; do make c  ; make ao3 &> Loop.log.txt ; sleep 30m ; done
