@@ -211,4 +211,10 @@ endif
 du1:
 	@$(foreach aa1,$(uri81),du -sh $(aa1)/ $(EOL))
 loopAO3:
-	while [ 1 ] ; do make c  ; make ao3 &> Loop.log.txt ; sleep 30m ; done
+	#while [ 1 ] ; do make c  ; make ao3 &> Loop.log.txt ; sleep 30m ; done
+	while [ 1 ] ; do make c  ; make ao3 &> Loop.log.txt ; \
+		aa1="$$(cat New_add_gen1.txt|wc -l)" ; \
+		[ "$${aa1}" = '0' ] && sleep 3m || sleep 6m ; \
+		done
+list:
+	find -type f |grep -v README.md |grep -v gitignore |grep -v '/.\.txt'|sed -e 's;$$;\n;g'   > 1.txt
