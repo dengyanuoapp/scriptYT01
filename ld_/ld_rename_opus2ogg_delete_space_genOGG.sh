@@ -100,9 +100,7 @@ then
             if [ -f ../Cpu_limit.txt ] ; then
                 cput2=$(date +%s)
                 cput3=$((${cput2} - ${cput1}))
-                cput4=$((${cput3} * 2))
-                echo " need to limit cpu , sleep : ${cput1} ${cput2} ${cput3} ${cput4} "
-                sleep ${cput4}
+                cput4v=$((${cput3} * 1))
             else
                 echo " don't need to limit cpu "
             fi
@@ -131,9 +129,7 @@ then
         if [ -f ../Cpu_limit.txt ] ; then
             cput2=$(date +%s)
             cput3=$((${cput2} - ${cput1}))
-            cput4=$((${cput3} * 2))
-            echo " need to limit cpu , sleep : ${cput1} ${cput2} ${cput3} ${cput4} "
-            sleep ${cput4}
+            cput4a=$((${cput3} * 1))
         else
             echo " don't need to limit cpu "
         fi
@@ -144,8 +140,8 @@ if [ -f ../.git/COMMIT_EDITMSG ]
 then
     echo ' trying git_up'
     git_up=
-    [ -n "${git_vo}" ] && git_up=1 && git add "${git_vo}" && git commit -m "${git_vo}" 
-    [ -n "${git_ao}" ] && git_up=1 && git add "${git_ao}" && git commit -m "${git_ao}" 
+    [ -n "${git_vo}" ] && git_up=1 && git add "${git_vo}" && git commit -a -m "${git_vo}" 
+    [ -n "${git_ao}" ] && git_up=1 && git add "${git_ao}" && git commit -a -m "${git_ao}" 
     echo " git_up ${git_up} , git_vo ${git_vo} , git_ao ${git_ao} " 
     if [ -n "${git_up}" ] 
     then
@@ -185,3 +181,14 @@ else
     fi
 fi
 
+if [ -n "${cput4a}" ]
+then
+    echo " need to limit cpu , sleep : ${cput1} ${cput2} ${cput3} ${cput4a} "
+    sleep ${cput4a}
+fi
+
+if [ -n "${cput4v}" ]
+then
+    echo " need to limit cpu , sleep : ${cput1} ${cput2} ${cput3} ${cput4v} "
+    sleep ${cput4v}
+fi
