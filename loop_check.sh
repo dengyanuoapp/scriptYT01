@@ -44,6 +44,7 @@ do
         ) || (
         tail -n 15 nohup.out | grep -i '\[download\] Downloa' |tail -n 1
     )
+    tail -n 1 nohup.out |grep ETA |grep '\[download\]' |sed -e 's;[\r\n\t]; ;g' |sed -e 's;download;\n;g'
     tail -n 5 nohup.out | grep -q END1  && echo &&echo&&tail -n 5 nohup.out |grep END1 && date -d '+16 hour'    +%Y%m%d__%H%M%p && echo && exit 3
 	sleep 5
 done
