@@ -1,0 +1,56 @@
+
+
+uu01:=$(wildcard U*)
+uu02:=$(foreach aa1,$(uu01),$(shell test -d $(aa1) && echo $(aa1)))
+
+check_dst_ff= [ -n "$(DST)" -a -n "$(FF)" ] || ( echo ; echo "usage : " ; \
+	echo "make $@ DST=??? FF=??? " ;echo 'make $@ DST=../all FF=/_17061'; echo ; exit 33 )
+
+check_ff= [ -n "$(FF)" ] || ( echo ; echo "usage : " ; \
+	echo "make $@ FF=??? " ;echo 'make $@ FF=/_17061'; echo ; exit 33 )
+
+define EOL
+
+
+endef
+
+all: help01
+	@#echo $(uu01)
+	@#echo $(uu02)
+	@echo
+
+help01:
+	@echo
+	@echo 'example : '
+	@echo ' make copy DST=../all FF=/_17061'
+	@echo
+	@echo ' make delete FF=/_17061 '
+
+
+
+
+m:
+	vim Makefile
+up:
+	nice -n 15 git push -u origin master
+
+gs :
+	nice -n 15 git status
+gc:
+	nice -n 15 git commit -a
+
+copy:
+	$(check_dst_ff)
+	@[ -n "$(DST)" -a -d "$(DST)" ] && echo && echo " == target dir is $(DST) "
+	@$(foreach aa2,$(uu02),\
+		mkdir -p $(DST)/$(aa2)/ $(EOL)\
+		find $(aa2)/ -type f |grep -v /yy_*.txt |grep -v /00_*.ogg |grep -v /zz_*.ogg \
+		|grep "$(FF)" |xargs -n 1 -I '{}' -exec /bin/cp -n '{}' $(DST)/$(aa2)/ $(EOL)\
+		)
+
+delete :
+	$(check_ff)
+	@$(foreach aa2,$(uu02),\
+		find $(aa2)/ -type f |grep -v /yy_*.txt |grep -v /00_*.ogg |grep -v /zz_*.ogg \
+		|grep "$(FF)" |xargs -n 1 -I '{}' -exec /bin/rm -f '{}' $(EOL)\
+		)
