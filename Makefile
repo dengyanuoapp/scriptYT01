@@ -167,11 +167,11 @@ vo video_only :
 
 ao3:
 	echo "`date` : `date +%s` : BEGIN $@"
-	make ao DD=3
+	make ao DD=2
 	echo "`date` : `date +%s` : END $@"
 vo3:
 	echo "`date` : `date +%s` : BEGIN $@"
-	make vo DD=3
+	make vo DD=2
 	echo "`date` : `date +%s` : END $@"
 
 ifneq (,$(wildcard ld_/))
