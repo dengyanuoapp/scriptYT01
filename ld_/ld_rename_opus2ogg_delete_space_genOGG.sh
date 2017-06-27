@@ -64,35 +64,43 @@ then
         echo " already exist . skip ${bb4}"
         video_skiped=1
     else 
-        pp1=$(ffprobe -v quiet -print_format json -show_format -show_streams "${bb1}" |grep coded_width  |head -n 1|awk -F : '{print $2}'|tr -d ',')
-        pp2=$(ffprobe -v quiet -print_format json -show_format -show_streams "${bb1}" |grep coded_height |head -n 1|awk -F : '{print $2}'|tr -d ',')
-        scale91='trunc(oh*a/2)*2:'
-        scale92=':trunc(ow*a/2)*2'
-        if [ -z "${pp1}" -o -z "${pp1}" ] ; then
-            echo "error pixel found <${pp1}><${pp2}>, skip "
+        ppW=$(ffprobe -v quiet -print_format json -show_format -show_streams "${bb1}" |grep coded_width  |head -n 1|awk -F : '{print $2}'|tr -d ',')
+        ppH=$(ffprobe -v quiet -print_format json -show_format -show_streams "${bb1}" |grep coded_height |head -n 1|awk -F : '{print $2}'|tr -d ',')
+        #scale91='trunc(ow*a/2)*2:'
+        #scale92=':trunc(oh*a/2)*2'
+        scale91='w=360:h=240:force_original_aspect_ratio=decrease'
+        scale92='w=240:h=360:force_original_aspect_ratio=decrease'
+        if [ -z "${ppW}" -o -z "${ppH}" ] ; then
+            echo "error pixel found <${ppW}><${ppH}>, skip "
         else
-            if [ ${pp2} -lt ${pp1} ] ; then
-                if [ ${pp2} -lt 360 ] ; then
-                    pp3=240
-                else
-                    pp3=360
+            if [ ${ppH} -lt ${ppW} ] ; then ################## w > h
+                if [ ${ppH} -lt 360 ] ; then ### w < 360 , ok , no need to chang
+                    nnW=${ppW}
+                    nnH=${ppH}
+                else                        ### w >= 360 , force w to 360
+                    nnW=360
+                    nnH=$(( ${ppH} * 360 / ${ppW} / 4 * 4 ))
                 fi
-                pp4="${scale91}${pp3}"
-            else
-                if [ ${pp1} -lt 360 ] ; then
-                    pp3=240
-                else
-                    pp3=360
+                pp4="${nnW}:${nnH}"
+            else                            ################## w <= h
+                if [ ${ppH} -lt 360 ] ; then ## w < h < 360
+                    nnW=${ppW}
+                    nnH=${ppH}
+                else                         ## w < h > 360 , force h to 360
+                    nnH=360
+                    nnW=$(( ${ppW} * 360 / ${ppH} / 4 * 4 ))
                 fi
-                pp4="${pp3}${scale92}"
+                pp4="${nnW}:${nnH}"
             fi
             cput1=$(date +%s)
             #echo   "nice -n 19 ffmpeg -i \"${bb1}\" -vcodec libx265 -r 12 -vf scale='trunc(oh*a/2)*2:360' -acodec libopus -ac 1 -maxrate ${rate} -ar ${freq} -ab ${rate} -y \"${bb4}\""
             #        nice -n 19 ffmpeg -i  "${bb1}"  -vcodec libx265 -r 12 -vf scale='trunc(oh*a/2)*2:360' -acodec libopus -ac 1 -maxrate ${rate} -ar ${freq} -ab ${rate} -y  "${bb4}"
             #echo   "nice -n 19 ffmpeg -i \"${bb1}\" -vcodec libx265 -r 12 -vf scale=\"${pp4}\" -acodec libopus -ac 1 -maxrate ${rate} -ar ${freq} -ab ${rate} -y \"${bb4}\""
             #        nice -n 19 ffmpeg -i  "${bb1}"  -vcodec libx265 -r 12 -vf  scale="${pp4}"  -acodec libopus -ac 1 -maxrate ${rate} -ar ${freq} -ab ${rate} -y  "${bb4}"
-            echo   "nice -n 19 ffmpeg -i \"${bb1}\" -vcodec libx265 -r 12 -vf scale=\"${pp4}\" -acodec libopus -af \"pan=mono|c0=FL\" -maxrate ${rate} -ar ${freq} -ab ${rate} -y \"${bb4}\""
-                    nice -n 19 ffmpeg -i  "${bb1}"  -vcodec libx265 -r 12 -vf  scale="${pp4}"  -acodec libopus -af  "pan=mono|c0=FL"  -maxrate ${rate} -ar ${freq} -ab ${rate} -y  "${bb4}"
+            #echo   "nice -n 19 ffmpeg -i \"${bb1}\" -vcodec libx265 -r 12 -vf scale=\"${pp4}\" -acodec libopus -af \"pan=mono|c0=FL\" -maxrate ${rate} -ar ${freq} -ab ${rate} -y \"${bb4}\""
+            #        nice -n 19 ffmpeg -i  "${bb1}"  -vcodec libx265 -r 12 -vf  scale="${pp4}"  -acodec libopus -af  "pan=mono|c0=FL"  -maxrate ${rate} -ar ${freq} -ab ${rate} -y  "${bb4}"
+            echo   "nice -n 19 ffmpeg -i \"${bb1}\" -vcodec libx265 -r 12 -vf scale=\"${pp4}\" -acodec libopus -ac 1 -maxrate ${rate} -ar ${freq} -ab ${rate} -y \"${bb4}\""
+                    nice -n 19 ffmpeg -i  "${bb1}"  -vcodec libx265 -r 12 -vf  scale="${pp4}"  -acodec libopus -ac 1 -maxrate ${rate} -ar ${freq} -ab ${rate} -y  "${bb4}"
             echo "change from <$1>  to <${bb4}> "
             ls -l "${bb4}" 
             [ -f ../New_add_gen1.txt ] && echo "$(basename ${PWD})/${bb4}" >> ../New_add_gen1.txt 
@@ -105,7 +113,7 @@ then
                 echo " don't need to limit cpu "
             fi
         fi
-        echo "------------${pp1}, ${pp2}, ${pp3}, ${pp4}-----------"
+        echo "------------${ppW}, ${ppH}, ${nnW}, ${nnH}, ${pp4}-----------"
     fi
 fi
 
@@ -120,8 +128,10 @@ then
         cput1=$(date +%s)
         #echo   "nice -n 19 ffmpeg -vn -i \"${bb1}\" -ac 1 -maxrate ${rate} -ar ${freq} -f opus -ab ${rate} -y \"${bb4}\""
         #        nice -n 19 ffmpeg -vn -i  "${bb1}"  -ac 1 -maxrate ${rate} -ar ${freq} -f opus -ab ${rate} -y  "${bb4}"
-        echo   "nice -n 19 ffmpeg -vn -i \"${bb1}\" -af \"pan=mono|c0=FL\" -maxrate ${rate} -ar ${freq} -f opus -ab ${rate} -y \"${bb4}\""
-                nice -n 19 ffmpeg -vn -i  "${bb1}"  -af  "pan=mono|c0=FL"  -maxrate ${rate} -ar ${freq} -f opus -ab ${rate} -y  "${bb4}"
+        #echo   "nice -n 19 ffmpeg -vn -i \"${bb1}\" -af \"pan=mono|c0=FL\" -maxrate ${rate} -ar ${freq} -f opus -ab ${rate} -y \"${bb4}\""
+        #        nice -n 19 ffmpeg -vn -i  "${bb1}"  -af  "pan=mono|c0=FL"  -maxrate ${rate} -ar ${freq} -f opus -ab ${rate} -y  "${bb4}"
+        echo   "nice -n 19 ffmpeg -vn -i \"${bb1}\" -ac 1 -maxrate ${rate} -ar ${freq} -f opus -ab ${rate} -y \"${bb4}\""
+                nice -n 19 ffmpeg -vn -i  "${bb1}"  -ac 1 -maxrate ${rate} -ar ${freq} -f opus -ab ${rate} -y  "${bb4}"
         echo "change from <$1>  to <${bb4}> "
         ls -l "${bb4}" 
         [ -f ../New_add_gen1.txt ] && echo "$(basename ${PWD})/${bb4}" >> ../New_add_gen1.txt 
