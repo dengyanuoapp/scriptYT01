@@ -47,6 +47,8 @@ help01:
 	@echo "vo video_only :"
 	@echo "ao audio_only :"
 	@echo
+	@echo "loopAO3       :"
+	@echo
 
 m :
 	vim Makefile
@@ -69,10 +71,14 @@ XX2:=
 endif
 endif
 
+DDstr1:=-d '+16 hour'    
+DDstr2:=+%Y%m%d__%H%M%p
+DDstr3:=date $(DDstr1) $(DDstr2)
+
 ifneq (,$(DD))
 DD11:=$(shell date                  +%Y%m%d)
 DD12:=$(shell date -d '-$(DD) day'  +%Y%m%d)
-DD00:=$(shell date -d '+16 hour'    +%Y%m%d__%H%M%p)
+DD00:=$(shell $(DDstr3))
 
 DD21:= --datebefore $(DD11)
 DD22:= --dateafter $(DD12)
@@ -84,6 +90,7 @@ freq:=24000
 cmd01:=LC_CTYPE=en_US.UTF-8 \
 	nice -n 19 \
 	youtube-dl   \
+	--abort-on-unavailable-fragment    \
 	--force-ipv4  \
 	--ignore-errors   \
 	--no-check-certificate   \
@@ -157,13 +164,13 @@ t1:
 #	make UCEtI-CRaNx6kiXMrVjnXe8w
 
 ao audio_only :
-	@echo "BEGIN1 == `date` : `date +%s` $@"
+	@echo "BEGIN1 == `date` : `date +%s` $@ : `$(DDstr3)` " ;echo "BEGIN1 == `date` : `date +%s` $@ : `$(DDstr3)` "   >> Start_stop_log.txt
 	make t1 XX=aoo DD=$(DD)
-	@echo "END1   == `date` : `date +%s` $@"
+	@echo "END1   == `date` : `date +%s` $@ : `$(DDstr3)` " ;echo "END1   == `date` : `date +%s` $@ : `$(DDstr3)` "   >> Start_stop_log.txt
 vo video_only :
-	@echo "BEGIN1 == `date` : `date +%s` $@"
+	@echo "BEGIN1 == `date` : `date +%s` $@ : `$(DDstr3)` " ;echo "BEGIN1 == `date` : `date +%s` $@ : `$(DDstr3)` "   >> Start_stop_log.txt
 	make t1 XX=voo DD=$(DD)
-	@echo "END1   == `date` : `date +%s` $@"
+	@echo "END1   == `date` : `date +%s` $@ : `$(DDstr3)` " ;echo "END1   == `date` : `date +%s` $@ : `$(DDstr3)` "   >> Start_stop_log.txt
 
 ao3:
 	echo "`date` : `date +%s` : BEGIN $@"
@@ -213,8 +220,9 @@ du1:
 loopAO3:
 	#while [ 1 ] ; do make c  ; make ao3 &> Loop.log.txt ; sleep 30m ; done
 	while [ 1 ] ; do make c  ; make ao3 &> Loop.log.txt ; \
+		[ -f stop.txt ] && break ; \
 		aa1="$$(cat New_add_gen1.txt|wc -l)" ; \
 		[ "$${aa1}" = '0' ] && sleep 3m || sleep 6m ; \
-		done
+		done ; echo
 list:
 	find -type f |grep -v README.md |grep -v gitignore |grep -v '/.\.txt'|sed -e 's;$$;\n;g'   > 1.txt
