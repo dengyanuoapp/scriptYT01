@@ -159,7 +159,7 @@ endif
 
 
 c clean : 
-	rm -f $(wildcard $(xxYT)) nohup.out
+	rm -f $(wildcard $(xxYT)) 
 
 up:
 	nice -n 15 git push -u origin master
@@ -233,7 +233,7 @@ du1:
 loopAO3:
 	#while [ 1 ] ; do make c  ; make ao3 &> Loop.log.txt ; sleep 30m ; done
 	while [ 1 ] ; do make c  ; make ao3 &> Loop.log.txt ; \
-		[ -f stop.txt ] && break ; \
+		[ -f stop.txt ] && echo && echo "stop.txt met, exit " && echo && break ; \
 		aa1="$$(cat New_add_gen1.txt|wc -l)" ; \
 		[ "$${aa1}" = '0' ] && sleep 3m || sleep 6m ; \
 		done ; echo

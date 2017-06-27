@@ -52,9 +52,20 @@ kill:
 	-ps auxf |grep ^dyn |grep make   |awk '{print $$2}'|xargs -n 1 kill
 	-ps auxf |grep ^dyn |grep ffmpeg |awk '{print $$2}'|xargs -n 1 kill
 	 ps auxf |grep ^dyn
+	@echo ; mount |grep rootX ; echo
 
 ps:
 	ps auxf |grep ^dyn
 	@[ ! -f tmpn/Start_stop_log.txt ] || ( echo ; tail -n 3 tmpn/Start_stop_log.txt )
 	@[ ! -f tmpn/New_add_gen1.txt   ] || ( echo ; tail -n 3 tmpn/New_add_gen1.txt   )
+	@echo ; mount |grep rootX ; echo
 	@echo
+ll:
+	while [ 1 ] ; do \
+		tail -n 3 tmpn/Start_stop_log.txt ; \
+		echo;echo; \
+		tail -n 3 tmpn/New_add_gen1.txt ; \
+		echo;echo; \
+		sleep 30 ; \
+		done
+
