@@ -1,39 +1,27 @@
 
+define EOL
+
+
+endef
+
+
 uri01:=https://www.youtube.com/channel
 uri81:=
 
 
-UCyDCC5CcIqMqBbzMVENoKVQ:=趙岩
-UCHjTK8jOPMM3zIz_y8lwNXA:=Gang_Liu
-UCdKyM0XmuvQrD0o5TNhUtkQ:=Mingjing_Huopai
-UCcBXM1hhamn9Su_bEQ1lVzA:=政論郭寶勝
-UC2VwgzDzUNvfRDqQ6LJxTXA:=《平论》
-UChRE0pMeij_O5FqWrSKBF-Q:=書齋夜話
-UCO3pO3ykAUybrjv3RBbXEHw:=郭文贵
-UCKt9OVBD71w4eGQEkLdn6NA:=History_Channel_Mingjing
-UC6xKvXKdFxPYjZGc5idYycA:=明鏡廣播電台
-UCUTYYuGRa_Xzu0FlcM1UvHQ:=透視中國
-UCEtI-CRaNx6kiXMrVjnXe8w:=Lee洪宽
-UC3lyWHqUY9IiP4en5jnY6vA:=MingjingTV
-UCeBfK3zzgqDQLhBovmguOuQ:=唐柏桥
+ifeq (,$(wildcard FileSet))
+$(error ' FileSet is not exist. ' )
+endif
 
-uri81 += UCyDCC5CcIqMqBbzMVENoKVQ
-uri81 += UCHjTK8jOPMM3zIz_y8lwNXA
-uri81 += UCdKyM0XmuvQrD0o5TNhUtkQ
-uri81 += UCcBXM1hhamn9Su_bEQ1lVzA
-uri81 += UC2VwgzDzUNvfRDqQ6LJxTXA
-uri81 += UChRE0pMeij_O5FqWrSKBF-Q
-uri81 += UCO3pO3ykAUybrjv3RBbXEHw
-uri81 += UCKt9OVBD71w4eGQEkLdn6NA
-uri81 += UC6xKvXKdFxPYjZGc5idYycA
-uri81 += UCUTYYuGRa_Xzu0FlcM1UvHQ
-uri81 += UCEtI-CRaNx6kiXMrVjnXe8w
-uri81 += UC3lyWHqUY9IiP4en5jnY6vA
-uri81 += UCeBfK3zzgqDQLhBovmguOuQ
+uri81:=$(shell cat FileSet|sed -e 's;[\r\n\t];;g'|grep -v ^gitUSERNAME |grep -v ^$$ | awk -F: '{print $$1}')
+
+$(info === $(uri81) ===)
+
+include ./FileSet
+#$(error debuging)
 
 
-
-all :help01
+all : README.md help01
 
 help01:
 	@echo
@@ -53,6 +41,36 @@ help01:
 m :
 	vim Makefile
 
+PWD01:=$(shell [ -f /bin/realpath ] &&  /bin/realpath    .)
+PWD02:=$(shell [ -f /bin/readlink ] &&  /bin/readlink -m .)
+PWD03:=$(firstword $(wildcard $(PWD01) $(PWD02)))
+ifeq (,$(PWD03))
+$(error ' path error ')
+endif
+
+PWD11:=$(shell [ -f /bin/basename ] &&  /bin/basename $(PWD03))
+
+#gitUSERNAME:=youtube01
+
+gitHUB:=https://github.com
+
+# https://github.com/youtube01/newest03/tree/master/UC3lyWHqUY9IiP4en5jnY6vA
+gitTOP0:=$(gitHUB)/$(gitUSERNAME)/$(PWD11)
+gitTOP1:=$(gitHUB)/$(gitUSERNAME)/$(PWD11)/tree/master
+gitTOP2:=$(gitHUB)/$(gitUSERNAME)/$(PWD11)/commits/master
+$(info --- gitHUB --- $(gitHUB) --- )
+$(info --- gitUSERNAME --- $(gitUSERNAME) --- )
+$(info --- PWD11 --- $(PWD11) --- )
+$(info --- gitTOP1 --- $(gitTOP1) --- )
+
+README.md : FileSet
+	[ -f readme.head ] && cat readme.head > $@ || echo -n > $@
+	echo >> $@; echo >> $@ 
+	echo "# $(gitTOP2)   # updateing " >> $@ $(EOL) 
+	echo >> $@; echo >> $@
+	$(foreach aa1,$(uri81),\
+		echo "# $(gitTOP1)/$(aa1)              # --> $($(aa1))" >> $@ $(EOL) \
+		echo >> $@ $(EOL))
 
 #	--postprocessor-args \
 #	' -vn -acodec opus -f opus -ac 1 -maxrate $(rate) -ar $(freq) -ab $(rate) '   \
@@ -110,11 +128,6 @@ t2:
 	$(cmd01) \
 		$(obj01)
 
-
-define EOL
-
-
-endef
 
 
 #$(foreach aa1,$(uri81),$(eval $(call 
