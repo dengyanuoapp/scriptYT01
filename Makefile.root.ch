@@ -11,6 +11,8 @@ e extract:$(NOW_ROOT_FILE_NAME)
 	make um
 	rm -fr rootY/*
 	cd rootY && tar xfJ  ../$< ; echo
+	chmod -R a-s rootY
+	chmod -R a-s rootY/
 
 m :
 	vim Makefile
