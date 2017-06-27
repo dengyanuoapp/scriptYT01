@@ -176,13 +176,13 @@ vo3:
 
 ifneq (,$(wildcard ld_/))
 ldXX :=
-ldXX += ld_ffmpeg_1_origin.sh
-ldXX += ld_ffmpeg_2_aac.sh
-ldXX += ld_ffmpeg_3_mp2.sh
-ldXX += ld_ffmpeg_4_opus.sh
-ldXX += ld_ffmpeg_5_ogg01.sh
-ldXX += ld_ffmpeg_6_ogg02.sh
-ldXX += ld_ffmpeg_7_mp4.sh
+#ldXX += ld_ffmpeg_1_origin.sh
+#ldXX += ld_ffmpeg_2_aac.sh
+#ldXX += ld_ffmpeg_3_mp2.sh
+#ldXX += ld_ffmpeg_4_opus.sh
+#ldXX += ld_ffmpeg_5_ogg01.sh
+#ldXX += ld_ffmpeg_6_ogg02.sh
+#ldXX += ld_ffmpeg_7_mp4.sh
 ldXX += ld_rename_opus2ogg_delete_space_genOGG.sh
 ldXX += ld_rename_opus2ogg_delete_space_noGEN.sh
 ldXX += ld_run.sh
