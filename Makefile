@@ -204,6 +204,7 @@ ldXX :=
 #ldXX += ld_ffmpeg_6_ogg02.sh
 #ldXX += ld_ffmpeg_7_mp4.sh
 ldXX += ld_rename_opus2ogg_delete_space_genOGG.sh
+ldXX += ld_rename_opus2ogg_delete_space_highQuality.sh
 ldXX += ld_rename_opus2ogg_delete_space_noGEN.sh
 ldXX += ld_run.sh
 ldXX += ld_youtube_dl1__video.sh
