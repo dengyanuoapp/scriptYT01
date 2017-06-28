@@ -194,6 +194,7 @@ vo3:
 	make vo DD=2
 	echo "`date` : `date +%s` : END $@"
 
+ifeq (1,0)
 ifneq (,$(wildcard ld_/))
 ldXX :=
 #ldXX += ld_ffmpeg_1_origin.sh
@@ -227,6 +228,7 @@ ld : $(ldYY)
 else
 ld :
 	@echo ; echo ' no ld target exist.' ; echo
+endif
 endif
 
 du1:

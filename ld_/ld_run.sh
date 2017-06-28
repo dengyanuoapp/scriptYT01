@@ -6,5 +6,5 @@ rr1=/home/rootX/rootY
 rr2=${rr1}/lib
 rr3=${rr1}/lib/ld-linux.so.2 
 
-echo   "LD_LIBRARY_PATH=${rr2} nice -n 18 $*"
-        LD_LIBRARY_PATH=${rr2} nice -n 18 $*
+echo   "LD_LIBRARY_PATH=${rr2} ${rr3} nice -n 18 $*"
+        LD_LIBRARY_PATH=${rr2} ${rr3} nice -n 18 $*
