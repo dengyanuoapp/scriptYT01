@@ -1,0 +1,1 @@
+libopencore_amrnb : 4.75k, 5.15k, 5.90k, 6.70k, 7.40k, 7.95k, 10.20k, 12.20k, using 12.20k
