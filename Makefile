@@ -144,7 +144,6 @@ $(xx$(1)):
 	-cd $(1) && ( \
 		$(cmd01)  "$(uri01)/$(1)" & pid1=$$$$! ; \
 		echo $$$${pid1} > ../pid_now_yt.txt ; \
-		echo $$$${pid1} | nc -l 127.0.0.1 33778 ; \
 		wait $$$${pid1} ; sleep 8 )
 	touch $$@
 
