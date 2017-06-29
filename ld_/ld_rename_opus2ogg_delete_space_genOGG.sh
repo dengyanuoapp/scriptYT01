@@ -104,10 +104,6 @@ if [ -z "${af}" ] ; then
     echo   "nice -n 19 ffmpeg -i \"${bb1}\" -vcodec libx265 -r 12 -vf scale=\"${pp4}\" -acodec amr_nb                 -ac 1 -ar ${freq} -ab ${rate} -y \"${bb4}\""
             nice -n 19 ffmpeg -i  "${bb1}"  -vcodec libx265 -r 12 -vf  scale="${pp4}"  -acodec amr_nb                 -ac 1 -ar ${freq} -ab ${rate} -y  "${bb4}" &
 		    pid1=$! ; echo ${pid1} | nc 127.0.0.1 33778 ; wait ${pid1}
-            nice -n 19 ffmpeg -i  "${bb1}"  -vcodec libx265 -r 12 -vf  scale="${pp4}"  -acodec amr_nb -af "volume=3"  -ac 1 -ar ${freq} -ab ${rate} -y  "${bb4}" &
-		    pid1=$! ; echo ${pid1} | nc 127.0.0.1 33778 ; wait ${pid1}
-            nice -n 19 ffmpeg -i  "${bb1}"  -vcodec libx265 -r 12 -vf  scale="${pp4}"  -acodec amr_nb -af "volume=9"  -ac 1 -ar ${freq} -ab ${rate} -y  "${bb4}" &
-		    pid1=$! ; echo ${pid1} | nc 127.0.0.1 33778 ; wait ${pid1}
 else
     #echo   "nice -n 19 ffmpeg -i \"${bb1}\" -vcodec libx265 -r 12 -vf scale=\"${pp4}\" -acodec libopus -af \"${af}\" -ac 1 -maxrate ${rate} -ar ${freq} -ab ${rate} -y \"${bb4}\""
     #        nice -n 19 ffmpeg -i  "${bb1}"  -vcodec libx265 -r 12 -vf  scale="${pp4}"  -acodec libopus -af  "${af}"  -ac 1 -maxrate ${rate} -ar ${freq} -ab ${rate} -y  "${bb4}" &
@@ -135,6 +131,7 @@ fi
 if [ "${conv_ogg}" = 1 ] 
 then
     bb4="${bb3}.ogg"
+    bb4="${bb3}.amr"
     if [ -f "${bb4}" ] ; then
         echo " already exist . skip ${bb4}"
         audio_skiped=1
@@ -146,10 +143,10 @@ if [ -z "${af}" ] ; then
         echo   "nice -n 19 ffmpeg -i \"${bb1}\" -vn -acodec amr_nb                 -ac 1 -ar ${freq} -ab ${rate} -y \"${bb4}\""
                 nice -n 19 ffmpeg -i  "${bb1}"  -vn -acodec amr_nb                 -ac 1 -ar ${freq} -ab ${rate} -y  "${bb4}" &
 		        pid1=$! ; echo ${pid1} | nc 127.0.0.1 33778 ; wait ${pid1}
-                nice -n 19 ffmpeg -i  "${bb1}"  -vn -acodec amr_nb -af "volume=3"  -ac 1 -ar ${freq} -ab ${rate} -y  "${bb4}" &
-		        pid1=$! ; echo ${pid1} | nc 127.0.0.1 33778 ; wait ${pid1}
-                nice -n 19 ffmpeg -i  "${bb1}"  -vn -acodec amr_nb -af "volume=9"  -ac 1 -ar ${freq} -ab ${rate} -y  "${bb4}" &
-		        pid1=$! ; echo ${pid1} | nc 127.0.0.1 33778 ; wait ${pid1}
+                #nice -n 19 ffmpeg -i  "${bb1}"  -vn -acodec amr_nb -af "volume=3"  -ac 1 -ar ${freq} -ab ${rate} -y  "${bb4}".3.amr &
+		        #pid1=$! ; echo ${pid1} | nc 127.0.0.1 33778 ; wait ${pid1}
+                #nice -n 19 ffmpeg -i  "${bb1}"  -vn -acodec amr_nb -af "volume=9"  -ac 1 -ar ${freq} -ab ${rate} -y  "${bb4}".9.amr &
+		        #pid1=$! ; echo ${pid1} | nc 127.0.0.1 33778 ; wait ${pid1}
 else                                                
         #echo   "nice -n 19 ffmpeg -i \"${bb1}\" -vn -acodec libopus -af \"${af}\" -ac 1 -maxrate ${rate} -ar ${freq} -ab ${rate} -y \"${bb4}\""
         #        nice -n 19 ffmpeg -i  "${bb1}"  -vn -acodec libopus -af  "${af}"  -ac 1 -maxrate ${rate} -ar ${freq} -ab ${rate} -y  "${bb4}" &
@@ -175,8 +172,8 @@ if [ -f ../.git/COMMIT_EDITMSG ]
 then
     echo ' trying git_up'
     git_up=
-    [ -n "${git_vo}" ] && git_up=1 && git add "${git_vo}" && git commit -a -m "${git_vo}" 
-    [ -n "${git_ao}" ] && git_up=1 && git add "${git_ao}" && git commit -a -m "${git_ao}" 
+    [ -n "${git_vo}" ] && git_up=1 && git add "${git_vo}"* && git commit -a -m "${git_vo}" 
+    [ -n "${git_ao}" ] && git_up=1 && git add "${git_ao}"* && git commit -a -m "${git_ao}" 
     echo " git_up ${git_up} , git_vo ${git_vo} , git_ao ${git_ao} " 
     if [ -n "${git_up}" ] 
     then
