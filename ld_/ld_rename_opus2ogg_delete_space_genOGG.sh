@@ -2,10 +2,11 @@
 
 ls -l "$1"
 
-if [ ! -f "$1" ] 
+if [ -z "$1" -o ! -f "$1" ] 
 then
     echo 
     echo "<$1> don't exist. exit."
+    echo 'af="volume=1.5"'  $0 '[mkv|ogg]'
     echo 
     exit
 fi
@@ -16,7 +17,7 @@ ls -l "${bb1}"
 
 bb2=$(cat "${bb1}"|wc -c)
 
-bb3="_$(echo -n "$1"|tr -d \'|tr -d \"|sed -e 's;[ \t\r\n&=\-\|\+\@\#,]*;;g' -e 's;__*;_;g' -e 's;^201;1;g' -e 's;\.mp4$;;g' -e 's;\.mkv$;;g' -e 's;\.m4a$;;g' -e 's;\.mp[234]$;;g' -e 's;\.webm$;;g' -e 's;\.opus$;;g')"
+bb3="_$(echo -n "$1"|tr -d \'|tr -d \"|sed -e 's;[/ \t\r\n&=\-\|\+\@\#,]*;;g' -e 's;__*;_;g' -e 's;^201;1;g' -e 's;\.mp4$;;g' -e 's;\.mkv$;;g' -e 's;\.m4a$;;g' -e 's;\.mp[234]$;;g' -e 's;\.webm$;;g' -e 's;\.opus$;;g')"
 
 
 echo
@@ -126,11 +127,11 @@ then
     else 
         cput1=$(date +%s)
 if [ -z "${af}" ] ; then
-        echo   "nice -n 19 ffmpeg -vn -i \"${bb1}\" -acodec libopus -ac 1 -maxrate ${rate} -ar ${freq} -ab ${rate} -y \"${bb4}\""
-                nice -n 19 ffmpeg -vn -i  "${bb1}"  -acodec libopus -ac 1 -maxrate ${rate} -ar ${freq} -ab ${rate} -y  "${bb4}"
-else
-        echo   "nice -n 19 ffmpeg -vn -i \"${bb1}\" -acodec libopus -af \"${af}\" -ac 1 -maxrate ${rate} -ar ${freq} -ab ${rate} -y \"${bb4}\""
-                nice -n 19 ffmpeg -vn -i  "${bb1}"  -acodec libopus -af  "${af}"  -ac 1 -maxrate ${rate} -ar ${freq} -ab ${rate} -y  "${bb4}"
+        echo   "nice -n 19 ffmpeg -i \"${bb1}\" -vn -acodec libopus               -ac 1 -maxrate ${rate} -ar ${freq} -ab ${rate} -y \"${bb4}\""
+                nice -n 19 ffmpeg -i  "${bb1}"  -vn -acodec libopus               -ac 1 -maxrate ${rate} -ar ${freq} -ab ${rate} -y  "${bb4}"
+else                                                
+        echo   "nice -n 19 ffmpeg -i \"${bb1}\" -vn -acodec libopus -af \"${af}\" -ac 1 -maxrate ${rate} -ar ${freq} -ab ${rate} -y \"${bb4}\""
+                nice -n 19 ffmpeg -i  "${bb1}"  -vn -acodec libopus -af  "${af}"  -ac 1 -maxrate ${rate} -ar ${freq} -ab ${rate} -y  "${bb4}"
 fi
         echo "change from <$1>  to <${bb4}> "
         ls -l "${bb4}" 

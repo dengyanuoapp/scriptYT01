@@ -12,7 +12,7 @@ fi
 
 ls -l "$1" 
 
-bb1=$(echo -n "$1"|sed -e 's;[ \t\r\n&=\-\|\+\@\#]*;;g' -e 's;__*;_;g' -e 's;\.opus$;.ogg;g')
+bb1=$(echo -n "$1"|sed -e 's;[ /\t\r\n&=\-\|\+\@\#]*;;g' -e 's;__*;_;g' -e 's;\.opus$;.ogg;g')
 if [ "$1" = "${bb1}" ]
 then
     echo 

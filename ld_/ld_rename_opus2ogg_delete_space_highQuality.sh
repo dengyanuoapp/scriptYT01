@@ -16,7 +16,7 @@ ls -l "${bb1}"
 
 bb2=$(cat "${bb1}"|wc -c)
 
-bb3="_$(echo -n "$1"|tr -d \'|tr -d \"|sed -e 's;[ \t\r\n&=\-\|\+\@\#,]*;;g' -e 's;__*;_;g' -e 's;^201;1;g' -e 's;\.mp4$;;g' -e 's;\.mkv$;;g' -e 's;\.m4a$;;g' -e 's;\.mp[234]$;;g' -e 's;\.webm$;;g' -e 's;\.opus$;;g')"
+bb3="_$(echo -n "$1"|tr -d \'|tr -d \"|sed -e 's;[ /\t\r\n&=\-\|\+\@\#,]*;;g' -e 's;__*;_;g' -e 's;^201;1;g' -e 's;\.mp4$;;g' -e 's;\.mkv$;;g' -e 's;\.m4a$;;g' -e 's;\.mp[234]$;;g' -e 's;\.webm$;;g' -e 's;\.opus$;;g')"
 
 
 echo
@@ -135,8 +135,8 @@ then
         #        nice -n 19 ffmpeg -vn -i  "${bb1}"  -ac 1 -maxrate ${rate} -ar ${freq} -f opus -ab ${rate} -y  "${bb4}"
         #echo   "nice -n 19 ffmpeg -vn -i \"${bb1}\" -af \"pan=mono|c0=FL\" -maxrate ${rate} -ar ${freq} -f opus -ab ${rate} -y \"${bb4}\""
         #        nice -n 19 ffmpeg -vn -i  "${bb1}"  -af  "pan=mono|c0=FL"  -maxrate ${rate} -ar ${freq} -f opus -ab ${rate} -y  "${bb4}"
-        echo   "nice -n 19 ffmpeg -vn -i \"${bb1}\" -ac 1 -maxrate ${rate} -ar ${freq} -f opus -ab ${rate} -y \"${bb4}\""
-                nice -n 19 ffmpeg -vn -i  "${bb1}"  -ac 1 -maxrate ${rate} -ar ${freq} -f opus -ab ${rate} -y  "${bb4}"
+        echo   "nice -n 19 ffmpeg -i \"${bb1}\" -vn -acodec libopus -ac 1 -maxrate ${rate} -ar ${freq} -ab ${rate} -y \"${bb4}\""
+                nice -n 19 ffmpeg -i  "${bb1}"  -vn -acodec libopus -ac 1 -maxrate ${rate} -ar ${freq} -ab ${rate} -y  "${bb4}"
         echo "change from <$1>  to <${bb4}> "
         ls -l "${bb4}" 
         [ -f ../New_add_gen1.txt ] && echo "$(basename ${PWD})/${bb4}" >> ../New_add_gen1.txt 
