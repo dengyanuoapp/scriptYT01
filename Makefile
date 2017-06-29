@@ -141,7 +141,11 @@ $(xx$(1)):
 	mkdir -p $(1)/
 	#cd $(1) && ld_youtube_dl2.sh  "$(uri01)/$(1)"
 	cd $(1) && touch 00_$($(1)).ogg && touch zz_$($(1)).ogg
-	-cd $(1) && ( $(cmd01)  "$(uri01)/$(1)" & pid1=$$$$! ; echo $$$${pid1} > ../pid_now_yt.txt ; wait $$$${pid1} ; sleep 8 )
+	-cd $(1) && ( \
+		$(cmd01)  "$(uri01)/$(1)" & pid1=$$$$! ; \
+		echo $$$${pid1} > ../pid_now_yt.txt ; \
+		echo $$$${pid1} | nc -l 127.0.0.1 33778 ; \
+		wait $$$${pid1} ; sleep 8 )
 	touch $$@
 
 endef

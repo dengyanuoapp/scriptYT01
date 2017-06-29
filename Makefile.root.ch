@@ -69,3 +69,10 @@ ll:
 		sleep 30 ; \
 		done
 
+cpu:
+	[ -f /proc/cpuinfo ] || ( echo ; echo 'cpuinfo do NOT exist. exit.' ; echo ;echo ; exit 33 )
+	[ "$${USER}" = 'dyn' ] || ( echo ; echo 'yould should run by dyn only.' ;echo ; exit 44 )
+	while [ 1 ] ; do sleep 5 ; \
+		    nc -l  127.0.0.1 33778 |xargs -n 1  cpulimit -l 47  -z -p ; \
+	done 
+
