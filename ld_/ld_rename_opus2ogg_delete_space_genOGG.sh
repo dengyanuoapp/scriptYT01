@@ -11,6 +11,7 @@ then
     exit
 fi
 
+# 4750  5150 5900  6700  7400 7950 10200 12200
 # scale="720:trunc(ow/a/2)*2" scale="trunc(oh*a/2)*2:720"
 bb1="${1}"
 ls -l "${bb1}" 
@@ -23,8 +24,11 @@ bb3="_$(echo -n "$1"|tr -d \'|tr -d \"|sed -e 's;[/ \t\r\n&=\-\|\+\@\#,]*;;g' -e
 echo
 echo "change from <$1>  to <${bb3}> , size <${bb2}"
 
-rate=16k
+rate=4750
 freq=24000
+
+rate=4750
+freq=8000
 
 if [ "$2" = 'mkv' ]
 then
@@ -95,12 +99,20 @@ then
             fi
             cput1=$(date +%s)
 if [ -z "${af}" ] ; then
-    echo   "nice -n 19 ffmpeg -i \"${bb1}\" -vcodec libx265 -r 12 -vf scale=\"${pp4}\" -acodec libopus               -ac 1 -maxrate ${rate} -ar ${freq} -ab ${rate} -y \"${bb4}\""
-            nice -n 19 ffmpeg -i  "${bb1}"  -vcodec libx265 -r 12 -vf  scale="${pp4}"  -acodec libopus               -ac 1 -maxrate ${rate} -ar ${freq} -ab ${rate} -y  "${bb4}" &
+    #echo   "nice -n 19 ffmpeg -i \"${bb1}\" -vcodec libx265 -r 12 -vf scale=\"${pp4}\" -acodec libopus               -ac 1 -maxrate ${rate} -ar ${freq} -ab ${rate} -y \"${bb4}\""
+    #        nice -n 19 ffmpeg -i  "${bb1}"  -vcodec libx265 -r 12 -vf  scale="${pp4}"  -acodec libopus               -ac 1 -maxrate ${rate} -ar ${freq} -ab ${rate} -y  "${bb4}" &
+    echo   "nice -n 19 ffmpeg -i \"${bb1}\" -vcodec libx265 -r 12 -vf scale=\"${pp4}\" -acodec amr_nb                 -ac 1 -ar ${freq} -ab ${rate} -y \"${bb4}\""
+            nice -n 19 ffmpeg -i  "${bb1}"  -vcodec libx265 -r 12 -vf  scale="${pp4}"  -acodec amr_nb                 -ac 1 -ar ${freq} -ab ${rate} -y  "${bb4}" &
+		    pid1=$! ; echo ${pid1} | nc 127.0.0.1 33778 ; wait ${pid1}
+            nice -n 19 ffmpeg -i  "${bb1}"  -vcodec libx265 -r 12 -vf  scale="${pp4}"  -acodec amr_nb -af "volume=3"  -ac 1 -ar ${freq} -ab ${rate} -y  "${bb4}" &
+		    pid1=$! ; echo ${pid1} | nc 127.0.0.1 33778 ; wait ${pid1}
+            nice -n 19 ffmpeg -i  "${bb1}"  -vcodec libx265 -r 12 -vf  scale="${pp4}"  -acodec amr_nb -af "volume=9"  -ac 1 -ar ${freq} -ab ${rate} -y  "${bb4}" &
 		    pid1=$! ; echo ${pid1} | nc 127.0.0.1 33778 ; wait ${pid1}
 else
-    echo   "nice -n 19 ffmpeg -i \"${bb1}\" -vcodec libx265 -r 12 -vf scale=\"${pp4}\" -acodec libopus -af \"${af}\" -ac 1 -maxrate ${rate} -ar ${freq} -ab ${rate} -y \"${bb4}\""
-            nice -n 19 ffmpeg -i  "${bb1}"  -vcodec libx265 -r 12 -vf  scale="${pp4}"  -acodec libopus -af  "${af}"  -ac 1 -maxrate ${rate} -ar ${freq} -ab ${rate} -y  "${bb4}" &
+    #echo   "nice -n 19 ffmpeg -i \"${bb1}\" -vcodec libx265 -r 12 -vf scale=\"${pp4}\" -acodec libopus -af \"${af}\" -ac 1 -maxrate ${rate} -ar ${freq} -ab ${rate} -y \"${bb4}\""
+    #        nice -n 19 ffmpeg -i  "${bb1}"  -vcodec libx265 -r 12 -vf  scale="${pp4}"  -acodec libopus -af  "${af}"  -ac 1 -maxrate ${rate} -ar ${freq} -ab ${rate} -y  "${bb4}" &
+    echo   "nice -n 19 ffmpeg -i \"${bb1}\" -vcodec libx265 -r 12 -vf scale=\"${pp4}\" -acodec amr_nb -af \"${af}\"   -ac 1 -ar ${freq} -ab ${rate} -y \"${bb4}\""
+            nice -n 19 ffmpeg -i  "${bb1}"  -vcodec libx265 -r 12 -vf  scale="${pp4}"  -acodec amr_nb -af  "${af}"    -ac 1 -ar ${freq} -ab ${rate} -y  "${bb4}" &
 		    pid1=$! ; echo ${pid1} | nc 127.0.0.1 33778 ; wait ${pid1}
 fi
             echo "change from <$1>  to <${bb4}> "
@@ -129,12 +141,20 @@ then
     else 
         cput1=$(date +%s)
 if [ -z "${af}" ] ; then
-        echo   "nice -n 19 ffmpeg -i \"${bb1}\" -vn -acodec libopus               -ac 1 -maxrate ${rate} -ar ${freq} -ab ${rate} -y \"${bb4}\""
-                nice -n 19 ffmpeg -i  "${bb1}"  -vn -acodec libopus               -ac 1 -maxrate ${rate} -ar ${freq} -ab ${rate} -y  "${bb4}" &
+        #echo   "nice -n 19 ffmpeg -i \"${bb1}\" -vn -acodec libopus               -ac 1 -maxrate ${rate} -ar ${freq} -ab ${rate} -y \"${bb4}\""
+        #        nice -n 19 ffmpeg -i  "${bb1}"  -vn -acodec libopus               -ac 1 -maxrate ${rate} -ar ${freq} -ab ${rate} -y  "${bb4}" &
+        echo   "nice -n 19 ffmpeg -i \"${bb1}\" -vn -acodec amr_nb                 -ac 1 -ar ${freq} -ab ${rate} -y \"${bb4}\""
+                nice -n 19 ffmpeg -i  "${bb1}"  -vn -acodec amr_nb                 -ac 1 -ar ${freq} -ab ${rate} -y  "${bb4}" &
+		        pid1=$! ; echo ${pid1} | nc 127.0.0.1 33778 ; wait ${pid1}
+                nice -n 19 ffmpeg -i  "${bb1}"  -vn -acodec amr_nb -af "volume=3"  -ac 1 -ar ${freq} -ab ${rate} -y  "${bb4}" &
+		        pid1=$! ; echo ${pid1} | nc 127.0.0.1 33778 ; wait ${pid1}
+                nice -n 19 ffmpeg -i  "${bb1}"  -vn -acodec amr_nb -af "volume=9"  -ac 1 -ar ${freq} -ab ${rate} -y  "${bb4}" &
 		        pid1=$! ; echo ${pid1} | nc 127.0.0.1 33778 ; wait ${pid1}
 else                                                
-        echo   "nice -n 19 ffmpeg -i \"${bb1}\" -vn -acodec libopus -af \"${af}\" -ac 1 -maxrate ${rate} -ar ${freq} -ab ${rate} -y \"${bb4}\""
-                nice -n 19 ffmpeg -i  "${bb1}"  -vn -acodec libopus -af  "${af}"  -ac 1 -maxrate ${rate} -ar ${freq} -ab ${rate} -y  "${bb4}" &
+        #echo   "nice -n 19 ffmpeg -i \"${bb1}\" -vn -acodec libopus -af \"${af}\" -ac 1 -maxrate ${rate} -ar ${freq} -ab ${rate} -y \"${bb4}\""
+        #        nice -n 19 ffmpeg -i  "${bb1}"  -vn -acodec libopus -af  "${af}"  -ac 1 -maxrate ${rate} -ar ${freq} -ab ${rate} -y  "${bb4}" &
+        echo   "nice -n 19 ffmpeg -i \"${bb1}\" -vn -acodec amr_nb -af \"${af}\" -ac 1 -ar ${freq} -ab ${rate} -y \"${bb4}\""
+                nice -n 19 ffmpeg -i  "${bb1}"  -vn -acodec amr_nb -af  "${af}"  -ac 1 -ar ${freq} -ab ${rate} -y  "${bb4}" &
 		        pid1=$! ; echo ${pid1} | nc 127.0.0.1 33778 ; wait ${pid1}
 fi
         echo "change from <$1>  to <${bb4}> "
