@@ -199,11 +199,11 @@ fi
 if [ -n "${cput4a}" ]
 then
     echo " need to limit cpu , sleep : ${cput1} ${cput2} ${cput3} ${cput4a} "
-    sleep ${cput4a}
+    #sleep ${cput4a}
 fi
 
 if [ -n "${cput4v}" ]
 then
     echo " need to limit cpu , sleep : ${cput1} ${cput2} ${cput3} ${cput4v} "
-    sleep ${cput4v}
+    #sleep ${cput4v}
 fi
