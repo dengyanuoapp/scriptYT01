@@ -1,0 +1,16 @@
+ffmpeg  -buildconf          #  show build configuration
+ffmpeg  -formats            #  show available formats
+ffmpeg  -devices            #  show available devices
+ffmpeg  -codecs             #  show available codecs
+ffmpeg  -decoders           #  show available decoders
+ffmpeg  -encoders           #  show available encoders
+ffmpeg  -bsfs               #  show available bit stream filters
+ffmpeg  -protocols          #  show available protocols
+ffmpeg  -filters            #  show available filters
+ffmpeg  -pix_fmts           #  show available pixel formats
+ffmpeg  -layouts            #  show standard channel layouts
+ffmpeg  -sample_fmts        #  show available audio sample formats
+ffmpeg  -colors             #  show available color names
+ffmpeg  -sources device     #  list sources of the input device
+ffmpeg  -sinks device       #  list sinks of the output device
+ffmpeg  -hwaccels           #  show available HW acceleration methods
