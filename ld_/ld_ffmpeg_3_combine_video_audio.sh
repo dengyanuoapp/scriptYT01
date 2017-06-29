@@ -1,10 +1,10 @@
 #!/bin/sh
 
 
-if [ -z "$1" -o ! -f "$1" ] 
+if [ -z "$1" -o ! -f "$1" -o -z "$2" -o ! -f "$2" ] 
 then
     echo 
-    echo "<$1> don't exist. exit."
+    echo "<$1> <$1> don't exist. exit."
     echo 
     exit
 fi
@@ -31,15 +31,17 @@ then
     echo 
     exit
 fi
-bb1=${bb1}.vo.mkv
+
+bb1=${bb1}.combine.mkv
 
 echo
 echo "change from <$1>  to <${bb1}> "
 
 ffmpeg \
     -i ${1}    \
-    -an \
+    -i ${2}    \
     -vcodec copy \
+    -acodec copy \
     -y \
     ${bb1}
 
