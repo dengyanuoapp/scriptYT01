@@ -30,7 +30,35 @@ ls -l "${bb1}"
 
 bb2=$(cat "${bb1}"|wc -c)
 
-bb3="_$(echo -n "$1"|tr -d \'|tr -d \"|sed -e 's;[/ \t\r\n&=\-\|\+\@\#,]*;;g' -e 's;__*;_;g' -e 's;^201;1;g' -e 's;\.mp4$;;g' -e 's;\.mkv$;;g' -e 's;\.m4a$;;g' -e 's;\.mp[234]$;;g' -e 's;\.webm$;;g' -e 's;\.opus$;;g')"
+bb3="_$(echo -n "$1"|   \
+    tr -d \'|   \
+    tr -d \"|   \
+    tr -d '-' | \
+    tr -d '?' | \
+    tr -d '&' | \
+    tr -d '=' | \
+    tr -d '|' | \
+    tr -d '+' | \
+    tr -d '@' | \
+    tr -d '#' | \
+    tr -d ',' | \
+    tr -d '/' | \
+    tr -d ' ' | \
+    tr -d '(' | \
+    tr -d ')' | \
+    tr -d '[' | \
+    tr -d ']' | \
+    tr -d '{' | \
+    tr -d '}' | \
+    sed -e 's;[\t\r\n]*;;g' \
+    -e 's;__*;_;g' \
+    -e 's;^201;1;g' \
+    -e 's;\.mp4$;;g' \
+    -e 's;\.mkv$;;g' \
+    -e 's;\.m4a$;;g' \
+    -e 's;\.mp[234]$;;g' \
+    -e 's;\.webm$;;g' \
+    -e 's;\.opus$;;g')"
 
 
 echo
@@ -236,7 +264,7 @@ else
     fi
 fi
 
-if [ 1 = 1]
+if [ 1 = 1 ]
 then
     echo " use cpu limit , no sleep . 0Need to limit cpu , sleep : ${cput1} ${cput2} ${cput3} ${cput4a} "
     sleep 65
