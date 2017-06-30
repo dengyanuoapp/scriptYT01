@@ -36,7 +36,10 @@ help01:
 	@echo "vo video_only :"
 	@echo "ao audio_only :"
 	@echo
+	@echo "loopAO        :"
+	@echo "loopVO        :"
 	@echo "loopAO3       :"
+	@echo "loopVO3       :"
 	@echo
 
 m :
@@ -239,13 +242,22 @@ endif
 
 du1:
 	@$(foreach aa1,$(uri81),du -sh $(aa1)/ $(EOL))
-loopAO3:
+loopLOOP:
 	#while [ 1 ] ; do make c  ; make ao3 &> Loop.log.txt ; sleep 30m ; done
 	while [ 1 ] ; do make c  ; make ao3 &> Loop.log.txt ; \
 		[ -f stop.txt ] && echo && echo "stop.txt met, exit " && echo && break ; \
 		aa1="$$(cat New_add_gen1.txt|wc -l)" ; \
 		[ "$${aa1}" = '0' ] && sleep 3m || sleep 6m ; \
 		done ; echo
+loopAO:
+	make loopLOOP LOOP=ao
+loopVO:
+	make loopLOOP LOOP=vo
+loopAO3:
+	make loopLOOP LOOP=ao3
+loopVO3:
+	make loopLOOP LOOP=vo3
+
 list:
 	find -type f |grep -v README.md |grep -v gitignore |grep -v '/.\.txt'|sed -e 's;$$;\n;g'   > 1.txt
 gr git_reset_to_remote:
