@@ -29,6 +29,7 @@ help01:
 	@echo "  Cpu_limit.txt    "
 	@echo "  skip_kill.txt"
 	@echo "  pid_now_yt.txt"
+	@echo "  stop.txt"
 	@echo
 	@echo "c clean : $(xxYT)"
 	@echo
@@ -177,6 +178,7 @@ t1:
 	echo -n > New_add_gen1.txt
 	       make $(uri81) XX=$(XX)  DD=$(DD) 
 	@echo "make $(uri81) XX=$(XX)  DD=$(DD)  "
+	wc -l New_add_gen1.txt   >> Start_stop_log.txt
 #	make UCEtI-CRaNx6kiXMrVjnXe8w
 
 ao audio_only :

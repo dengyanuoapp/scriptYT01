@@ -103,13 +103,13 @@ if [ -z "${af}" ] ; then
     #        nice -n 19 ffmpeg -i  "${bb1}"  -vcodec libx265 -r 12 -vf  scale="${pp4}"  -acodec libopus               -ac 1 -maxrate ${rate} -ar ${freq} -ab ${rate} -y  "${bb4}" &
     echo   "nice -n 19 ffmpeg -i \"${bb1}\" -vcodec libx265 -r 12 -vf scale=\"${pp4}\" -acodec amr_nb                 -ac 1 -ar ${freq} -ab ${rate} -y \"${bb4}\""
             nice -n 19 ffmpeg -i  "${bb1}"  -vcodec libx265 -r 12 -vf  scale="${pp4}"  -acodec amr_nb                 -ac 1 -ar ${freq} -ab ${rate} -y  "${bb4}" &
-		    pid1=$! ; echo ${pid1} | nc 127.0.0.1 33778 ; wait ${pid1}
+		    export pid1=$! ; echo ${pid1} > ../../pid_now_ff.txt ; echo "pid1->${pid1}" ; echo -n ${pid1} | nc 127.0.0.1 33778 ; wait ${pid1}
 else
     #echo   "nice -n 19 ffmpeg -i \"${bb1}\" -vcodec libx265 -r 12 -vf scale=\"${pp4}\" -acodec libopus -af \"${af}\" -ac 1 -maxrate ${rate} -ar ${freq} -ab ${rate} -y \"${bb4}\""
     #        nice -n 19 ffmpeg -i  "${bb1}"  -vcodec libx265 -r 12 -vf  scale="${pp4}"  -acodec libopus -af  "${af}"  -ac 1 -maxrate ${rate} -ar ${freq} -ab ${rate} -y  "${bb4}" &
     echo   "nice -n 19 ffmpeg -i \"${bb1}\" -vcodec libx265 -r 12 -vf scale=\"${pp4}\" -acodec amr_nb -af \"${af}\"   -ac 1 -ar ${freq} -ab ${rate} -y \"${bb4}\""
             nice -n 19 ffmpeg -i  "${bb1}"  -vcodec libx265 -r 12 -vf  scale="${pp4}"  -acodec amr_nb -af  "${af}"    -ac 1 -ar ${freq} -ab ${rate} -y  "${bb4}" &
-		    pid1=$! ; echo ${pid1} | nc 127.0.0.1 33778 ; wait ${pid1}
+		    export pid1=$! ; echo ${pid1} > ../../pid_now_ff.txt ; echo "pid1->${pid1}" ; echo -n ${pid1} | nc 127.0.0.1 33778 ; wait ${pid1}
 fi
             echo "change from <$1>  to <${bb4}> "
             ls -l "${bb4}" 
@@ -142,17 +142,17 @@ if [ -z "${af}" ] ; then
         #        nice -n 19 ffmpeg -i  "${bb1}"  -vn -acodec libopus               -ac 1 -maxrate ${rate} -ar ${freq} -ab ${rate} -y  "${bb4}" &
         echo   "nice -n 19 ffmpeg -i \"${bb1}\" -vn -acodec amr_nb                 -ac 1 -ar ${freq} -ab ${rate} -y \"${bb4}\""
                 nice -n 19 ffmpeg -i  "${bb1}"  -vn -acodec amr_nb                 -ac 1 -ar ${freq} -ab ${rate} -y  "${bb4}" &
-		        pid1=$! ; echo ${pid1} | nc 127.0.0.1 33778 ; wait ${pid1}
+		        export pid1=$! ; echo ${pid1} > ../../pid_now_ff.txt ; echo "pid1->${pid1}" ; echo -n ${pid1} | nc 127.0.0.1 33778 ; wait ${pid1}
                 #nice -n 19 ffmpeg -i  "${bb1}"  -vn -acodec amr_nb -af "volume=3"  -ac 1 -ar ${freq} -ab ${rate} -y  "${bb4}".3.amr &
-		        #pid1=$! ; echo ${pid1} | nc 127.0.0.1 33778 ; wait ${pid1}
+		        #export pid1=$! ; echo ${pid1} > ../../pid_now_ff.txt ; echo "pid1->${pid1}" ; echo -n ${pid1} | nc 127.0.0.1 33778 ; wait ${pid1}
                 #nice -n 19 ffmpeg -i  "${bb1}"  -vn -acodec amr_nb -af "volume=9"  -ac 1 -ar ${freq} -ab ${rate} -y  "${bb4}".9.amr &
-		        #pid1=$! ; echo ${pid1} | nc 127.0.0.1 33778 ; wait ${pid1}
+		        #export pid1=$! ; echo ${pid1} > ../../pid_now_ff.txt ; echo "pid1->${pid1}" ; echo -n ${pid1} | nc 127.0.0.1 33778 ; wait ${pid1}
 else                                                
         #echo   "nice -n 19 ffmpeg -i \"${bb1}\" -vn -acodec libopus -af \"${af}\" -ac 1 -maxrate ${rate} -ar ${freq} -ab ${rate} -y \"${bb4}\""
         #        nice -n 19 ffmpeg -i  "${bb1}"  -vn -acodec libopus -af  "${af}"  -ac 1 -maxrate ${rate} -ar ${freq} -ab ${rate} -y  "${bb4}" &
         echo   "nice -n 19 ffmpeg -i \"${bb1}\" -vn -acodec amr_nb -af \"${af}\" -ac 1 -ar ${freq} -ab ${rate} -y \"${bb4}\""
                 nice -n 19 ffmpeg -i  "${bb1}"  -vn -acodec amr_nb -af  "${af}"  -ac 1 -ar ${freq} -ab ${rate} -y  "${bb4}" &
-		        pid1=$! ; echo ${pid1} | nc 127.0.0.1 33778 ; wait ${pid1}
+		        export pid1=$! ; echo ${pid1} > ../../pid_now_ff.txt ; echo "pid1->${pid1}" ; echo -n ${pid1} | nc 127.0.0.1 33778 ; wait ${pid1}
 fi
         echo "change from <$1>  to <${bb4}> "
         ls -l "${bb4}" 
@@ -215,12 +215,12 @@ fi
 
 if [ -n "${cput4a}" ]
 then
-    echo " need to limit cpu , sleep : ${cput1} ${cput2} ${cput3} ${cput4a} "
-    #sleep ${cput4a}
+    echo " 1Need to limit cpu , sleep : ${cput1} ${cput2} ${cput3} ${cput4a} "
+    sleep ${cput4a}
 fi
 
 if [ -n "${cput4v}" ]
 then
-    echo " need to limit cpu , sleep : ${cput1} ${cput2} ${cput3} ${cput4v} "
-    #sleep ${cput4v}
+    echo " 2Need to limit cpu , sleep : ${cput1} ${cput2} ${cput3} ${cput4v} "
+    sleep ${cput4v}
 fi

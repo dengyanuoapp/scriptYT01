@@ -74,7 +74,7 @@ cpu:
 	[ "$${USER}" = 'dyn' ] || ( echo ; echo 'yould should run by dyn only.' ;echo ; exit 44 )
 	while [ 1 ] ; do \
 		sleep 1 ; \
-		nc -l  127.0.0.1 33778 |xargs -n 1  sh rootY/scriptYT01/Cpu_limit.sh ; \
+		sh rootY/scriptYT01/Cpu_limit.sh `nc -l  127.0.0.1 33778 ` ; \
 	done 
 	#	    nc -l  127.0.0.1 33778 |xargs -n 1  cpulimit -l 47  -z -p ; 
 
