@@ -40,6 +40,8 @@ help01:
 	@echo "loopVO        :"
 	@echo "loopAO3       :"
 	@echo "loopVO3       :"
+	@echo "loopAO180     :"
+	@echo "loopVO180     :"
 	@echo
 
 m :
@@ -202,6 +204,14 @@ vo3:
 	echo "`date` : `date +%s` : BEGIN $@"
 	make vo DD=2
 	echo "`date` : `date +%s` : END $@"
+ao180:
+	echo "`date` : `date +%s` : BEGIN $@"
+	make ao DD=180
+	echo "`date` : `date +%s` : END $@"
+vo180:
+	echo "`date` : `date +%s` : BEGIN $@"
+	make vo DD=180
+	echo "`date` : `date +%s` : END $@"
 
 ifeq (1,0)
 ifneq (,$(wildcard ld_/))
@@ -243,8 +253,7 @@ endif
 du1:
 	@$(foreach aa1,$(uri81),du -sh $(aa1)/ $(EOL))
 loopLOOP:
-	#while [ 1 ] ; do make c  ; make ao3 &> Loop.log.txt ; sleep 30m ; done
-	while [ 1 ] ; do make c  ; make ao3 &> Loop.log.txt ; \
+	while [ 1 ] ; do make c  ; make $(LOOP) &> Loop.log.txt ; \
 		[ -f stop.txt ] && echo && echo "stop.txt met, exit " && echo && break ; \
 		aa1="$$(cat New_add_gen1.txt|wc -l)" ; \
 		[ "$${aa1}" = '0' ] && sleep 3m || sleep 6m ; \
@@ -257,6 +266,10 @@ loopAO3:
 	make loopLOOP LOOP=ao3
 loopVO3:
 	make loopLOOP LOOP=vo3
+loopAO180:
+	make loopLOOP LOOP=ao180
+loopVO180:
+	make loopLOOP LOOP=vo180
 
 list:
 	find -type f |grep -v README.md |grep -v gitignore |grep -v '/.\.txt'|sed -e 's;$$;\n;g'   > 1.txt
