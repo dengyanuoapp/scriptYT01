@@ -85,8 +85,9 @@ ifeq ($(XX),voo)
 XX1:=
 XX2:=voo
 else
-XX1:=-x
-XX2:=
+# if no specified , video & audio
+XX1:=
+XX2:=vooaoo
 endif
 endif
 

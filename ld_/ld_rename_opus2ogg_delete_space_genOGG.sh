@@ -1,14 +1,26 @@
 #!/bin/sh
 
+usage01() {
+    echo
+    echo
+    echo " Usage : $0 <filename.in>  [aoo|voo|aoovoo|vooaoo] {keep_origon|ko}"
+    echo '         aoo              -> audio only '
+    echo '         voo              -> video only '
+    echo '         vooaoo , aoovoo  -> video and audio '
+    echo '         ko , keep_origin -> skip to delete the origin file.'
+    echo
+    echo ' if , need to scale the volumn of the audio volumn : '
+    echo '         af="volume=1.5"' "$0 <filename.in>  [aoo|voo|aoovoo|vooaoo] {keep_origon|ko}"
+    echo
+    echo
+    exit
+}
+
 ls -l "$1"
 
 if [ -z "$1" -o ! -f "$1" ] 
 then
-    echo 
-    echo "<$1> don't exist. exit."
-    echo 'af="volume=1.5"'  $0 '[mkv|ogg]'
-    echo 
-    exit
+    usage01
 fi
 
 # 4750  5150 5900  6700  7400 7950 10200 12200
@@ -36,29 +48,40 @@ then
 else
     size1=155000111
 fi
+size1=95111000111
 
 video_skiped=0
 audio_skiped=0
 
-conv_mkv=0
-conv_ogg=1
+conv_mkv=
+conv_ogg=
 
 git_vo=
 git_ao=
 
 ## if specified 2nd para as mkv , or , the origin file less than 150M , then , gen an x265 mkv file.
-[ "$2" = 'mkv' ]                              && conv_mkv=1
-[ -n "${bb2}" -a "${bb2}" -lt "${size1}" ]    && conv_mkv=1
-
-if [ "$2" = 'aoo' ] 
+#########################3### aoo -> audio_only
+if [ "$2" = 'aoo' ]
 then
-    conv_mkv=0    ### aoo -> audio_only
-    conv_ogg=1    ### aoo -> audio_only
+    conv_mkv=0    
+    conv_ogg=1    
 fi
+#########################3### ### voo -> video_only
 if [ "$2" = 'voo' ] 
 then
-    conv_mkv=1    ### voo -> video_only
-    conv_ogg=0    ### voo -> video_only
+    conv_mkv=1    
+    conv_ogg=0    
+fi
+#########################3### ### aoovoo vooaoo-> video and audio
+if [ "$2" = 'vooaoo' -o "$2" = 'aoovoo' ] 
+then
+    conv_mkv=1    ### 
+    conv_ogg=1    ### 
+fi
+
+if [ -z "${conv_mkv}" ]
+then
+    usage01
 fi
 
 
@@ -184,13 +207,13 @@ then
         echo " no file gen , skip git_up "
     fi
 else
-    echo ' skip git_up'
+    echo ' no git directory , skip git_up'
 fi
 
 
 
 #delete the origin file
-if [ -n "$2" ] 
+if [ "$3" != 'keep_origon' -a "$3" != 'ko' ] 
 then
     echo "rm -f \"${bb1}\""
           rm -f  "${bb1}"
