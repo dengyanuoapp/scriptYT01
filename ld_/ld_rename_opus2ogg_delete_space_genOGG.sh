@@ -239,6 +239,7 @@ fi
 if [ 1 = 1]
 then
     echo " use cpu limit , no sleep . 0Need to limit cpu , sleep : ${cput1} ${cput2} ${cput3} ${cput4a} "
+    sleep 65
 else
     if [ -n "${cput4a}" ]
     then
