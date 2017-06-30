@@ -247,3 +247,8 @@ loopAO3:
 		done ; echo
 list:
 	find -type f |grep -v README.md |grep -v gitignore |grep -v '/.\.txt'|sed -e 's;$$;\n;g'   > 1.txt
+gr git_reset_to_remote:
+	git fetch origin
+	git reset --hard origin/master
+	git branch --set-upstream-to=origin/master master
+
