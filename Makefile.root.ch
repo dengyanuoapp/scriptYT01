@@ -39,6 +39,7 @@ mm mmount :
 	@echo ; mount |grep rootX ; echo
 ch        chroot  : mm
 #	chroot rootY/
+	cat /etc/resolv.conf > rootY/etc/resolv.conf
 	chroot rootY/ su - dyn
 	@echo ; mount |grep rootX ; echo 
 
@@ -54,17 +55,29 @@ kill:
 	 ps auxf |grep ^dyn
 	@echo ; mount |grep rootX ; echo
 
+speed:
+	while [ 1 ] ; do \
+		echo -n " $$(tail -n 50  rootY/tmp/noW/Loop.log.txt \
+		|grep -i Duration|tail -n 1|sed \
+		-e 's;^.*Duration: ;;g' -e 's;\..*$$;;g'  -e 's; \+; ;g') " ;  \
+		tail rootY/tmp/noW/Loop.log.txt \
+		| sed -e 's;[\r\n];\n;g' \
+		|grep bitrate= \
+		|tail -n 1 ; \
+		sleep 10 ; \
+		done
+
 ps:
 	ps auxf |grep ^dyn
-	@[ ! -f tmpn/Start_stop_log.txt ] || ( echo ; tail -n 3 tmpn/Start_stop_log.txt )
-	@[ ! -f tmpn/New_add_gen1.txt   ] || ( echo ; tail -n 3 tmpn/New_add_gen1.txt   )
+	@[ ! -f rootY/tmp/noW/Start_stop_log.txt ] || ( echo ; tail -n 3 rootY/tmp/noW/Start_stop_log.txt )
+	@[ ! -f rootY/tmp/noW/New_add_gen1.txt   ] || ( echo ; tail -n 3 rootY/tmp/noW/New_add_gen1.txt   )
 	@echo ; mount |grep rootX ; echo
 	@echo
 ll:
 	while [ 1 ] ; do \
-		tail -n 3 tmpn/Start_stop_log.txt ; \
+		tail -n 3 rootY/tmp/noW/Start_stop_log.txt ; \
 		echo;echo; \
-		tail -n 3 tmpn/New_add_gen1.txt ; \
+		tail -n 3 rootY/tmp/noW/New_add_gen1.txt ; \
 		echo;echo; \
 		sleep 30 ; \
 		done
