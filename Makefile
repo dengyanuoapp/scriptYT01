@@ -153,6 +153,7 @@ $(xx$(1)):
 		echo $$$${pid1} > ../pid_now_yt.txt ; \
 		wait $$$${pid1} ; sleep 8 )
 	touch $$@
+	[ ! -f ../stop.txt ] || (echo ; echo "11 stop.txt met, exit " ; echo ; exit 22 )
 
 endef
 YTube=$(info $(foreach mm1,$1, $(eval $(call YTtemplate1,$(mm1)))))
