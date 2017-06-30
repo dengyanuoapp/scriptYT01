@@ -236,14 +236,19 @@ else
     fi
 fi
 
-if [ -n "${cput4a}" ]
+if [ 1 = 1]
 then
-    echo " 1Need to limit cpu , sleep : ${cput1} ${cput2} ${cput3} ${cput4a} "
-    sleep ${cput4a}
-fi
-
-if [ -n "${cput4v}" ]
-then
-    echo " 2Need to limit cpu , sleep : ${cput1} ${cput2} ${cput3} ${cput4v} "
-    sleep ${cput4v}
+    echo " use cpu limit , no sleep . 0Need to limit cpu , sleep : ${cput1} ${cput2} ${cput3} ${cput4a} "
+else
+    if [ -n "${cput4a}" ]
+    then
+        echo " 1Need to limit cpu , sleep : ${cput1} ${cput2} ${cput3} ${cput4a} "
+        sleep ${cput4a}
+    fi
+    
+    if [ -n "${cput4v}" ]
+    then
+        echo " 2Need to limit cpu , sleep : ${cput1} ${cput2} ${cput3} ${cput4v} "
+        sleep ${cput4v}
+    fi
 fi
