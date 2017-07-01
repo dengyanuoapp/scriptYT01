@@ -40,9 +40,12 @@ then
 fi
 
 ## 47 will active the foce drop down
+#pC=32
+#pC=24
+pC=47
 echo "== $0 , $* : begin : `date`"
-echo " $0 --- cpulimit -l 32  -z -p ${pid1} "
-cpulimit -l 32  -z -p ${pid1}
+echo " $0 --- cpulimit -l ${pC}  -z -p ${pid1} "
+cpulimit -l ${pC}  -z -p ${pid1}
 
 ps auxf |grep -v ' grep ' |grep ${pid1}
 
