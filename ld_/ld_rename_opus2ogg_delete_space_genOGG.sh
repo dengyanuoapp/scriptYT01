@@ -126,7 +126,7 @@ then
         ppH=$(ffprobe -v quiet -print_format json -show_streams "${bb1}" |grep coded_height |head -n 1|awk -F : '{print $2}'|tr -d ',')
         ppL=$(($(ffprobe -v quiet -print_format json -show_format "${bb1}" |grep duration|sed -e 's;",.*$;;g' -e 's;^.*";;g' -e 's;\..*$;;g' )))
         echo "format parameter : <${ppW}><${ppH}><${ppL}>"
-        if [ -z "${ppW}" -o -z "${ppH}" -z "${ppL}" ] ; then
+        if [ -z "${ppW}" -o -z "${ppH}" -o -z "${ppL}" ] ; then
             echo "error pixel found <${ppW}><${ppH}><${ppL}>, skip "
         else
             if [ ${ppL} -lt 7000 ]
