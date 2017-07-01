@@ -120,31 +120,39 @@ then
         echo " already exist . skip ${bb4}"
         video_skiped=1
     else 
-        ppW=$(ffprobe -v quiet -print_format json -show_format -show_streams "${bb1}" |grep coded_width  |head -n 1|awk -F : '{print $2}'|tr -d ',')
-        ppH=$(ffprobe -v quiet -print_format json -show_format -show_streams "${bb1}" |grep coded_height |head -n 1|awk -F : '{print $2}'|tr -d ',')
-        #scale91='trunc(ow*a/2)*2:'
-        #scale92=':trunc(oh*a/2)*2'
-        scale91='w=360:h=240:force_original_aspect_ratio=decrease'
-        scale92='w=240:h=360:force_original_aspect_ratio=decrease'
-        if [ -z "${ppW}" -o -z "${ppH}" ] ; then
-            echo "error pixel found <${ppW}><${ppH}>, skip "
+        # ffprobe -v quiet -print_format json -show_format -show_streams 
+
+        ppW=$(ffprobe -v quiet -print_format json -show_streams "${bb1}" |grep coded_width  |head -n 1|awk -F : '{print $2}'|tr -d ',')
+        ppH=$(ffprobe -v quiet -print_format json -show_streams "${bb1}" |grep coded_height |head -n 1|awk -F : '{print $2}'|tr -d ',')
+        ppL=$(($(ffprobe -v quiet -print_format json -show_format "${bb1}" |grep duration|sed -e 's;",.*$;;g' -e 's;^.*";;g' -e 's;\..*$;;g' )))
+        echo "format parameter : <${ppW}><${ppH}><${ppL}>"
+        if [ -z "${ppW}" -o -z "${ppH}" -z "${ppL}" ] ; then
+            echo "error pixel found <${ppW}><${ppH}><${ppL}>, skip "
         else
+            if [ ${ppL} -lt 7000 ]
+            then
+                ssW=360
+                ssH=240
+            else
+                ssW=180
+                ssH=120
+            fi
             if [ ${ppH} -lt ${ppW} ] ; then ################## w > h
-                if [ ${ppH} -lt 360 ] ; then ### w < 360 , ok , no need to chang
+                if [ ${ppH} -lt ${ssW} ] ; then ### w < ${ssW} , ok , no need to chang
                     nnW=${ppW}
                     nnH=${ppH}
-                else                        ### w >= 360 , force w to 360
-                    nnW=360
-                    nnH=$(( ${ppH} * 360 / ${ppW} / 4 * 4 ))
+                else                        ### w >= ${ssW} , force w to ${ssW}
+                    nnW=${ssW}
+                    nnH=$(( ${ppH} * ${ssW} / ${ppW} / 4 * 4 ))
                 fi
                 pp4="${nnW}:${nnH}"
             else                            ################## w <= h
-                if [ ${ppH} -lt 360 ] ; then ## w < h < 360
+                if [ ${ppH} -lt ${ssW} ] ; then ## w < h < ${ssW}
                     nnW=${ppW}
                     nnH=${ppH}
-                else                         ## w < h > 360 , force h to 360
-                    nnH=360
-                    nnW=$(( ${ppW} * 360 / ${ppH} / 4 * 4 ))
+                else                         ## w < h > ${ssW} , force h to ${ssW}
+                    nnH=${ssW}
+                    nnW=$(( ${ppW} * ${ssW} / ${ppH} / 4 * 4 ))
                 fi
                 pp4="${nnW}:${nnH}"
             fi
