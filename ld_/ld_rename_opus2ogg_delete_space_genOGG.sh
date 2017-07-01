@@ -135,6 +135,7 @@ then
                 ssH=240
             else
                 ssW=180
+                ssW=160
                 ssH=120
             fi
             if [ ${ppH} -lt ${ppW} ] ; then ################## w > h
