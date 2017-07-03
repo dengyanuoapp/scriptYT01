@@ -54,3 +54,12 @@ delete :
 		find $(aa2)/ -type f |grep -v /yy_*.txt |grep -v /00_*.ogg |grep -v /zz_*.ogg \
 		|grep "$(FF)" |xargs -n 1 -I '{}' -exec /bin/rm -f '{}' $(EOL)\
 		)
+
+day1:
+	mkdir -p 1
+	rm -fr 1/*
+	cp $$(find -newermt `date -d '-0 day' +%Y-%m-%d` -type f )  1/
+day2:
+	mkdir -p 1
+	rm -fr 1/*
+	cp $$(find -newermt `date -d '-1 day' +%Y-%m-%d` -type f )  1/
