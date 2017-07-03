@@ -280,13 +280,17 @@ then
 else
     if [ -n "${cput4a}" ]
     then
-        echo " 1Need to limit cpu , sleep : ${cput1} ${cput2} ${cput3} ${cput4a} "
-        sleep ${cput4a}
+        cput4c='' ; [ -f /tmp/cpu_sleep.txt ] && cput4c=`cat /tmp/cpu_sleep.txt` 
+        [ -z "${cput4c}" ] && cput4c=${cpu4a} 
+        echo " 1Need to limit cpu , sleep : ${cput1} ${cput2} ${cput3} ${cput4a} ${cput4c}"
+        sleep ${cput4c}
     fi
     
     if [ -n "${cput4v}" ]
     then
-        echo " 2Need to limit cpu , sleep : ${cput1} ${cput2} ${cput3} ${cput4v} "
-        sleep ${cput4v}
+        cput4c='' ; [ -f /tmp/cpu_sleep.txt ] && cput4c=`cat /tmp/cpu_sleep.txt` 
+        [ -z "${cput4c}" ] && cput4c=${cpu4v} 
+        echo " 2Need to limit cpu , sleep : ${cput1} ${cput2} ${cput3} ${cput4v} ${cput4c}"
+        sleep ${cput4c}
     fi
 fi

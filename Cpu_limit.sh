@@ -24,8 +24,10 @@ then
     echo 
     echo "why 1 : $1 NULL ?<$*>"
     if    [ -f rootY/pid_now_ff.txt ] ; then
+        echo 'use  rootY/pid_now_ff.txt'
         pid1=`cat rootY/pid_now_ff.txt`
     elif  [ -f rootY/tmp/pid_now_ff.txt ] ; then
+        echo 'use  rootY/tmp/pid_now_ff.txt'
         pid1=`cat rootY/tmp/pid_now_ff.txt`
     fi
 else
@@ -39,10 +41,26 @@ then
     exit 44 
 fi
 
-## 47 will active the foce drop down
-#pC=32
-pC=24
-#pC=47
+pC=''
+if    [ -f rootY/cpu_limit.txt ] ; then
+    echo 'use rootY/cpu_limit.txt'
+    pC=`cat rootY/cpu_limit.txt`
+elif  [ -f rootY/tmp/cpu_limit.txt ] ; then
+    echo 'use rootY/tmp/cpu_limit.txt'
+    pC=`cat rootY/tmp/cpu_limit.txt`
+fi
+
+if [ -z "${pC}" ]
+then
+    ## 47 will active the foce drop down
+    #pC=32
+    #pC=47
+    pC=24
+else
+    echo " use percent : ${pC} % "
+fi
+
+
 echo "== $0 , $* : begin : `date`"
 echo " $0 --- cpulimit -l ${pC}  -z -p ${pid1} "
 cpulimit -l ${pC}  -z -p ${pid1}

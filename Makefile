@@ -31,6 +31,8 @@ help01:
 	@echo "  pid_now_yt.txt"
 	@echo "  stop.txt_loop"
 	@echo "  stop.txt_person"
+	@echo "  /tmp/cpu_limit.txt # write the percent init it"
+	@echo "  /tmp/cpu_sleep.txt # write the sleep lengh"
 	@echo
 	@echo "c clean : $(xxYT)"
 	@echo
