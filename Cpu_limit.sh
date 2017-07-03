@@ -41,8 +41,8 @@ fi
 
 ## 47 will active the foce drop down
 #pC=32
-#pC=24
-pC=47
+pC=24
+#pC=47
 echo "== $0 , $* : begin : `date`"
 echo " $0 --- cpulimit -l ${pC}  -z -p ${pid1} "
 cpulimit -l ${pC}  -z -p ${pid1}

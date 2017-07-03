@@ -29,7 +29,8 @@ help01:
 	@echo "  Cpu_limit.txt    "
 	@echo "  skip_kill.txt"
 	@echo "  pid_now_yt.txt"
-	@echo "  stop.txt"
+	@echo "  stop.txt_loop"
+	@echo "  stop.txt_person"
 	@echo
 	@echo "c clean : $(xxYT)"
 	@echo
@@ -153,7 +154,7 @@ $(xx$(1)):
 		echo $$$${pid1} > ../pid_now_yt.txt ; \
 		wait $$$${pid1} ; sleep 8 )
 	touch $$@
-	[ ! -f ../stop.txt ] || (echo ; echo "11 stop.txt met, exit " ; echo ; exit 22 )
+	[ ! -f ../stop.txt_person ] || (echo ; echo "11 stop.txt_person met, exit " ; echo ; exit 22 )
 
 endef
 YTube=$(info $(foreach mm1,$1, $(eval $(call YTtemplate1,$(mm1)))))
@@ -255,7 +256,7 @@ du1:
 	@$(foreach aa1,$(uri81),du -sh $(aa1)/ $(EOL))
 loopLOOP:
 	while [ 1 ] ; do make c  ; make $(LOOP) &> Loop.log.txt ; \
-		[ -f stop.txt ] && echo && echo "stop.txt met, exit " && echo && break ; \
+		[ -f stop.txt_loop ] && echo && echo "stop.txt_loop met, exit " && echo && break ; \
 		aa1="$$(cat New_add_gen1.txt|wc -l)" ; \
 		[ "$${aa1}" = '0' ] && sleep 3m || sleep 6m ; \
 		done ; echo
