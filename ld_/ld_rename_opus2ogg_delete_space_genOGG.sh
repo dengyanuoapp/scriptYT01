@@ -68,6 +68,7 @@ rate=4750
 freq=24000
 
 rate=4750
+rate=6700
 freq=8000
 
 if [ "$2" = 'mkv' ]
