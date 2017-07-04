@@ -133,12 +133,27 @@ then
             if [ ${ppL} -lt 7000 ]
             then
                 ssW=360
-                ssH=240
             else
                 ssW=180
                 ssW=160
-                ssH=120
             fi
+            ppZ1=2588000
+            ppZ2=$(( ${ppZ1} / ${ppL} ))
+            ppZ3=$(( ${ppZ2} / 16 ))
+            ppZ4=$(( ${ppZ3} * 16 ))
+            if [ ${ppZ4} -lt 160 ] ; then
+                ppZ5=160
+            elif [ ${ppZ4} -gt 720 ] ; then
+                ppZ5=720
+            else
+                ppZ5=${ppZ4}
+            fi
+
+
+            echo "ppZ1,2,3,4,5:${ppZ1}, ${ppZ2}, ${ppZ3}, ${ppZ4}, ${ppZ5}"
+            ssW=${ppZ5}
+
+
             if [ ${ppH} -lt ${ppW} ] ; then ################## w > h
                 if [ ${ppH} -lt ${ssW} ] ; then ### w < ${ssW} , ok , no need to chang
                     nnW=${ppW}
