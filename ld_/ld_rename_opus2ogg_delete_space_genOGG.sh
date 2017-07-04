@@ -156,7 +156,7 @@ then
 
 
             if [ ${ppH} -lt ${ppW} ] ; then ################## w > h
-                if [ ${ppH} -lt ${ssW} ] ; then ### w < ${ssW} , ok , no need to chang
+                if [ ${ppW} -lt ${ssW} ] ; then ### h < w < ${ssW} , ok , no need to chang
                     nnW=${ppW}
                     nnH=${ppH}
                 else                        ### w >= ${ssW} , force w to ${ssW}
