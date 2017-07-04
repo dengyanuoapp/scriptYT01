@@ -157,23 +157,28 @@ then
 
             if [ ${ppH} -lt ${ppW} ] ; then ################## w > h
                 if [ ${ppW} -lt ${ssW} ] ; then ### h < w < ${ssW} , ok , no need to chang
+                    echo " -- db 1"
                     nnW=${ppW}
                     nnH=${ppH}
                 else                        ### w >= ${ssW} , force w to ${ssW}
+                    echo " -- db 2"
                     nnW=${ssW}
                     nnH=$(( ${ppH} * ${ssW} / ${ppW} / 4 * 4 ))
                 fi
                 pp4="${nnW}:${nnH}"
             else                            ################## w <= h
                 if [ ${ppH} -lt ${ssW} ] ; then ## w < h < ${ssW}
+                    echo " -- db 3"
                     nnW=${ppW}
                     nnH=${ppH}
                 else                         ## w < h > ${ssW} , force h to ${ssW}
+                    echo " -- db 4"
                     nnH=${ssW}
                     nnW=$(( ${ppW} * ${ssW} / ${ppH} / 4 * 4 ))
                 fi
                 pp4="${nnW}:${nnH}"
             fi
+            echo " -- pp4 -> ${pp4}"
             cput1=$(date +%s)
 if [ -z "${af}" ] ; then
     #echo   "nice -n 19 ffmpeg -i \"${bb1}\" -vcodec libx265 -r 12 -vf scale=\"${pp4}\" -acodec libopus               -ac 1 -maxrate ${rate} -ar ${freq} -ab ${rate} -y \"${bb4}\""
