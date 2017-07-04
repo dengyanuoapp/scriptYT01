@@ -64,12 +64,12 @@ then
         echo " already exist . skip ${bb4}"
         video_skiped=1
     else 
-        ppW=$(ffprobe -v quiet -print_format json -show_format -show_streams "${bb1}" |grep coded_width  |head -n 1|awk -F : '{print $2}'|tr -d ',')
-        ppH=$(ffprobe -v quiet -print_format json -show_format -show_streams "${bb1}" |grep coded_height |head -n 1|awk -F : '{print $2}'|tr -d ',')
-        #scale91='trunc(ow*a/2)*2:'
-        #scale92=':trunc(oh*a/2)*2'
-        scale91='w=360:h=240:force_original_aspect_ratio=decrease'
-        scale92='w=240:h=360:force_original_aspect_ratio=decrease'
+        ppW=$(ffprobe -v quiet -print_format json -show_format -show_streams "${bb1}" |grep coded_width  |head -n 1|awk -F : '{print $2}'|tr -d ','|tr -d ' ')
+        ppH=$(ffprobe -v quiet -print_format json -show_format -show_streams "${bb1}" |grep coded_height |head -n 1|awk -F : '{print $2}'|tr -d ','|tr -d ' ')
+        ppX=$(ffprobe -v quiet -print_format json -show_streams "${bb1}" |grep DURATION|head -n 1|tr -d '"'|sed -e 's;\.[0-9]*$;;g' -e 's;^.* ;;g')
+        ppL=$(($(ffprobe -v quiet -print_format json -show_format "${bb1}" |grep duration|head -n 1|sed -e 's;",.*$;;g' -e 's;^.*";;g' -e 's;\..*$;;g' )))
+        echo "format parameter : <${ppW}><${ppH}><${ppX}> <${ppL}> "
+
         if [ -z "${ppW}" -o -z "${ppH}" ] ; then
             echo "error pixel found <${ppW}><${ppH}>, skip "
         else
