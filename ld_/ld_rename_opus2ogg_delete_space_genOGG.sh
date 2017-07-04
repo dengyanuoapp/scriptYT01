@@ -254,7 +254,7 @@ if [ -f ../.git/COMMIT_EDITMSG ]
 then
     echo ' trying git_up'
     git_up=
-    [ -n "${git_vo}" ] && git_up=1 && git add "${git_vo}"* && git commit -a -m "${git_vo}" 
+    [ -n "${git_vo}" ] && git_up=1 && git add "${git_vo}"* && git commit -a -m "${pp4}_${git_vo}" 
     [ -n "${git_ao}" ] && git_up=1 && git add "${git_ao}"* && git commit -a -m "${git_ao}" 
     echo " git_up ${git_up} , git_vo ${git_vo} , git_ao ${git_ao} " 
     if [ -n "${git_up}" ] 
