@@ -260,7 +260,7 @@ loopLOOP:
 	while [ 1 ] ; do make c  ; make $(LOOP) &> Loop.log.txt ; \
 		[ -f stop.txt_loop ] && echo && echo "stop.txt_loop met, exit " && echo && break ; \
 		aa1="$$(cat New_add_gen1.txt|wc -l)" ; \
-		[ "$${aa1}" = '0' ] && sleep 3m || sleep 6m ; \
+		[ "$${aa1}" = '0' ] && sleep 13m || sleep 6m ; \
 		done ; echo
 loopAO:
 	make loopLOOP LOOP=ao
