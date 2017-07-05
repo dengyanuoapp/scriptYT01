@@ -72,7 +72,7 @@ title=${title1}
 # -metadata title="${title}" -metadata author="${author}" 
 
 echo
-echo "change from <$1>  to <${bb3}> , size <${bb2}"
+echo "change from 11 <$1>  to <${bb3}> , size <${bb2}>"
 
 VOcode=libopus
 VOrate=12k
@@ -208,8 +208,8 @@ else
             nice -n 19 ffmpeg -i  "${bb1}"  -vcodec libx265 -r 12 -vf  scale="${pp4}"  -acodec ${VOcode} -af  "${af}"    -ac 1 -ar ${VOfreq} -ab ${VOrate}   -metadata title="${title}"  -metadata  author="${author}"  -y  "${bb4}" &
 		    export pid1=$! ; echo ${pid1} > ../../pid_now_ff.txt ; echo "pid1->${pid1}" ; echo -n ${pid1} | nc 127.0.0.1 33778 ; wait ${pid1}
 fi
-sizeVV4="`ls -lh ${bb4} |awk '{print $5}'`"
-            echo "change from <$1>  to <${bb4}> <${sizeVV4}>"
+sizeVV4="`ls -lh "${bb4}" |head -n 1|awk '{print $5}'`"
+            echo "change from 22 <$1>  to <${bb4}> <${sizeVV4}>"
             ls -l "${bb4}" 
             [ -f ../New_add_gen1.txt ] && echo "$(basename ${PWD})/${bb4}" >> ../New_add_gen1.txt 
             git_vo="${bb4}" 
@@ -248,9 +248,9 @@ else
                 nice -n 19 ffmpeg -i  "${bb1}"  -vn -acodec ${VOcode} -af  "${af}"  -ac 1 -ar ${VOfreq} -ab ${VOrate}   -metadata title="${title}"  -metadata  author="${author}"  -y  "X${bb4}.ogg" &
 		export pid1=$! ; echo ${pid1} > ../../pid_now_ff.txt ; echo "pid1->${pid1}" ; echo -n ${pid1} | nc 127.0.0.1 33778 ; wait ${pid1}
 fi
-sizeAA41="`ls -lh  "${bb4}"     |awk '{print $5}'`"
-sizeAA42="`ls -lh X"${bb4}".ogg |awk '{print $5}'`"
-        echo "change from <$1>  to <${bb4}> <${sizeAA41}> <${sizeAA42}>"
+sizeAA41="`ls -lh  "${bb4}"     |head -n 1|awk '{print $5}'`"
+sizeAA42="`ls -lh X"${bb4}".ogg |head -n 1|awk '{print $5}'`"
+        echo "change from 33 <$1>  to <${bb4}> <${sizeAA41}> <${sizeAA42}>"
         ls -l "${bb4}" 
         [ -f ../New_add_gen1.txt ] && echo "$(basename ${PWD})/${bb4}" >> ../New_add_gen1.txt 
         git_ao="${bb4}" 
