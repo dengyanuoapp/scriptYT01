@@ -200,12 +200,12 @@ then
             echo " -- pp4 -> ${pp4}"
             cput1=$(date +%s)
 if [ -z "${af}" ] ; then
-    echo   "nice -n 19 ffmpeg -i \"${bb1}\" -vcodec libx265 -r 12 -vf scale=\"${pp4}\" -acodec ${VOcode}                 -ac 1 -ar ${VOfreq} -ab ${VOrate}  -metadata title="${title}" -metadata author=\"${author}\" -y \"${bb4}\""
-            nice -n 19 ffmpeg -i  "${bb1}"  -vcodec libx265 -r 12 -vf  scale="${pp4}"  -acodec ${VOcode}                 -ac 1 -ar ${VOfreq} -ab ${VOrate}  -metadata title="${title}" -metadata  author="${author}"  -y  "${bb4}" &
+    echo   "nice -n 19 ffmpeg -i \"${bb1}\" -vcodec libx265 -r 12 -vf scale=\"${pp4}\" -acodec ${VOcode}                 -ac 1 -ar ${VOfreq} -ab ${VOrate}  -metadata title=\"${title}\" -metadata author=\"${author}\" -y \"${bb4}\""
+            nice -n 19 ffmpeg -i  "${bb1}"  -vcodec libx265 -r 12 -vf  scale="${pp4}"  -acodec ${VOcode}                 -ac 1 -ar ${VOfreq} -ab ${VOrate}   -metadata title="${title}"  -metadata  author="${author}"  -y  "${bb4}" &
 		    export pid1=$! ; echo ${pid1} > ../../pid_now_ff.txt ; echo "pid1->${pid1}" ; echo -n ${pid1} | nc 127.0.0.1 33778 ; wait ${pid1}
 else
-    echo   "nice -n 19 ffmpeg -i \"${bb1}\" -vcodec libx265 -r 12 -vf scale=\"${pp4}\" -acodec ${VOcode} -af \"${af}\"   -ac 1 -ar ${VOfreq} -ab ${VOrate}  -metadata author=\"${author}\" -y \"${bb4}\""
-            nice -n 19 ffmpeg -i  "${bb1}"  -vcodec libx265 -r 12 -vf  scale="${pp4}"  -acodec ${VOcode} -af  "${af}"    -ac 1 -ar ${VOfreq} -ab ${VOrate}  -metadata  author="${author}"  -y  "${bb4}" &
+    echo   "nice -n 19 ffmpeg -i \"${bb1}\" -vcodec libx265 -r 12 -vf scale=\"${pp4}\" -acodec ${VOcode} -af \"${af}\"   -ac 1 -ar ${VOfreq} -ab ${VOrate}  -metadata title=\"${title}\" -metadata author=\"${author}\" -y \"${bb4}\""
+            nice -n 19 ffmpeg -i  "${bb1}"  -vcodec libx265 -r 12 -vf  scale="${pp4}"  -acodec ${VOcode} -af  "${af}"    -ac 1 -ar ${VOfreq} -ab ${VOrate}   -metadata title="${title}"  -metadata  author="${author}"  -y  "${bb4}" &
 		    export pid1=$! ; echo ${pid1} > ../../pid_now_ff.txt ; echo "pid1->${pid1}" ; echo -n ${pid1} | nc 127.0.0.1 33778 ; wait ${pid1}
 fi
 sizeVV4="`ls -lh ${bb4} |awk '{print $5}'`"
@@ -236,16 +236,16 @@ then
     else 
         cput1=$(date +%s)
 if [ -z "${af}" ] ; then
-        echo   "nice -n 19 ffmpeg -i \"${bb1}\" -vn -acodec ${AOcode}               -ac 1 -ar ${AOfreq} -ab ${AOrate}  -metadata author=\"${author}\" -y \"${bb4}\""
-                nice -n 19 ffmpeg -i  "${bb1}"  -vn -acodec ${AOcode}               -ac 1 -ar ${AOfreq} -ab ${AOrate}  -metadata  author="${author}"  -y  "${bb4}" &
+        echo   "nice -n 19 ffmpeg -i \"${bb1}\" -vn -acodec ${AOcode}               -ac 1 -ar ${AOfreq} -ab ${AOrate}  -metadata title=\"${title}\" -metadata author=\"${author}\" -y \"${bb4}\""
+                nice -n 19 ffmpeg -i  "${bb1}"  -vn -acodec ${AOcode}               -ac 1 -ar ${AOfreq} -ab ${AOrate}   -metadata title="${title}"  -metadata  author="${author}"  -y  "${bb4}" &
 		export pid1=$! ; echo ${pid1} > ../../pid_now_ff.txt ; echo "pid1->${pid1}" ; echo -n ${pid1} | nc 127.0.0.1 33778 ; wait ${pid1}
-                nice -n 19 ffmpeg -i  "${bb1}"  -vn -acodec ${VOcode}               -ac 1 -ar ${VOfreq} -ab ${VOrate}  -metadata  author="${author}"  -y  "X${bb4}.ogg" &
+                nice -n 19 ffmpeg -i  "${bb1}"  -vn -acodec ${VOcode}               -ac 1 -ar ${VOfreq} -ab ${VOrate}   -metadata title="${title}"  -metadata  author="${author}"  -y  "X${bb4}.ogg" &
 		export pid1=$! ; echo ${pid1} > ../../pid_now_ff.txt ; echo "pid1->${pid1}" ; echo -n ${pid1} | nc 127.0.0.1 33778 ; wait ${pid1}
 else                                                
-        echo   "nice -n 19 ffmpeg -i \"${bb1}\" -vn -acodec ${AOcode} -af \"${af}\" -ac 1 -ar ${AOfreq} -ab ${AOrate}  -metadata author=\"${author}\" -y \"${bb4}\""
-                nice -n 19 ffmpeg -i  "${bb1}"  -vn -acodec ${AOcode} -af  "${af}"  -ac 1 -ar ${AOfreq} -ab ${AOrate}  -metadata  author="${author}"  -y  "${bb4}" &
+        echo   "nice -n 19 ffmpeg -i \"${bb1}\" -vn -acodec ${AOcode} -af \"${af}\" -ac 1 -ar ${AOfreq} -ab ${AOrate}  -metadata title=\"${title}\" -metadata author=\"${author}\" -y \"${bb4}\""
+                nice -n 19 ffmpeg -i  "${bb1}"  -vn -acodec ${AOcode} -af  "${af}"  -ac 1 -ar ${AOfreq} -ab ${AOrate}   -metadata title="${title}"  -metadata  author="${author}"  -y  "${bb4}" &
 		export pid1=$! ; echo ${pid1} > ../../pid_now_ff.txt ; echo "pid1->${pid1}" ; echo -n ${pid1} | nc 127.0.0.1 33778 ; wait ${pid1}
-                nice -n 19 ffmpeg -i  "${bb1}"  -vn -acodec ${VOcode} -af  "${af}"  -ac 1 -ar ${VOfreq} -ab ${VOrate}  -metadata  author="${author}"  -y  "X${bb4}.ogg" &
+                nice -n 19 ffmpeg -i  "${bb1}"  -vn -acodec ${VOcode} -af  "${af}"  -ac 1 -ar ${VOfreq} -ab ${VOrate}   -metadata title="${title}"  -metadata  author="${author}"  -y  "X${bb4}.ogg" &
 		export pid1=$! ; echo ${pid1} > ../../pid_now_ff.txt ; echo "pid1->${pid1}" ; echo -n ${pid1} | nc 127.0.0.1 33778 ; wait ${pid1}
 fi
 sizeAA41="`ls -lh  "${bb4}"     |awk '{print $5}'`"
