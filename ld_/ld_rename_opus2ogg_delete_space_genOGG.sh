@@ -147,6 +147,7 @@ then
                 ssW=160
             fi
             ppZ1=2588000
+            ppZ1=3009280
             ppZ2=$(( ${ppZ1} / ${ppL} ))
             ppZ3=$(( ${ppZ2} / 16 ))
             ppZ4=$(( ${ppZ3} * 16 ))
