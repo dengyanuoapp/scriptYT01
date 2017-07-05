@@ -206,8 +206,8 @@ else
             nice -n 19 ffmpeg -i  "${bb1}"  -vcodec libx265 -r 12 -vf  scale="${pp4}"  -acodec ${VOcode} -af  "${af}"    -ac 1 -ar ${VOfreq} -ab ${VOrate} -y  "${bb4}" &
 		    export pid1=$! ; echo ${pid1} > ../../pid_now_ff.txt ; echo "pid1->${pid1}" ; echo -n ${pid1} | nc 127.0.0.1 33778 ; wait ${pid1}
 fi
-sizeBB4="`ls -lh ${bb4} |awk '{print $5}'`"
-            echo "change from <$1>  to <${bb4}> <${sizeBB4}>"
+sizeVV4="`ls -lh ${bb4} |awk '{print $5}'`"
+            echo "change from <$1>  to <${bb4}> <${sizeVV4}>"
             ls -l "${bb4}" 
             [ -f ../New_add_gen1.txt ] && echo "$(basename ${PWD})/${bb4}" >> ../New_add_gen1.txt 
             git_vo="${bb4}" 
@@ -246,7 +246,9 @@ else
                 nice -n 19 ffmpeg -i  "${bb1}"  -vn -acodec ${VOcode} -af  "${af}"  -ac 1 -ar ${VOfreq} -ab ${VOrate} -y  "X${bb4}.ogg" &
 		export pid1=$! ; echo ${pid1} > ../../pid_now_ff.txt ; echo "pid1->${pid1}" ; echo -n ${pid1} | nc 127.0.0.1 33778 ; wait ${pid1}
 fi
-        echo "change from <$1>  to <${bb4}> "
+sizeAA41="`ls -lh ${bb4}      |awk '{print $5}'`"
+sizeAA42="`ls -lh X${bb4}.ogg |awk '{print $5}'`"
+        echo "change from <$1>  to <${bb4}> <${sizeAA41}> <${sizeAA42}>"
         ls -l "${bb4}" 
         [ -f ../New_add_gen1.txt ] && echo "$(basename ${PWD})/${bb4}" >> ../New_add_gen1.txt 
         git_ao="${bb4}" 
@@ -264,8 +266,8 @@ if [ -f ../.git/COMMIT_EDITMSG ]
 then
     echo ' trying git_up'
     git_up=
-    [ -n "${git_vo}" ] && git_up=1 && git add *"${git_vo}"* && git commit -a -m "${sizeBB4}_${pp4}_${git_vo}" 
-    [ -n "${git_ao}" ] && git_up=1 && git add *"${git_ao}"* && git commit -a -m "${git_ao}_ogg" 
+    [ -n "${git_vo}" ] && git_up=1 && git add *"${git_vo}"* && git commit -a -m "${sizeVV4}_${pp4}_${git_vo}" 
+    [ -n "${git_ao}" ] && git_up=1 && git add *"${git_ao}"* && git commit -a -m "${sizeAA41}_${sizeAA42}_${git_ao}_ogg" 
     echo " git_up ${git_up} , git_vo ${git_vo} , git_ao ${git_ao} " 
     if [ -n "${git_up}" ] 
     then
