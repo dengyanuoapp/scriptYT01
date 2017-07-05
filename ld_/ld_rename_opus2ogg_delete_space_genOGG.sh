@@ -70,6 +70,7 @@ title=${title1}
 # -metadata title="kkk" 
 # -metadata author="aaa" 
 # -metadata title="${title}" -metadata author="${author}" 
+# "${title} ${author}" 
 
 echo
 echo "change from 11 <$1>  to <${bb3}> , size <${bb2}>"
@@ -268,8 +269,9 @@ if [ -f ../.git/COMMIT_EDITMSG ]
 then
     echo ' trying git_up'
     git_up=
-    [ -n "${git_vo}" ] && git_up=1 && git add *"${git_vo}"* && git commit -a -m "${sizeVV4}_${pp4}_${git_vo}" 
-    [ -n "${git_ao}" ] && git_up=1 && git add *"${git_ao}"* && git commit -a -m "${sizeAA41}_${sizeAA42}_${git_ao}_ogg" 
+# ${title} ${author} 
+    [ -n "${git_vo}" ] && git_up=1 && git add *"${git_vo}"* && git commit -a -m "${sizeVV4}_${pp4}_${git_vo} ${title} ${author}" 
+    [ -n "${git_ao}" ] && git_up=1 && git add *"${git_ao}"* && git commit -a -m "${sizeAA41}_${sizeAA42}_${git_ao}_ogg ${title} ${author}" 
     echo " git_up ${git_up} , git_vo ${git_vo} , git_ao ${git_ao} " 
     if [ -n "${git_up}" ] 
     then
