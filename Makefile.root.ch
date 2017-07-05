@@ -60,6 +60,7 @@ speed:
 		echo -n " $$(tail -n 50  rootY/tmp/noW/Loop.log.txt \
 		|grep -i Duration|tail -n 1|sed \
 		-e 's;^.*Duration: ;;g' -e 's;\..*$$;;g'  -e 's; \+; ;g') " ;  \
+		echo -n " $$(cat rootY/tmp/noW/Loop.log.txt |grep -i ' pp4 '|tail -n 1 |awk '{printf $$4}') " ; \
 		tail rootY/tmp/noW/Loop.log.txt \
 		| sed -e 's;[\r\n];\n;g' \
 		|grep bitrate= \
