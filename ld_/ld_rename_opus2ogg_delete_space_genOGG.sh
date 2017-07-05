@@ -159,6 +159,11 @@ then
             fi
             ppZ1=2588000
             ppZ1=3009280
+            if [ ${ppW} -lt 720 -a ${ppH} -lt 720 ]
+            then
+                ppZ1=$((${ppZ1} / 2 ))
+            fi
+
             ppZ2=$(( ${ppZ1} / ${ppL} ))
             ppZ3=$(( ${ppZ2} / 16 ))
             ppZ4=$(( ${ppZ3} * 16 ))
@@ -173,6 +178,10 @@ then
 
             echo "ppZ1,2,3,4,5:${ppZ1}, ${ppZ2}, ${ppZ3}, ${ppZ4}, ${ppZ5}"
             ssW=${ppZ5}
+            if [ ${ssW} -lt 360 ]
+            then
+                ssW=360
+            fi
 
 
             if [ ${ppH} -lt ${ppW} ] ; then ################## w > h
