@@ -248,8 +248,8 @@ else
                 nice -n 19 ffmpeg -i  "${bb1}"  -vn -acodec ${VOcode} -af  "${af}"  -ac 1 -ar ${VOfreq} -ab ${VOrate}  -metadata  author="${author}"  -y  "X${bb4}.ogg" &
 		export pid1=$! ; echo ${pid1} > ../../pid_now_ff.txt ; echo "pid1->${pid1}" ; echo -n ${pid1} | nc 127.0.0.1 33778 ; wait ${pid1}
 fi
-sizeAA41="`ls -lh ${bb4}      |awk '{print $5}'`"
-sizeAA42="`ls -lh X${bb4}.ogg |awk '{print $5}'`"
+sizeAA41="`ls -lh  "${bb4}"     |awk '{print $5}'`"
+sizeAA42="`ls -lh X"${bb4}".ogg |awk '{print $5}'`"
         echo "change from <$1>  to <${bb4}> <${sizeAA41}> <${sizeAA42}>"
         ls -l "${bb4}" 
         [ -f ../New_add_gen1.txt ] && echo "$(basename ${PWD})/${bb4}" >> ../New_add_gen1.txt 
