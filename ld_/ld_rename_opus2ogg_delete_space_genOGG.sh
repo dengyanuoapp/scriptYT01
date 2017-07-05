@@ -233,24 +233,16 @@ then
     else 
         cput1=$(date +%s)
 if [ -z "${af}" ] ; then
-        #echo   "nice -n 19 ffmpeg -i \"${bb1}\" -vn -acodec libopus               -ac 1 -maxrate ${rate} -ar ${freq} -ab ${rate} -y \"${bb4}\""
-        #        nice -n 19 ffmpeg -i  "${bb1}"  -vn -acodec libopus               -ac 1 -maxrate ${rate} -ar ${freq} -ab ${rate} -y  "${bb4}" &
-        #echo   "nice -n 19 ffmpeg -i \"${bb1}\" -vn -acodec amr_nb                 -ac 1 -ar ${freq} -ab ${rate} -y \"${bb4}\""
-        #        nice -n 19 ffmpeg -i  "${bb1}"  -vn -acodec amr_nb                 -ac 1 -ar ${freq} -ab ${rate} -y  "${bb4}" &
         echo   "nice -n 19 ffmpeg -i \"${bb1}\" -vn -acodec ${AOcode}               -ac 1 -ar ${AOfreq} -ab ${AOrate} -y \"${bb4}\""
                 nice -n 19 ffmpeg -i  "${bb1}"  -vn -acodec ${AOcode}               -ac 1 -ar ${AOfreq} -ab ${AOrate} -y  "${bb4}" &
 		export pid1=$! ; echo ${pid1} > ../../pid_now_ff.txt ; echo "pid1->${pid1}" ; echo -n ${pid1} | nc 127.0.0.1 33778 ; wait ${pid1}
-                #nice -n 19 ffmpeg -i  "${bb1}"  -vn -acodec amr_nb -af "volume=3"  -ac 1 -ar ${freq} -ab ${rate} -y  "${bb4}".3.amr &
-		        #export pid1=$! ; echo ${pid1} > ../../pid_now_ff.txt ; echo "pid1->${pid1}" ; echo -n ${pid1} | nc 127.0.0.1 33778 ; wait ${pid1}
-                #nice -n 19 ffmpeg -i  "${bb1}"  -vn -acodec amr_nb -af "volume=9"  -ac 1 -ar ${freq} -ab ${rate} -y  "${bb4}".9.amr &
-		        #export pid1=$! ; echo ${pid1} > ../../pid_now_ff.txt ; echo "pid1->${pid1}" ; echo -n ${pid1} | nc 127.0.0.1 33778 ; wait ${pid1}
+                nice -n 19 ffmpeg -i  "${bb1}"  -vn -acodec ${VOcode}               -ac 1 -ar ${VOfreq} -ab ${VOrate} -y  "X${bb4}.ogg" &
+		export pid1=$! ; echo ${pid1} > ../../pid_now_ff.txt ; echo "pid1->${pid1}" ; echo -n ${pid1} | nc 127.0.0.1 33778 ; wait ${pid1}
 else                                                
-        #echo   "nice -n 19 ffmpeg -i \"${bb1}\" -vn -acodec libopus -af \"${af}\" -ac 1 -maxrate ${rate} -ar ${freq} -ab ${rate} -y \"${bb4}\""
-        #        nice -n 19 ffmpeg -i  "${bb1}"  -vn -acodec libopus -af  "${af}"  -ac 1 -maxrate ${rate} -ar ${freq} -ab ${rate} -y  "${bb4}" &
-        #echo   "nice -n 19 ffmpeg -i \"${bb1}\" -vn -acodec amr_nb -af \"${af}\" -ac 1 -ar ${freq} -ab ${rate} -y \"${bb4}\""
-        #        nice -n 19 ffmpeg -i  "${bb1}"  -vn -acodec amr_nb -af  "${af}"  -ac 1 -ar ${freq} -ab ${rate} -y  "${bb4}" &
         echo   "nice -n 19 ffmpeg -i \"${bb1}\" -vn -acodec ${AOcode} -af \"${af}\" -ac 1 -ar ${AOfreq} -ab ${AOrate} -y \"${bb4}\""
                 nice -n 19 ffmpeg -i  "${bb1}"  -vn -acodec ${AOcode} -af  "${af}"  -ac 1 -ar ${AOfreq} -ab ${AOrate} -y  "${bb4}" &
+		export pid1=$! ; echo ${pid1} > ../../pid_now_ff.txt ; echo "pid1->${pid1}" ; echo -n ${pid1} | nc 127.0.0.1 33778 ; wait ${pid1}
+                nice -n 19 ffmpeg -i  "${bb1}"  -vn -acodec ${VOcode} -af  "${af}"  -ac 1 -ar ${VOfreq} -ab ${VOrate} -y  "X${bb4}.ogg" &
 		export pid1=$! ; echo ${pid1} > ../../pid_now_ff.txt ; echo "pid1->${pid1}" ; echo -n ${pid1} | nc 127.0.0.1 33778 ; wait ${pid1}
 fi
         echo "change from <$1>  to <${bb4}> "
@@ -271,8 +263,8 @@ if [ -f ../.git/COMMIT_EDITMSG ]
 then
     echo ' trying git_up'
     git_up=
-    [ -n "${git_vo}" ] && git_up=1 && git add "${git_vo}"* && git commit -a -m "${sizeBB4}_${pp4}_${git_vo}" 
-    [ -n "${git_ao}" ] && git_up=1 && git add "${git_ao}"* && git commit -a -m "${git_ao}" 
+    [ -n "${git_vo}" ] && git_up=1 && git add *"${git_vo}"* && git commit -a -m "${sizeBB4}_${pp4}_${git_vo}" 
+    [ -n "${git_ao}" ] && git_up=1 && git add *"${git_ao}"* && git commit -a -m "${git_ao}" 
     echo " git_up ${git_up} , git_vo ${git_vo} , git_ao ${git_ao} " 
     if [ -n "${git_up}" ] 
     then
