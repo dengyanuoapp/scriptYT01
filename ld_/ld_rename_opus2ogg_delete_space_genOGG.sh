@@ -74,11 +74,11 @@ title=${title1}
 echo
 echo "change from <$1>  to <${bb3}> , size <${bb2}"
 
-VOcode=amr_nb
+VOcode=libopus
 VOrate=12k
 VOfreq=16000
 
-AOcode=libopus
+AOcode=amr_nb
 AOrate=4750
 AOfreq=8000
 
