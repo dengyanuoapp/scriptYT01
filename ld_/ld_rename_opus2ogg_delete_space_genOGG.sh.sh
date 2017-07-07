@@ -142,20 +142,22 @@ then
             echo "error pixel found <${ppW}><${ppH}><${ppL}>, skip "
         else
             if [ ${ppH} -lt ${ppW} ] ; then ################## w > h
-                HH=${ppW}     ### high pixel
-                LL=${ppH}     ### high pixel
+                HH1=${ppW}     ### high pixel
+                LL1=${ppH}     ### high pixel
             else
-                HH=${ppH}     ### high pixel
-                LL=${ppW}     ### high pixel
+                HH1=${ppH}     ### high pixel
+                LL1=${ppW}     ### high pixel
             fi
 
             if [ ${HH} -lt 720 ]
             then
-                echo " ok . no need to recalc pixel. W<${ppW}> x H<${ppH}> --> HH<${HH}> x LL<${LL}> . "
+                echo " ok . no need to recalc pixel. W<${ppW}> x H<${ppH}> --> HH<${HH}> x LL<${LL}> .  HH1<${HH1}> x LL1<${LL1}> . "
+                HH=${HH1}
+                LL=${LL1}
             else
-                LL=$(( ${LL} * 720 / ${HH} / 4 * 4 ))
                 HH=720
-                echo " ok . recalc pixel to . W<${ppW}> x H<${ppH}>  --> HH<${HH}> x LL<${LL}> . "
+                LL=$(( ${LL1} * ${HH} / ${HH1} / 4 * 4 ))
+                echo " ok .        recalc pixel to . W<${ppW}> x H<${ppH}>  --> HH<${HH}> x LL<${LL}> .  HH1<${HH1}> x LL1<${LL1}> . "
             fi
 
             ### max allow size
@@ -172,8 +174,13 @@ then
             if [ ${ppZ3} -lt ${ppZ4} ]
             then
                 ppZ8=${ppZ4}
+                echo " enough file size. use file speed : ${ppZ8}"
             else
+                HH=$(( ${ppZ4} / 100 / 4 * 4 ))
+                LL=$(( ${LL1} * {HH} / ${HH1} / 4 * 4 ))
+                echo " ok .   2nd  recalc pixel to . W<${ppW}> x H<${ppH}>  --> HH<${HH}> x LL<${LL}> .  HH1<${HH1}> x LL1<${LL1}> . "
                 ppZ8=${ppZ4}
+                echo " not enough file size. reduce the pixel ${ppZ8}"
             fi
 
             ### buf size
@@ -182,7 +189,7 @@ then
             echo " speed and buf : ppZ1<${ppZ1}> ppZ2<${ppZ2}> ppZ3<${ppZ3}> ppZ4<${ppZ4}> ppZ8<${ppZ8}> ppZ9<${ppZ9}> "
 
             if [ ${ppH} -lt ${ppW} ] ; then ################## w > h
-                export pp4="${HH}:${HH}"
+                export pp4="${HH}:${LL}"
             else
                 export pp4="${LL}:${HH}"
             fi
