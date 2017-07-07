@@ -151,13 +151,13 @@ then
 
             if [ ${HH1} -lt 720 ]
             then
-                echo " ok . no need to recalc pixel. W<${ppW}> x H<${ppH}> --> HH<${HH}> x LL<${LL}> .  HH1<${HH1}> x LL1<${LL1}> . "
                 HH=${HH1}
                 LL=${LL1}
+                echo " ok 11. no need to recalc pixel. W<${ppW}> x H<${ppH}> --> HH<${HH}> x LL<${LL}> .  HH1<${HH1}> x LL1<${LL1}> . "
             else
                 HH=720
                 LL=$(( ${LL1} * ${HH} / ${HH1} / 4 * 4 ))
-                echo " ok .        recalc pixel to . W<${ppW}> x H<${ppH}>  --> HH<${HH}> x LL<${LL}> .  HH1<${HH1}> x LL1<${LL1}> . "
+                echo " ok 22.        recalc pixel to . W<${ppW}> x H<${ppH}>  --> HH<${HH}> x LL<${LL}> .  HH1<${HH1}> x LL1<${LL1}> . "
             fi
 
             ### max allow size
@@ -177,7 +177,7 @@ then
                 echo " enough file size. use file speed : ${ppZ8}"
             else
                 HH=$(( ${ppZ4} / 100 / 4 * 4 ))
-                LL=$(( ${LL1} * {HH} / ${HH1} / 4 * 4 ))
+                LL=$(( ${LL1} * ${HH} / ${HH1} / 4 * 4 ))
                 echo " ok .   2nd  recalc pixel to . W<${ppW}> x H<${ppH}>  --> HH<${HH}> x LL<${LL}> .  HH1<${HH1}> x LL1<${LL1}> . "
                 ppZ8=${ppZ4}
                 echo " not enough file size. reduce the pixel ${ppZ8}"
