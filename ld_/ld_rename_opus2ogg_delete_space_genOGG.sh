@@ -201,8 +201,8 @@ then
 # -r 12 
 
 if [ 1 = 1 ] ; then
-echo   "nice -n 19 ffmpeg -i \"${bb1}\" -vcodec libx265 -vf scale=\"${pp4}\" -maxrate ${ppZ8} -bufsize ${ppZ9} -acodec ${AHcode} -ac 1 -ar ${AHfreq} -ab ${AHrate}  -metadata title=\"${title}\" -metadata author=\"${author}_${pp5}\" -y \"${bb4}\""
-        nice -n 19 ffmpeg -i  "${bb1}"  -vcodec libx265 -vf  scale="${pp4}"  -maxrate ${ppZ8} -bufsize ${ppZ9} -acodec ${AHcode} -ac 1 -ar ${AHfreq} -ab ${AHrate}   -metadata title="${title}"  -metadata  author="${author}_${pp5}"  -y  "${bb4}" &
+echo   "nice -n 19 ffmpeg -i \"${bb1}\" -vcodec libx265 -r 15 -vf scale=\"${pp4}\" -maxrate ${ppZ8} -bufsize ${ppZ9} -acodec ${AHcode} -ac 1 -ar ${AHfreq} -ab ${AHrate}  -metadata title=\"${title}\" -metadata author=\"${author}_${pp5}\" -y \"${bb4}\""
+        nice -n 19 ffmpeg -i  "${bb1}"  -vcodec libx265 -r 15 -vf  scale="${pp4}"  -maxrate ${ppZ8} -bufsize ${ppZ9} -acodec ${AHcode} -ac 1 -ar ${AHfreq} -ab ${AHrate}   -metadata title="${title}"  -metadata  author="${author}_${pp5}"  -y  "${bb4}" &
         export pid1=$! ; echo ${pid1} > ../../pid_now_ff.txt ; sleep 2 ; echo "pid1->${pid1}" ; echo -n ${pid1} | nc 127.0.0.1 33778 ; wait ${pid1}
 sizeVV4="`ls -lh "${bb4}" |head -n 1|awk '{print $5}'`"
 fi
