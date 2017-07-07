@@ -9,8 +9,6 @@ usage01() {
     echo '         vooaoo , aoovoo  -> video and audio '
     echo '         ko , keep_origin -> skip to delete the origin file.'
     echo
-    echo ' if , need to scale the volumn of the audio volumn : '
-    echo '         af="volume=1.5"' "$0 <filename.in>  [aoo|voo|aoovoo|vooaoo] {keep_origon|ko}"
     echo
     echo
     exit
@@ -75,28 +73,21 @@ title=${title1}
 echo
 echo "change from 11 <$1>  to <${bb3}> , size <${bb2}>"
 
-VOcode=libopus
-VOrate=12k
-VOfreq=16000
+AHcode=libopus
+AHrate=12k
+AHfreq=16000
 
-AOcode=amr_nb
-AOrate=4750
-AOfreq=8000
+ALcode=amr_nb
+ALrate=4750
+ALfreq=8000
 
-rate=4750
-freq=24000
+#rate=4750
+#freq=24000
+#rate=4750
+#rate=6700
+#freq=8000
 
-rate=4750
-rate=6700
-freq=8000
-
-if [ "$2" = 'mkv' ]
-then
-    size1=95111000111
-else
-    size1=155000111
-fi
-size1=95111000111
+size1=48000111
 
 video_skiped=0
 audio_skiped=0
@@ -150,75 +141,71 @@ then
         if [ -z "${ppW}" -o -z "${ppH}" -o -z "${ppL}" ] ; then
             echo "error pixel found <${ppW}><${ppH}><${ppL}>, skip "
         else
-            if [ ${ppL} -lt 7000 ]
-            then
-                ssW=360
+            if [ ${ppH} -lt ${ppW} ] ; then ################## w > h
+                HH1=${ppW}     ### high pixel
+                LL1=${ppH}     ### high pixel
             else
-                ssW=180
-                ssW=160
-            fi
-            ppZ1=2588000
-            ppZ1=3009280
-            if [ ${ppW} -lt 720 -a ${ppH} -lt 720 ]
-            then
-                ppZ1=$((${ppZ1} / 2 ))
+                HH1=${ppH}     ### high pixel
+                LL1=${ppW}     ### high pixel
             fi
 
-            ppZ2=$(( ${ppZ1} / ${ppL} ))
-            ppZ3=$(( ${ppZ2} / 16 ))
-            ppZ4=$(( ${ppZ3} * 16 ))
-            if [ ${ppZ4} -lt 160 ] ; then
-                ppZ5=160
-            elif [ ${ppZ4} -gt 720 ] ; then
-                ppZ5=720
+            if [ ${HH1} -lt 720 ]
+            then
+                HH=${HH1}
+                LL=${LL1}
+                echo " ok 11. no need to recalc pixel. W<${ppW}> x H<${ppH}> --> HH<${HH}> x LL<${LL}> .  HH1<${HH1}> x LL1<${LL1}> . "
             else
-                ppZ5=${ppZ4}
+                HH=720
+                LL=$(( ${LL1} * ${HH} / ${HH1} / 4 * 4 ))
+                echo " ok 22.        recalc pixel to . W<${ppW}> x H<${ppH}>  --> HH<${HH}> x LL<${LL}> .  HH1<${HH1}> x LL1<${LL1}> . "
             fi
 
+            ### max allow size : 48 --> 40 , so , 55 -> 
+            ppZ1=48
+            ppZ1=55
+            ppZ2=$((${ppZ1} * 1000 * 1000 ))
 
-            echo "ppZ1,2,3,4,5:${ppZ1}, ${ppZ2}, ${ppZ3}, ${ppZ4}, ${ppZ5}"
-            ssW=${ppZ5}
-            if [ ${ssW} -lt 360 ]
+            ### const min limit speed. for exampel : 720 pixel , 72kbps == 720 * 100
+            ppZ3=$(( ${HH} * 100 ))
+
+            ### video leng limit speed. for exampel : ( 48000000 * 8  bits) / ( xxx second ) 
+            ppZ4=$(( ${ppZ2} * 8 / ${ppL} ))
+
+            ## the max limit speed ( bps ) 
+            if [ ${ppZ3} -lt ${ppZ4} ]
             then
-                ssW=360
+                ppZ8=${ppZ4}
+                echo " enough file size. use file speed : ${ppZ8}"
+            else
+                HH=$(( ${ppZ4} / 100 / 4 * 4 ))
+                LL=$(( ${LL1} * ${HH} / ${HH1} / 4 * 4 ))
+                echo " ok .   2nd  recalc pixel to . W<${ppW}> x H<${ppH}>  --> HH<${HH}> x LL<${LL}> .  HH1<${HH1}> x LL1<${LL1}> . "
+                ppZ8=${ppZ4}
+                echo " not enough file size. reduce the pixel ${ppZ8}"
             fi
 
+            ### buf size
+            ppZ9=$(( ${ppZ8} * 10 ))
+
+            echo " speed and buf : ppZ1<${ppZ1}> ppZ2<${ppZ2}> ppZ3<${ppZ3}> ppZ4<${ppZ4}> ppZ8<${ppZ8}> ppZ9<${ppZ9}> "
 
             if [ ${ppH} -lt ${ppW} ] ; then ################## w > h
-                if [ ${ppW} -lt ${ssW} ] ; then ### h < w < ${ssW} , ok , no need to chang
-                    echo " -- db 1"
-                    nnW=${ppW}
-                    nnH=${ppH}
-                else                        ### w >= ${ssW} , force w to ${ssW}
-                    echo " -- db 2"
-                    nnW=${ssW}
-                    nnH=$(( ${ppH} * ${ssW} / ${ppW} / 4 * 4 ))
-                fi
-                pp4="${nnW}:${nnH}"
-            else                            ################## w <= h
-                if [ ${ppH} -lt ${ssW} ] ; then ## w < h < ${ssW}
-                    echo " -- db 3"
-                    nnW=${ppW}
-                    nnH=${ppH}
-                else                         ## w < h > ${ssW} , force h to ${ssW}
-                    echo " -- db 4"
-                    nnH=${ssW}
-                    nnW=$(( ${ppW} * ${ssW} / ${ppH} / 4 * 4 ))
-                fi
-                pp4="${nnW}:${nnH}"
+                export pp4="${HH}:${LL}"
+            else
+                export pp4="${LL}:${HH}"
             fi
-            echo " -- pp4 -> ${pp4}"
+            pp5="${ppW}x${ppH}"
+
+            echo " -- pp4 -> ${pp4} -- pp5 -> ${pp5}"
             cput1=$(date +%s)
-if [ -z "${af}" ] ; then
-    echo   "nice -n 19 ffmpeg -i \"${bb1}\" -vcodec libx265 -r 12 -vf scale=\"${pp4}\" -acodec ${VOcode}                 -ac 1 -ar ${VOfreq} -ab ${VOrate}  -metadata title=\"${title}\" -metadata author=\"${author}\" -y \"${bb4}\""
-            nice -n 19 ffmpeg -i  "${bb1}"  -vcodec libx265 -r 12 -vf  scale="${pp4}"  -acodec ${VOcode}                 -ac 1 -ar ${VOfreq} -ab ${VOrate}   -metadata title="${title}"  -metadata  author="${author}"  -y  "${bb4}" &
-		    export pid1=$! ; echo ${pid1} > ../../pid_now_ff.txt ; echo "pid1->${pid1}" ; echo -n ${pid1} | nc 127.0.0.1 33778 ; wait ${pid1}
-else
-    echo   "nice -n 19 ffmpeg -i \"${bb1}\" -vcodec libx265 -r 12 -vf scale=\"${pp4}\" -acodec ${VOcode} -af \"${af}\"   -ac 1 -ar ${VOfreq} -ab ${VOrate}  -metadata title=\"${title}\" -metadata author=\"${author}\" -y \"${bb4}\""
-            nice -n 19 ffmpeg -i  "${bb1}"  -vcodec libx265 -r 12 -vf  scale="${pp4}"  -acodec ${VOcode} -af  "${af}"    -ac 1 -ar ${VOfreq} -ab ${VOrate}   -metadata title="${title}"  -metadata  author="${author}"  -y  "${bb4}" &
-		    export pid1=$! ; echo ${pid1} > ../../pid_now_ff.txt ; echo "pid1->${pid1}" ; echo -n ${pid1} | nc 127.0.0.1 33778 ; wait ${pid1}
-fi
+# -r 12 
+
+if [ 1 = 1 ] ; then
+echo   "nice -n 19 ffmpeg -i \"${bb1}\" -vcodec libx265 -vf scale=\"${pp4}\" -maxrate ${ppZ8} -bufsize ${ppZ9} -acodec ${AHcode} -ac 1 -ar ${AHfreq} -ab ${AHrate}  -metadata title=\"${title}\" -metadata author=\"${author}_${pp5}\" -y \"${bb4}\""
+        nice -n 19 ffmpeg -i  "${bb1}"  -vcodec libx265 -vf  scale="${pp4}"  -maxrate ${ppZ8} -bufsize ${ppZ9} -acodec ${AHcode} -ac 1 -ar ${AHfreq} -ab ${AHrate}   -metadata title="${title}"  -metadata  author="${author}_${pp5}"  -y  "${bb4}" &
+        export pid1=$! ; echo ${pid1} > ../../pid_now_ff.txt ; echo "pid1->${pid1}" ; echo -n ${pid1} | nc 127.0.0.1 33778 ; wait ${pid1}
 sizeVV4="`ls -lh "${bb4}" |head -n 1|awk '{print $5}'`"
+fi
             echo "change from 22 <$1>  to <${bb4}> <${sizeVV4}>"
             ls -l "${bb4}" 
             [ -f ../New_add_gen1.txt ] && echo "$(basename ${PWD})/${bb4}" >> ../New_add_gen1.txt 
@@ -245,21 +232,15 @@ then
         audio_skiped=1
     else 
         cput1=$(date +%s)
-if [ -z "${af}" ] ; then
-        echo   "nice -n 19 ffmpeg -i \"${bb1}\" -vn -acodec ${AOcode}               -ac 1 -ar ${AOfreq} -ab ${AOrate}  -metadata title=\"${title}\" -metadata author=\"${author}\" -y \"${bb4}\""
-                nice -n 19 ffmpeg -i  "${bb1}"  -vn -acodec ${AOcode}               -ac 1 -ar ${AOfreq} -ab ${AOrate}   -metadata title="${title}"  -metadata  author="${author}"  -y  "${bb4}" &
-		export pid1=$! ; echo ${pid1} > ../../pid_now_ff.txt ; echo "pid1->${pid1}" ; echo -n ${pid1} | nc 127.0.0.1 33778 ; wait ${pid1}
-                nice -n 19 ffmpeg -i  "${bb1}"  -vn -acodec ${VOcode}               -ac 1 -ar ${VOfreq} -ab ${VOrate}   -metadata title="${title}"  -metadata  author="${author}"  -y  "X${bb4}.ogg" &
-		export pid1=$! ; echo ${pid1} > ../../pid_now_ff.txt ; echo "pid1->${pid1}" ; echo -n ${pid1} | nc 127.0.0.1 33778 ; wait ${pid1}
-else                                                
-        echo   "nice -n 19 ffmpeg -i \"${bb1}\" -vn -acodec ${AOcode} -af \"${af}\" -ac 1 -ar ${AOfreq} -ab ${AOrate}  -metadata title=\"${title}\" -metadata author=\"${author}\" -y \"${bb4}\""
-                nice -n 19 ffmpeg -i  "${bb1}"  -vn -acodec ${AOcode} -af  "${af}"  -ac 1 -ar ${AOfreq} -ab ${AOrate}   -metadata title="${title}"  -metadata  author="${author}"  -y  "${bb4}" &
-		export pid1=$! ; echo ${pid1} > ../../pid_now_ff.txt ; echo "pid1->${pid1}" ; echo -n ${pid1} | nc 127.0.0.1 33778 ; wait ${pid1}
-                nice -n 19 ffmpeg -i  "${bb1}"  -vn -acodec ${VOcode} -af  "${af}"  -ac 1 -ar ${VOfreq} -ab ${VOrate}   -metadata title="${title}"  -metadata  author="${author}"  -y  "X${bb4}.ogg" &
-		export pid1=$! ; echo ${pid1} > ../../pid_now_ff.txt ; echo "pid1->${pid1}" ; echo -n ${pid1} | nc 127.0.0.1 33778 ; wait ${pid1}
-fi
+if [ 1 = 1 ] ; then
+echo   "nice -n 19 ffmpeg -i \"${bb1}\" -vn -acodec ${ALcode}               -ac 1 -ar ${ALfreq} -ab ${ALrate}  -metadata title=\"${title}\" -metadata author=\"${author}\" -y \"${bb4}\""
+        nice -n 19 ffmpeg -i  "${bb1}"  -vn -acodec ${ALcode} -ac 1 -ar ${ALfreq} -ab ${ALrate}   -metadata title="${title}"  -metadata  author="${author}"  -y  "${bb4}" &
+export  pid1=$! ; echo ${pid1} > ../../pid_now_ff.txt ; echo "pid1->${pid1}" ; echo -n ${pid1} | nc 127.0.0.1 33778 ; wait ${pid1}
+        nice -n 19 ffmpeg -i  "${bb1}"  -vn -acodec ${AHcode} -ac 1 -ar ${AHfreq} -ab ${AHrate}   -metadata title="${title}"  -metadata  author="${author}"  -y  "X${bb4}.ogg" &
+export  pid1=$! ; echo ${pid1} > ../../pid_now_ff.txt ; echo "pid1->${pid1}" ; echo -n ${pid1} | nc 127.0.0.1 33778 ; wait ${pid1}
 sizeAA41="`ls -lh  "${bb4}"     |head -n 1|awk '{print $5}'`"
 sizeAA42="`ls -lh X"${bb4}".ogg |head -n 1|awk '{print $5}'`"
+fi
         echo "change from 33 <$1>  to <${bb4}> <${sizeAA41}> <${sizeAA42}>"
         ls -l "${bb4}" 
         [ -f ../New_add_gen1.txt ] && echo "$(basename ${PWD})/${bb4}" >> ../New_add_gen1.txt 
@@ -279,8 +260,8 @@ then
     echo ' trying git_up'
     git_up=
 # ${title} ${author} 
-    [ -n "${git_vo}" ] && git_up=1 && git add *"${git_vo}"* && git commit -a -m "${sizeVV4}_${pp4}_${git_vo} ${title} ${author}" 
-    [ -n "${git_ao}" ] && git_up=1 && git add *"${git_ao}"* && git commit -a -m "${sizeAA41}_${sizeAA42}_${git_ao}_ogg ${title} ${author}" 
+    [ -n "${git_vo}" ] && git_up=1 && git add *"${git_vo}"* && git commit -a -m "${sizeVV4}_${pp4}_${git_vo} ${author} ${title} " 
+    [ -n "${git_ao}" ] && git_up=1 && git add *"${git_ao}"* && git commit -a -m "${sizeAA41}_${sizeAA42}_${git_ao}_ogg ${author} ${title} " 
     echo " git_up ${git_up} , git_vo ${git_vo} , git_ao ${git_ao} " 
     if [ -n "${git_up}" ] 
     then
