@@ -160,9 +160,10 @@ then
                 echo " ok 22.        recalc pixel to . W<${ppW}> x H<${ppH}>  --> HH<${HH}> x LL<${LL}> .  HH1<${HH1}> x LL1<${LL1}> . "
             fi
 
-            ### max allow size
+            ### max allow size : 48 --> 40 , so , 55 -> 
             ppZ1=48
-            ppZ2=$((48 * 1000 * 1000 ))
+            ppZ1=55
+            ppZ2=$((${ppZ1} * 1000 * 1000 ))
 
             ### const min limit speed. for exampel : 720 pixel , 72kbps == 720 * 100
             ppZ3=$(( ${HH} * 100 ))
