@@ -149,7 +149,7 @@ then
                 LL1=${ppW}     ### high pixel
             fi
 
-            if [ ${HH} -lt 720 ]
+            if [ ${HH1} -lt 720 ]
             then
                 echo " ok . no need to recalc pixel. W<${ppW}> x H<${ppH}> --> HH<${HH}> x LL<${LL}> .  HH1<${HH1}> x LL1<${LL1}> . "
                 HH=${HH1}
