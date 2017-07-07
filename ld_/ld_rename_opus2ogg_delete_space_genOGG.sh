@@ -203,7 +203,7 @@ then
 if [ 1 = 1 ] ; then
 echo   "nice -n 19 ffmpeg -i \"${bb1}\" -vcodec libx265 -vf scale=\"${pp4}\" -maxrate ${ppZ8} -bufsize ${ppZ9} -acodec ${AHcode} -ac 1 -ar ${AHfreq} -ab ${AHrate}  -metadata title=\"${title}\" -metadata author=\"${author}_${pp5}\" -y \"${bb4}\""
         nice -n 19 ffmpeg -i  "${bb1}"  -vcodec libx265 -vf  scale="${pp4}"  -maxrate ${ppZ8} -bufsize ${ppZ9} -acodec ${AHcode} -ac 1 -ar ${AHfreq} -ab ${AHrate}   -metadata title="${title}"  -metadata  author="${author}_${pp5}"  -y  "${bb4}" &
-        export pid1=$! ; echo ${pid1} > ../../pid_now_ff.txt ; echo "pid1->${pid1}" ; echo -n ${pid1} | nc 127.0.0.1 33778 ; wait ${pid1}
+        export pid1=$! ; echo ${pid1} > ../../pid_now_ff.txt ; sleep 2 ; echo "pid1->${pid1}" ; echo -n ${pid1} | nc 127.0.0.1 33778 ; wait ${pid1}
 sizeVV4="`ls -lh "${bb4}" |head -n 1|awk '{print $5}'`"
 fi
             echo "change from 22 <$1>  to <${bb4}> <${sizeVV4}>"
@@ -235,9 +235,9 @@ then
 if [ 1 = 1 ] ; then
 echo   "nice -n 19 ffmpeg -i \"${bb1}\" -vn -acodec ${ALcode}               -ac 1 -ar ${ALfreq} -ab ${ALrate}  -metadata title=\"${title}\" -metadata author=\"${author}\" -y \"${bb4}\""
         nice -n 19 ffmpeg -i  "${bb1}"  -vn -acodec ${ALcode} -ac 1 -ar ${ALfreq} -ab ${ALrate}   -metadata title="${title}"  -metadata  author="${author}"  -y  "${bb4}" &
-export  pid1=$! ; echo ${pid1} > ../../pid_now_ff.txt ; echo "pid1->${pid1}" ; echo -n ${pid1} | nc 127.0.0.1 33778 ; wait ${pid1}
+export  pid1=$! ; echo ${pid1} > ../../pid_now_ff.txt ; sleep 2 ; echo "pid1->${pid1}" ; echo -n ${pid1} | nc 127.0.0.1 33778 ; wait ${pid1}
         nice -n 19 ffmpeg -i  "${bb1}"  -vn -acodec ${AHcode} -ac 1 -ar ${AHfreq} -ab ${AHrate}   -metadata title="${title}"  -metadata  author="${author}"  -y  "X${bb4}.ogg" &
-export  pid1=$! ; echo ${pid1} > ../../pid_now_ff.txt ; echo "pid1->${pid1}" ; echo -n ${pid1} | nc 127.0.0.1 33778 ; wait ${pid1}
+export  pid1=$! ; echo ${pid1} > ../../pid_now_ff.txt ; sleep 2 ; echo "pid1->${pid1}" ; echo -n ${pid1} | nc 127.0.0.1 33778 ; wait ${pid1}
 sizeAA41="`ls -lh  "${bb4}"     |head -n 1|awk '{print $5}'`"
 sizeAA42="`ls -lh X"${bb4}".ogg |head -n 1|awk '{print $5}'`"
 fi
