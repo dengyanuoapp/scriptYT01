@@ -151,6 +151,8 @@ then
                 HH1=${ppH}     ### high pixel
                 LL1=${ppW}     ### high pixel
             fi
+            LL1=$(( ${LL1} / 4 * 4 ))
+            HH1=$(( ${HH1} / 4 * 4 ))
 
             ### max allow 48M
             ppZ1=55
