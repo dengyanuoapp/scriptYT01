@@ -50,8 +50,9 @@ new :
 	mv     tmp1/$(T)      srcROOT/ 
 	ls  srcROOT/$(T)    > now_root_file_name.txt
 kill:
-	-ps auxf |grep ^dyn |grep make   |awk '{print $$2}'|xargs -n 1 kill
-	-ps auxf |grep ^dyn |grep ffmpeg |awk '{print $$2}'|xargs -n 1 kill
+	-ps auxf |grep ^dyn |grep make   									|awk '{print $$2}'|xargs -n 1 kill
+	-ps auxf |grep ^dyn |grep ld_rename_opus2ogg_delete_space_genOGG.sh |awk '{print $$2}'|xargs -n 1 kill
+	-ps auxf |grep ^dyn |grep ffmpeg 									|awk '{print $$2}'|xargs -n 1 kill
 	 ps auxf |grep ^dyn
 	@echo ; mount |grep rootX ; echo
 
