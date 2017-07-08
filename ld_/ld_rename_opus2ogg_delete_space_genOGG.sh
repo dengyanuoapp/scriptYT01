@@ -176,7 +176,7 @@ then
                     echo " ==debuging 2: enough file size. large then 720 , use 720 pixel : ppZ4:${ppZ4} : HH:${HH} , LL:${LL}"
                 fi
             else
-                HH2=$(( ${ppZ4} * 720 / 200000 ))
+                HH2=$(( ${ppZ4} * 720 / 200000 / 4 * 4))
                 if [ ${HH2} -lt 360 ]
                 then
                     HH=360
@@ -188,7 +188,7 @@ then
             fi
 
 
-            echo " ==debuging 4: ppZ1<${ppZ1}> ppZ2<${ppZ2}> ppZ4<${ppZ4}> HH:${HH} , LL:${LL} , ppW:${ppW} , ppH:${ppH} , ppL:${ppL} "
+            echo " ==debuging 4: ppZ1<${ppZ1}> ppZ2<${ppZ2}> ppZ4<${ppZ4}> HH:${HH} , LL:${LL} , HH1:${HH1} , LL1:${LL1} , ppW:${ppW} , ppH:${ppH} , ppL:${ppL} "
 
             if [ ${ppH} -lt ${ppW} ] ; then ################## w > h
                 export pp4="${HH}:${LL}"
