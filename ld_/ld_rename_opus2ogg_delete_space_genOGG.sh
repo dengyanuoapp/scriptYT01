@@ -135,9 +135,12 @@ then
 
         ppW=$(ffprobe -v quiet -print_format json -show_streams "${bb1}" |grep coded_width  |head -n 1|awk -F : '{print $2}'|tr -d ','|tr -d ' ')
         ppH=$(ffprobe -v quiet -print_format json -show_streams "${bb1}" |grep coded_height |head -n 1|awk -F : '{print $2}'|tr -d ','|tr -d ' ')
-        ppX=$(ffprobe -v quiet -print_format json -show_streams "${bb1}" |grep DURATION|head -n 1|tr -d '"'|sed -e 's;\.[0-9]*$;;g' -e 's;^.* ;;g')
         ppL=$(($(ffprobe -v quiet -print_format json -show_format "${bb1}" |grep duration|head -n 1|sed -e 's;",.*$;;g' -e 's;^.*";;g' -e 's;\..*$;;g' )))
-        echo "format parameter : <${ppW}><${ppH}><${ppX}> <${ppL}> "
+
+        ppX1=$((${ppL}/3600)) ; ppX2=$(((${ppL}-${ppX1}*3600)/60)); ppX3=$((${ppL}-${ppX1}*3600-${ppX2}*60)) ; ppX="${ppX1}:${ppX2}:${ppX3}"
+        echo "ppL:${ppL} ppX1:${ppX1} ppX2:${ppX2} ppX3:${ppX3} ppX:${ppX}"
+
+        echo "format_parameter : ppW:<${ppW}> ppH:<${ppH}> ppX:<${ppX}> ppL:<${ppL}> "
         if [ -z "${ppW}" -o -z "${ppH}" -o -z "${ppL}" ] ; then
             echo "error pixel found <${ppW}><${ppH}><${ppL}>, skip "
         else
@@ -154,21 +157,21 @@ then
             ppZ1=48
             ppZ2=$((${ppZ1} * 1000 * 1000 ))
 
-            ### video leng limit speed. for exampel : ( 48000000 * 8  bits) / ( xxx second ) 
+            ### video leng limit max-speed. for exampel : ( 48000000 * 8  bits) / ( xxx second ) 
             ppZ4=$(( ${ppZ2} * 8 / ${ppL} ))
 
             ## the max limit speed ( bps ) 
-            if [ ${ppZ4} -lt 200000 ]
+            if [ ${ppZ4} -gt 200000 ] ## file-size-max-allow-speed > 200 kps
             then
-                if [ ${HH1} -lt 720 ]
+                if [ ${HH1} -lt 720 ] ## less than 720 , use origin
                 then
                     HH=${HH1}
                     LL=${LL1}
-                    echo " enough file size. less then 720 , use origin pixel : ppZ4:${ppZ4} : HH:${HH} , LL:${LL}"
-                else
+                    echo " ==debuging 1: enough file size. less then 720 , use origin pixel : ppZ4:${ppZ4} : HH:${HH} , LL:${LL}"
+                else  ## larger than 720 , use 720
                     HH=720
                     LL=$(( ${LL1} * ${HH} / ${HH1} / 4 * 4 ))
-                    echo " enough file size. large then 720 , use 720 pixel : ppZ4:${ppZ4} : HH:${HH} , LL:${LL}"
+                    echo " ==debuging 2: enough file size. large then 720 , use 720 pixel : ppZ4:${ppZ4} : HH:${HH} , LL:${LL}"
                 fi
             else
                 HH2=$(( ${ppZ4} * 720 / 200000 ))
@@ -179,11 +182,11 @@ then
                     HH=${HH2}
                 fi
                 LL=$(( ${LL1} * ${HH} / ${HH1} / 4 * 4 ))
-                echo " no enough file size. reduce the pixel : ppZ4:${ppZ4} : HH:${HH} , LL:${LL} , HH2:${HH2} "
+                echo " ==debuging 3: no enough file size. reduce the pixel : ppZ4:${ppZ4} : HH:${HH} , LL:${LL} , HH2:${HH2} "
             fi
 
 
-            echo " ==debuging : ppZ1<${ppZ1}> ppZ2<${ppZ2}> ppZ4<${ppZ4}> HH:${HH} , LL:${LL} , ppW:${ppW} , ppH:${ppH} , ppL:${ppL} "
+            echo " ==debuging 4: ppZ1<${ppZ1}> ppZ2<${ppZ2}> ppZ4<${ppZ4}> HH:${HH} , LL:${LL} , ppW:${ppW} , ppH:${ppH} , ppL:${ppL} "
 
             if [ ${ppH} -lt ${ppW} ] ; then ################## w > h
                 export pp4="${HH}:${LL}"
