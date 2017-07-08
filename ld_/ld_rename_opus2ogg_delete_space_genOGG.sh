@@ -149,45 +149,41 @@ then
                 LL1=${ppW}     ### high pixel
             fi
 
-            if [ ${HH1} -lt 720 ]
-            then
-                HH=${HH1}
-                LL=${LL1}
-                echo " ok 11. no need to recalc pixel. W<${ppW}> x H<${ppH}> --> HH<${HH}> x LL<${LL}> .  HH1<${HH1}> x LL1<${LL1}> . "
-            else
-                HH=720
-                LL=$(( ${LL1} * ${HH} / ${HH1} / 4 * 4 ))
-                echo " ok 22.        recalc pixel to . W<${ppW}> x H<${ppH}>  --> HH<${HH}> x LL<${LL}> .  HH1<${HH1}> x LL1<${LL1}> . "
-            fi
-
-            ### max allow size : 48 --> 40 , so , 55 -> 
-            ppZ1=48
+            ### max allow 48M
             ppZ1=55
+            ppZ1=48
             ppZ2=$((${ppZ1} * 1000 * 1000 ))
-
-            ### const min limit speed. for exampel : 720 pixel , 72kbps == 720 * 100
-            ppZ3=$(( ${HH} * 100 ))
 
             ### video leng limit speed. for exampel : ( 48000000 * 8  bits) / ( xxx second ) 
             ppZ4=$(( ${ppZ2} * 8 / ${ppL} ))
 
             ## the max limit speed ( bps ) 
-            if [ ${ppZ3} -lt ${ppZ4} ]
+            if [ ${ppZ4} -lt 200000 ]
             then
-                ppZ8=${ppZ4}
-                echo " enough file size. use file speed : ${ppZ8}"
+                if [ ${HH1} -lt 720 ]
+                then
+                    HH=${HH1}
+                    LL=${LL1}
+                    echo " enough file size. less then 720 , use origin pixel : ppZ4:${ppZ4} : HH:${HH} , LL:${LL}"
+                else
+                    HH=720
+                    LL=$(( ${LL1} * ${HH} / ${HH1} / 4 * 4 ))
+                    echo " enough file size. large then 720 , use 720 pixel : ppZ4:${ppZ4} : HH:${HH} , LL:${LL}"
+                fi
             else
-                HH=$(( ${ppZ4} / 100 / 4 * 4 ))
+                HH2=$(( ${ppZ4} * 720 / 200000 ))
+                if [ ${HH2} -lt 360 ]
+                then
+                    HH=360
+                else
+                    HH=${HH2}
+                fi
                 LL=$(( ${LL1} * ${HH} / ${HH1} / 4 * 4 ))
-                echo " ok .   2nd  recalc pixel to . W<${ppW}> x H<${ppH}>  --> HH<${HH}> x LL<${LL}> .  HH1<${HH1}> x LL1<${LL1}> . "
-                ppZ8=${ppZ4}
-                echo " not enough file size. reduce the pixel ${ppZ8}"
+                echo " no enough file size. reduce the pixel : ppZ4:${ppZ4} : HH:${HH} , LL:${LL} , HH2:${HH2} "
             fi
 
-            ### buf size
-            ppZ9=$(( ${ppZ8} * 10 ))
 
-            echo " speed and buf : ppZ1<${ppZ1}> ppZ2<${ppZ2}> ppZ3<${ppZ3}> ppZ4<${ppZ4}> ppZ8<${ppZ8}> ppZ9<${ppZ9}> "
+            echo " ==debuging : ppZ1<${ppZ1}> ppZ2<${ppZ2}> ppZ4<${ppZ4}> HH:${HH} , LL:${LL} , ppW:${ppW} , ppH:${ppH} , ppL:${ppL} "
 
             if [ ${ppH} -lt ${ppW} ] ; then ################## w > h
                 export pp4="${HH}:${LL}"
@@ -201,8 +197,10 @@ then
 # -r 12 
 
 if [ 1 = 1 ] ; then
-echo   "nice -n 19 ffmpeg -i \"${bb1}\" -vcodec libx265 -r 15 -vf scale=\"${pp4}\" -maxrate ${ppZ8} -bufsize ${ppZ9} -acodec ${AHcode} -ac 1 -ar ${AHfreq} -ab ${AHrate}  -metadata title=\"${title}\" -metadata author=\"${author}_${pp5}\" -y \"${bb4}\""
-        nice -n 19 ffmpeg -i  "${bb1}"  -vcodec libx265 -r 15 -vf  scale="${pp4}"  -maxrate ${ppZ8} -bufsize ${ppZ9} -acodec ${AHcode} -ac 1 -ar ${AHfreq} -ab ${AHrate}   -metadata title="${title}"  -metadata  author="${author}_${pp5}"  -y  "${bb4}" &
+#echo   "nice -n 19 ffmpeg -i \"${bb1}\" -vcodec libx265 -r 15 -vf scale=\"${pp4}\" -maxrate ${ppZ8} -bufsize ${ppZ9} -acodec ${AHcode} -ac 1 -ar ${AHfreq} -ab ${AHrate}  -metadata title=\"${title}\" -metadata author=\"${author}_${pp5}\" -y \"${bb4}\""
+#        nice -n 19 ffmpeg -i  "${bb1}"  -vcodec libx265 -r 15 -vf  scale="${pp4}"  -maxrate ${ppZ8} -bufsize ${ppZ9} -acodec ${AHcode} -ac 1 -ar ${AHfreq} -ab ${AHrate}   -metadata title="${title}"  -metadata  author="${author}_${pp5}"  -y  "${bb4}" &
+echo   "nice -n 19 ffmpeg -i \"${bb1}\" -vcodec libx265 -r 10 -vf scale=\"${pp4}\" -acodec ${AHcode} -ac 1 -ar ${AHfreq} -ab ${AHrate}  -metadata title=\"${title}\" -metadata author=\"${author}_${pp5}\" -y \"${bb4}\""
+        nice -n 19 ffmpeg -i  "${bb1}"  -vcodec libx265 -r 10 -vf  scale="${pp4}"  -acodec ${AHcode} -ac 1 -ar ${AHfreq} -ab ${AHrate}   -metadata title="${title}"  -metadata  author="${author}_${pp5}"  -y  "${bb4}" &
         export pid1=$! ; echo ${pid1} > ../../pid_now_ff.txt ; sleep 2 ; echo "pid1->${pid1}" ; echo -n ${pid1} | nc 127.0.0.1 33778 ; wait ${pid1}
 sizeVV4="`ls -lh "${bb4}" |head -n 1|awk '{print $5}'`"
 fi
