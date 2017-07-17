@@ -179,7 +179,12 @@ then
                 HH2=$(( ${ppZ4} * 720 / 200000 / 4 * 4))
                 if [ ${HH2} -lt 360 ]
                 then
-                    HH=360
+                    if [ ${HH2} -lt 180 ]
+                    then
+                        HH=180
+                    else
+                        HH=360
+                    fi
                 else
                     HH=${HH2}
                 fi
