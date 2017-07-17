@@ -1,5 +1,5 @@
 
-NOW_ROOT_FILE_NAME:=$(shell cat now_root_file_name.txt|head -n 1 |awk '{printf $$1}')
+NOW_ROOT_FILE_NAME:=$(shell cat Nnow_root_file_name.txt|head -n 1 |awk '{printf $$1}')
 #$(info $(NOW_ROOT_FILE_NAME))
 
 all: help01
@@ -48,7 +48,7 @@ ch        chroot  : mm
 new :
 	@[ -n "$(T)" ] || ( echo ; echo ; echo 'Usage : ';echo '       make new T=???' ; echo ; echo ; exit 3)
 	mv     tmp1/$(T)      srcROOT/ 
-	ls  srcROOT/$(T)    > now_root_file_name.txt
+	ls  srcROOT/$(T)    > Nnow_root_file_name.txt
 kill:
 	-ps auxf |grep ^dyn |grep make   									|awk '{print $$2}'|xargs -n 1 kill
 	-ps auxf |grep ^dyn |grep ld_rename_opus2ogg_delete_space_genOGG.sh |awk '{print $$2}'|xargs -n 1 kill
