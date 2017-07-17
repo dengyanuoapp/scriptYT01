@@ -10,6 +10,9 @@ do
     echo ; echo 'end pull , sleep 30 minutes ' ; echo
     df -h .
 
+    rm -f `find -name "*.amr"`
+    pwd
+
     sleep 30m
 
     sleep 5
