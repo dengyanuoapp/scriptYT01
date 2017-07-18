@@ -179,9 +179,9 @@ then
                 HH2=$(( ${ppZ4} * 720 / 200000 / 4 * 4))
                 if [ ${HH2} -lt 360 ]
                 then
-                    if [ ${HH2} -lt 180 ]
+                    if [ ${HH2} -lt 120 ]
                     then
-                        HH=180
+                        HH=240
                     else
                         HH=360
                     fi
