@@ -36,6 +36,14 @@ else
 fi
 }
 
+delete_the_origin_file(){
+    if [ "$3" != 'keep_origon' -a "$3" != 'ko' ] 
+    then
+        echo "rm -f \"${bb1}\""
+              rm -f  "${bb1}"
+    fi
+}
+
 ls -l "$1"
 
 if [ -z "$1" -o ! -f "$1" ] 
@@ -91,7 +99,8 @@ title=${title1}
 # -metadata author="aaa" 
 # -metadata title="${title}" -metadata author="${author}" 
 # "${title} ${author}" 
-skipName1=skip_"_$(echo -n "${bb3}"|   \
+skipName1="$(echo -n "${bb3}"|   \
+    sed \
     -e 's;.*_;;g')"
 
 echo
@@ -99,16 +108,17 @@ echo "change from 11 <$1>  to <${bb3}> , size <${bb2}> , skipName1<${skipName1}>
 
 if [ -n "${skipName1}" ]
 then
-    if [ -f skip/${skipName1} ]
+    if [ -f skip/skip_${skipName1} ]
     then
         echo " file skipName1<${skipName1}> , found . skip . exit "
-        chkeck_skip_kill
+        delete_the_origin_file
         echo " skiped needed, try to kill 3"
+        #chkeck_skip_kill
         kill_youtube
         exit
     else
         mkdir -p skip/
-        touch skip/${skipName1}
+        touch skip/skip_${skipName1}
     fi
 fi
 
@@ -324,12 +334,7 @@ fi
 
 
 
-#delete the origin file
-if [ "$3" != 'keep_origon' -a "$3" != 'ko' ] 
-then
-    echo "rm -f \"${bb1}\""
-          rm -f  "${bb1}"
-fi
+delete_the_origin_file
 
 echo "== audio_skiped ${audio_skiped}, video_skiped ${video_skiped}, conv_ogg ${conv_ogg}, conv_mkv ${conv_mkv}"
 
