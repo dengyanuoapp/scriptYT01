@@ -14,6 +14,28 @@ usage01() {
     exit
 }
 
+kill_youtube(){
+        echo " skiped needed, try to kill 2"
+        grep '' ../pid_now_yt.txt
+        kill `cat ../pid_now_yt.txt`
+}
+
+chkeck_skip_kill(){
+if [ -f "../skip_kill.txt" ]
+then
+    echo " ../skip_kill.txt exist , skip. "
+else
+    echo " ../skip_kill.txt don't exist , try to kill "
+    if [ "${audio_skiped}" = '1' -o "${video_skiped}" = '1' ]
+    then
+        echo " skiped needed, try to kill 1"
+        kill_youtube
+    else
+        echo " no skiped , no need to kill "
+    fi
+fi
+}
+
 ls -l "$1"
 
 if [ -z "$1" -o ! -f "$1" ] 
@@ -69,9 +91,26 @@ title=${title1}
 # -metadata author="aaa" 
 # -metadata title="${title}" -metadata author="${author}" 
 # "${title} ${author}" 
+skipName1=skip_"_$(echo -n "${bb3}"|   \
+    -e 's;.*_;;g')"
 
 echo
-echo "change from 11 <$1>  to <${bb3}> , size <${bb2}>"
+echo "change from 11 <$1>  to <${bb3}> , size <${bb2}> , skipName1<${skipName1}> "
+
+if [ -n "${skipName1}" ]
+then
+    if [ -f skip/${skipName1} ]
+    then
+        echo " file skipName1<${skipName1}> , found . skip . exit "
+        chkeck_skip_kill
+        echo " skiped needed, try to kill 3"
+        kill_youtube
+        exit
+    else
+        mkdir -p skip/
+        touch skip/${skipName1}
+    fi
+fi
 
 AHcode=libopus
 AHrate=12k
@@ -235,7 +274,7 @@ if [ "${conv_ogg}" = 1 ]
 then
     #bb4="${bb3}.ogg"
     bb4="${bb3}.amr"
-    if [ -f "${bb4}".ogg ] ; then
+    if [ -f "${bb4}".ogg -o -f "X${bb4}".ogg ] ; then
         echo " already exist . skip ${bb4}"
         audio_skiped=1
     else 
@@ -243,7 +282,7 @@ then
 if [ 1 = 1 ] ; then
 #echo   "nice -n 19 ffmpeg -i \"${bb1}\" -vn -acodec ${ALcode}               -ac 1 -ar ${ALfreq} -ab ${ALrate}  -metadata title=\"${title}\" -metadata author=\"${author}\" -y \"${bb4}\""
 #        nice -n 19 ffmpeg -i  "${bb1}"  -vn -acodec ${ALcode} -ac 1 -ar ${ALfreq} -ab ${ALrate}   -metadata title="${title}"  -metadata  author="${author}"  -y  "${bb4}" &
-export  pid1=$! ; echo ${pid1} > ../../pid_now_ff.txt ; sleep 2 ; echo "pid1->${pid1}" ; echo -n ${pid1} | nc 127.0.0.1 33778 ; wait ${pid1}
+#export  pid1=$! ; echo ${pid1} > ../../pid_now_ff.txt ; sleep 2 ; echo "pid1->${pid1}" ; echo -n ${pid1} | nc 127.0.0.1 33778 ; wait ${pid1}
         nice -n 19 ffmpeg -i  "${bb1}"  -vn -acodec ${AHcode} -ac 1 -ar ${AHfreq} -ab ${AHrate}   -metadata title="${title}"  -metadata  author="${author}"  -y  "X${bb4}.ogg" &
 export  pid1=$! ; echo ${pid1} > ../../pid_now_ff.txt ; sleep 2 ; echo "pid1->${pid1}" ; echo -n ${pid1} | nc 127.0.0.1 33778 ; wait ${pid1}
 sizeAA41="`ls -lh  "${bb4}"     |head -n 1|awk '{print $5}'`"
@@ -294,20 +333,7 @@ fi
 
 echo "== audio_skiped ${audio_skiped}, video_skiped ${video_skiped}, conv_ogg ${conv_ogg}, conv_mkv ${conv_mkv}"
 
-if [ -f "../skip_kill.txt" ]
-then
-    echo " ../skip_kill.txt exist , skip. "
-else
-    echo " ../skip_kill.txt don't exist , try to kill "
-    if [ "${audio_skiped}" = '1' -o "${video_skiped}" = '1' ]
-    then
-        echo " skiped needed, try to kill "
-        grep '' ../pid_now_yt.txt
-        kill `cat ../pid_now_yt.txt`
-    else
-        echo " no skiped , no need to kill "
-    fi
-fi
+chkeck_skip_kill
 
 if [ 0 = 1 ]
 then
