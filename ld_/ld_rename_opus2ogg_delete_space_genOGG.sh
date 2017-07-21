@@ -117,9 +117,12 @@ then
         kill_youtube
         exit
     else
+        echo " first met , create file skipName1<${skipName1}> "
         mkdir -p skip/
         touch skip/skip_${skipName1}
     fi
+else
+        echo " why NULL skipName1<${skipName1}> "
 fi
 
 AHcode=libopus
