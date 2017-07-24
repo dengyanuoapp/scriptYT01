@@ -175,6 +175,14 @@ then
     usage01
 fi
 
+ppL=$(($(ffprobe -v quiet -print_format json -show_format "${bb1}" |grep duration|head -n 1|sed -e 's;",.*$;;g' -e 's;^.*";;g' -e 's;\..*$;;g' )))
+ppX1=$((${ppL}/3600)) 
+ppX2=$(((${ppL}-${ppX1}*3600)/60))
+ppX3=$((${ppL}-${ppX1}*3600-${ppX2}*60)) 
+ppX8=$((${ppL}/60)) 
+ppX="${ppX1}:${ppX2}:${ppX3}"
+echo "ppL:${ppL} ppX1:${ppX1} ppX2:${ppX2} ppX3:${ppX3} ppX:${ppX} ppX8:${ppX8}"
+
 
 if [ "${conv_mkv}" = 1 ] 
 then
@@ -187,10 +195,6 @@ then
 
         ppW=$(ffprobe -v quiet -print_format json -show_streams "${bb1}" |grep coded_width  |head -n 1|awk -F : '{print $2}'|tr -d ','|tr -d ' ')
         ppH=$(ffprobe -v quiet -print_format json -show_streams "${bb1}" |grep coded_height |head -n 1|awk -F : '{print $2}'|tr -d ','|tr -d ' ')
-        ppL=$(($(ffprobe -v quiet -print_format json -show_format "${bb1}" |grep duration|head -n 1|sed -e 's;",.*$;;g' -e 's;^.*";;g' -e 's;\..*$;;g' )))
-
-        ppX1=$((${ppL}/3600)) ; ppX2=$(((${ppL}-${ppX1}*3600)/60)); ppX3=$((${ppL}-${ppX1}*3600-${ppX2}*60)) ; ppX="${ppX1}:${ppX2}:${ppX3}"
-        echo "ppL:${ppL} ppX1:${ppX1} ppX2:${ppX2} ppX3:${ppX3} ppX:${ppX}"
 
         echo "format_parameter : ppW:<${ppW}> ppH:<${ppH}> ppX:<${ppX}> ppL:<${ppL}> "
         if [ -z "${ppW}" -o -z "${ppH}" -o -z "${ppL}" ] ; then
@@ -320,8 +324,9 @@ then
     echo ' trying git_up'
     git_up=
 # ${title} ${author} 
-    [ -n "${git_vo}" ] && git_up=1 && git add *"${git_vo}"* && git commit -a -m "${sizeVV4}_${pp4}_${git_vo} ${author} ${title} " 
-    [ -n "${git_ao}" ] && git_up=1 && git add *"${git_ao}"* && git commit -a -m "${sizeAA41}_${sizeAA42}_${git_ao}_ogg ${author} ${title} " 
+    [ -n "${git_vo}" ] && git_up=1 && git add *"${git_vo}"* && git commit -a -m "${ppX8} minuts ${sizeVV4}_${pp4}_${git_vo} ${author} ${title} " 
+    #[ -n "${git_ao}" ] && git_up=1 && git add *"${git_ao}"* && git commit -a -m "${ppX8} minuts ${sizeAA41}_${sizeAA42}_${git_ao}_ogg ${author} ${title} " 
+    [ -n "${git_ao}" ] && git_up=1 && git add *"${git_ao}"* && git commit -a -m "${ppX8} minuts ${sizeAA42}_${git_ao}_ogg ${author} ${title} " 
     echo " git_up ${git_up} , git_vo ${git_vo} , git_ao ${git_ao} " 
     if [ -n "${git_up}" ] 
     then
