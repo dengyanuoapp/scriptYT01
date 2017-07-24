@@ -56,13 +56,20 @@ kill:
 	 ps auxf |grep ^dyn
 	@echo ; mount |grep rootX ; echo
 
-speed:
+speed: rootY/tmp/noW/Loop.log.txt 
+	make speedX FF=$<
+
+speed3: rootY/tmp/3/nohup.out
+	make speedX FF=$<
+
+speedX:$(FF)
+	[ -n "$(FF)" ] || ( echo ; echo "usaage : make FF=xx" ; echo ; exit 32 )
 	while [ 1 ] ; do \
-		echo -n " $$(tail -n 50  rootY/tmp/noW/Loop.log.txt \
+		echo -n " $$(tail -n 50  $(FF) \
 		|grep -i Duration|tail -n 1|sed \
 		-e 's;^.*Duration: ;;g' -e 's;\..*$$;;g'  -e 's; \+; ;g') " ;  \
-		echo -n " $$(cat rootY/tmp/noW/Loop.log.txt |grep -i ' pp4 '|tail -n 1 |awk '{printf $$4}') " ; \
-		tail rootY/tmp/noW/Loop.log.txt \
+		echo -n " $$(cat $(FF) |grep -i ' pp4 '|tail -n 1 |awk '{printf $$4}') " ; \
+		tail $(FF) \
 		| sed -e 's;[\r\n];\n;g' \
 		|grep bitrate= \
 		|tail -n 1 ; \
