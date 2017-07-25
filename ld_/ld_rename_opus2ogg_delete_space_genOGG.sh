@@ -91,8 +91,9 @@ bb3="_$(echo -n "$1"|   \
     -e 's;\.opus$;;g')"
 
 
-author=`ls 00*.ogg|head -n 1|sed -e 's;^00_;;g' -e 's;\.ogg;;g'`_`echo -n "$1"|sed -e 's;_.*$;;g'`
-title1=`echo -n "${bb3}"|sed -e 's;__*[^_]*$;;g' -e 's;^.*_;;g'`
+#author=`ls 00*.ogg|head -n 1|sed -e 's;^00_;;g' -e 's;\.ogg;;g'`_`echo -n "$1"|sed -e 's;_.*$;;g'`
+author=$(ls 00*.ogg|head -n 1|sed -e 's;^00_;;g' -e 's;\.ogg;;g')
+title1=$(echo -n "${bb3}"|sed -e 's;__*[^_]*$;;g' -e 's;^.*_;;g')
 title=${title1}
 
 # -metadata title="kkk" 
@@ -179,9 +180,9 @@ ppL=$(($(ffprobe -v quiet -print_format json -show_format "${bb1}" |grep duratio
 ppX1=$((${ppL}/3600)) 
 ppX2=$(((${ppL}-${ppX1}*3600)/60))
 ppX3=$((${ppL}-${ppX1}*3600-${ppX2}*60)) 
-ppX8=$((${ppL}/60)) 
+mLen=$((${ppL}/60)) 
 ppX="${ppX1}:${ppX2}:${ppX3}"
-echo "ppL:${ppL} ppX1:${ppX1} ppX2:${ppX2} ppX3:${ppX3} ppX:${ppX} ppX8:${ppX8}"
+echo "ppL:${ppL} ppX1:${ppX1} ppX2:${ppX2} ppX3:${ppX3} ppX:${ppX} mLen:${mLen}"
 
 
 if [ "${conv_mkv}" = 1 ] 
@@ -324,9 +325,9 @@ then
     echo ' trying git_up'
     git_up=
 # ${title} ${author} 
-    [ -n "${git_vo}" ] && git_up=1 && git add *"${git_vo}"* && git commit -a -m "${ppX8} minuts ${sizeVV4}_${pp4}_${git_vo} ${author} ${title} " 
-    #[ -n "${git_ao}" ] && git_up=1 && git add *"${git_ao}"* && git commit -a -m "${ppX8} minuts ${sizeAA41}_${sizeAA42}_${git_ao}_ogg ${author} ${title} " 
-    [ -n "${git_ao}" ] && git_up=1 && git add *"${git_ao}"* && git commit -a -m "${ppX8} minuts ${sizeAA42}_${git_ao}_ogg ${author} ${title} " 
+    [ -n "${git_vo}" ] && git_up=1 && git add *"${git_vo}"* && git commit -a -m "${author} ${mLen} minuts ${sizeVV4}_${pp4}_${git_vo} ${title} " 
+    #[ -n "${git_ao}" ] && git_up=1 && git add *"${git_ao}"* && git commit -a -m "${mLen} minuts ${sizeAA41}_${sizeAA42}_${git_ao}_ogg ${author} ${title} " 
+    [ -n "${git_ao}" ] && git_up=1 && git add *"${git_ao}"* && git commit -a -m "${author} ${mLen} minuts ${sizeAA42}_${git_ao}_ogg ${title} " 
     echo " git_up ${git_up} , git_vo ${git_vo} , git_ao ${git_ao} " 
     if [ -n "${git_up}" ] 
     then
