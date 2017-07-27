@@ -61,6 +61,8 @@ speed: rootY/tmp/noW/Loop.log.txt
 
 speed3: rootY/tmp/3/nohup.out
 	make speedX FF=$<
+speed4: rootY/tmp/4/nohup.out
+	make speedX FF=$<
 
 speedX:$(FF)
 	[ -n "$(FF)" ] || ( echo ; echo "usaage : make FF=xx" ; echo ; exit 32 )
