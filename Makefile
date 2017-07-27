@@ -189,7 +189,7 @@ t1:
 	       make $(uri81) XX=$(XX)  DD=$(DD) 
 	@echo "make $(uri81) XX=$(XX)  DD=$(DD)  "
 	wc -l New_add_gen1.txt   >> Start_stop_log.txt
-	nice -n 17       git gc --aggressive 
+	#nice -n 17       git gc --aggressive 
 #	make UCEtI-CRaNx6kiXMrVjnXe8w
 
 ao audio_only :
