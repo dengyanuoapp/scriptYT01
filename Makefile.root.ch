@@ -40,6 +40,7 @@ mm mmount :
 ch        chroot  : mm
 #	chroot rootY/
 	cat /etc/resolv.conf > rootY/etc/resolv.conf
+	chown -R dyn:dyn rootY/home/dyn
 	chroot rootY/ su - dyn
 	@echo ; mount |grep rootX ; echo 
 
