@@ -325,6 +325,10 @@ then
     echo ' trying git_up'
     git_up=
 # ${title} ${author} 
+
+git config --global user.email "you@example.com"
+git config --global user.name "Your Name"
+
     [ -n "${git_vo}" ] && git_up=1 && git add *"${git_vo}"* && git commit -a -m "${author} ${mLen} minuts ${sizeVV4}_${pp4}_${git_vo} ${title} " 
     #[ -n "${git_ao}" ] && git_up=1 && git add *"${git_ao}"* && git commit -a -m "${mLen} minuts ${sizeAA41}_${sizeAA42}_${git_ao}_ogg ${author} ${title} " 
     [ -n "${git_ao}" ] && git_up=1 && git add *"${git_ao}"* && git commit -a -m "${author} ${mLen} minuts ${sizeAA42}_${git_ao}_ogg ${title} " 
