@@ -184,6 +184,14 @@ mLen=$((${ppL}/60))
 ppX="${ppX1}:${ppX2}:${ppX3}"
 echo "ppL:${ppL} ppX1:${ppX1} ppX2:${ppX2} ppX3:${ppX3} ppX:${ppX} mLen:${mLen}"
 
+if [ "${mLen}" = "0" ]
+then
+    echo " len is 0 ,  delete skip/skip_${skipName1} "
+    delete_the_origin_file
+    rm -f skip/skip_${skipName1}
+    echo ' after skip 0 len file , exit '
+    exit
+fi
 
 if [ "${conv_mkv}" = 1 ] 
 then
