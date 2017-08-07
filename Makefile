@@ -46,6 +46,7 @@ help01:
 	@echo "loopAO180     :"
 	@echo "loopVO180     :"
 	@echo "vo_before_201708     :"
+	@echo "vo_after_20170801    :"
 	@echo
 
 m :
@@ -247,6 +248,11 @@ vo180:
 vo_before_201708:
 	echo "`date` : `date +%s` : BEGIN $@"
 	make vo MM1=201708
+	echo "`date` : `date +%s` : END $@"
+
+vo_after_20170801:
+	echo "`date` : `date +%s` : BEGIN $@"
+	make vo MM2=201708
 	echo "`date` : `date +%s` : END $@"
 
 ifeq (1,0)
