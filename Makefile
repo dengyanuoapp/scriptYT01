@@ -45,6 +45,7 @@ help01:
 	@echo "loopVO3       :"
 	@echo "loopAO180     :"
 	@echo "loopVO180     :"
+	@echo "vo_before_201708     :"
 	@echo
 
 m :
@@ -104,12 +105,34 @@ DDstr2:=+%Y%m%d__%H%M%p
 DDstr3:=date $(DDstr1) $(DDstr2)
 
 ifneq (,$(DD))
-DD11:=$(shell date                  +%Y%m%d)
+DD11:=$(shell date -d '+2     day'  +%Y%m%d)
 DD12:=$(shell date -d '-$(DD) day'  +%Y%m%d)
 DD00:=$(shell $(DDstr3))
 
 DD21:= --datebefore $(DD11)
 DD22:= --dateafter $(DD12)
+endif
+
+## befor MM1 = 201707 -->>> befor 20170701
+ifneq (,$(MM1))
+DD11:=$(shell date -d '$(MM1)01'  +%Y%m%d)
+
+DD21:= --datebefore $(DD11)
+DD22:= 
+endif
+
+## befor MM2 = 201707 -->>> after 20170630
+ifneq (,$(MM1))
+DD12:=$(shell date -d '$(MM1)01 - 1 day'  +%Y%m%d)
+
+DD21:= 
+DD22:= --dateafter $(DD12)
+endif
+
+## after MM3 = 20170701 , befor MM4 20170731
+ifneq (,$(MM3))
+DD22:= --dateafter $(MM3)
+DD21:= --datebefore $(MM4)
 endif
 
 
@@ -221,6 +244,11 @@ vo180:
 	make vo DD=180
 	echo "`date` : `date +%s` : END $@"
 
+vo_before_201708:
+	echo "`date` : `date +%s` : BEGIN $@"
+	make vo MM1=201708
+	echo "`date` : `date +%s` : END $@"
+
 ifeq (1,0)
 ifneq (,$(wildcard ld_/))
 ldXX :=
@@ -262,7 +290,7 @@ du1:
 	@$(foreach aa1,$(uri81),du -sh $(aa1)/ $(EOL))
 loopLOOP:
 	while [ 1 ] ; do make c  ; make $(LOOP) &> Loop.log.txt ; \
-		[ -f stop.txt_loop ] && echo && echo "stop.txt_loop met, exit " && echo && break ; \
+		[ -f stop.txt_loop ] && echo && echo "stop.txt_loop met, exit " && echo && exit 32 ; \
 		aa1="$$(cat New_add_gen1.txt|wc -l)" ; \
 		[ "$${aa1}" = '0' ] && sleep 13m || sleep 6m ; \
 		done ; echo
