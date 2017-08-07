@@ -149,6 +149,10 @@ $(eval xxYT += $(xx$(1)))
 $(1): $(xx$(1))
 $(xx$(1)):
 	mkdir -p $(1)/
+
+	[ ! -f stop.txt_person ] || (echo ; echo "11 stop.txt_person met, exit " ; echo ; )
+	[ ! -f stop.txt_person ] || exit 23
+
 	#cd $(1) && ld_youtube_dl2.sh  "$(uri01)/$(1)"
 	cd $(1) && touch 00_$($(1)).ogg && touch zz_$($(1)).ogg
 	-cd $(1) && ( \
@@ -156,7 +160,6 @@ $(xx$(1)):
 		echo $$$${pid1} > ../pid_now_yt.txt ; \
 		wait $$$${pid1} ; sleep 8 )
 	touch $$@
-	[ ! -f stop.txt_person ] || (echo ; echo "11 stop.txt_person met, exit " ; echo ; sleep 10h ; exit 22 )
 
 endef
 YTube=$(info $(foreach mm1,$1, $(eval $(call YTtemplate1,$(mm1)))))
