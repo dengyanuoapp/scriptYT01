@@ -122,8 +122,8 @@ DD22:=
 endif
 
 ## befor MM2 = 201707 -->>> after 20170630
-ifneq (,$(MM1))
-DD12:=$(shell date -d '$(MM1)01 - 1 day'  +%Y%m%d)
+ifneq (,$(MM2))
+DD12:=$(shell date -d '$(MM2)01 - 1 day'  +%Y%m%d)
 
 DD21:= 
 DD22:= --dateafter $(DD12)
