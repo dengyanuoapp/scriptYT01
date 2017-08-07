@@ -212,8 +212,8 @@ gd:
 	nice -n 15 git diff
 t1:
 	echo -n > New_add_gen1.txt
-	       make $(uri81) XX=$(XX)  DD=$(DD) 
-	@echo "make $(uri81) XX=$(XX)  DD=$(DD)  "
+	       make $(uri81) XX=$(XX)  DD=$(DD) &> Loop.log.txt 
+	@echo "make $(uri81) XX=$(XX)  DD=$(DD) &> Loop.log.txt "
 	wc -l New_add_gen1.txt   >> Start_stop_log.txt
 	#nice -n 17       git gc --aggressive 
 #	make UCEtI-CRaNx6kiXMrVjnXe8w
@@ -289,7 +289,7 @@ endif
 du1:
 	@$(foreach aa1,$(uri81),du -sh $(aa1)/ $(EOL))
 loopLOOP:
-	while [ 1 ] ; do make c  ; make $(LOOP) &> Loop.log.txt ; \
+	while [ 1 ] ; do make c  ; make $(LOOP) ; \
 		[ -f stop.txt_loop ] && echo && echo "stop.txt_loop met, exit " && echo && exit 32 ; \
 		aa1="$$(cat New_add_gen1.txt|wc -l)" ; \
 		[ "$${aa1}" = '0' ] && sleep 13m || sleep 6m ; \
