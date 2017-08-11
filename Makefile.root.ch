@@ -67,10 +67,16 @@ speed4: rootY/tmp/4/nohup.out
 
 speedX:$(FF)
 	[ -n "$(FF)" ] || ( echo ; echo "usaage : make FF=xx" ; echo ; exit 32 )
+	PP1=`realpath $(FF)`;\
+	PP2=`dirname $${PP1}`;\
+	PP3=`basename $${PP2}`;\
 	while [ 1 ] ; do \
-		echo -n " $$(tail -n 50  $(FF) \
+		echo -n "$${HOSTNAME}:$${PP3}: $$(tail -n 50  $(FF) \
 		|grep -i Duration|tail -n 1|sed \
-		-e 's;^.*Duration: ;;g' -e 's;\..*$$;;g'  -e 's; \+; ;g') " ;  \
+		-e 's;^.*Duration *: *;;g' \
+		-e 's;^.*DURATION *: *;;g' \
+		-e 's;\..*$$;;g'  \
+		-e 's; \+; ;g') " ;  \
 		echo -n " $$(cat $(FF) |grep -i ' pp4 '|tail -n 1 |awk '{printf $$4}') " ; \
 		tail $(FF) \
 		| sed -e 's;[\r\n];\n;g' \
