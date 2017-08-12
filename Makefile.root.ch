@@ -65,6 +65,8 @@ speed3: rootY/tmp/3/nohup.out
 speed4: rootY/tmp/4/nohup.out
 	make speedX FF=$<
 
+
+
 speedX:$(FF)
 	[ -n "$(FF)" ] || ( echo ; echo "usaage : make FF=xx" ; echo ; exit 32 )
 	PP1=`realpath $(FF)`;\
@@ -72,14 +74,22 @@ speedX:$(FF)
 	PP3=`basename $${PP2}`;\
 	while [ 1 ] ; do \
 		echo -n "$${HOSTNAME}:$${PP3}: $$(tail -n 50  $(FF) \
-		|grep -i Duration|tail -n 1|sed \
-		-e 's;^.*Duration *: *;;g' \
-		-e 's;^.*DURATION *: *;;g' \
+		|grep -i Duration\
+		|tail -n 2\
+		|sed \
+		-e 's;^\s*Duration *: *;;g' \
+		-e 's;^\s*DURATION *: *;;g' \
+		-e 's;frame\s*=\s*;;g' \
+		-e 's;time\s*=\s*;;g' \
 		-e 's;\..*$$;;g'  \
-		-e 's; \+; ;g') " ;  \
+		-e 's; \+; ;g') " \
+		| tail -n 2 \
+		;  \
 		echo -n " $$(cat $(FF) |grep -i ' pp4 '|tail -n 1 |awk '{printf $$4}') " ; \
 		tail $(FF) \
 		| sed -e 's;[\r\n];\n;g' \
+		-e 's;frame\s*=\s*;;g' \
+		-e 's;time\s*=\s*;;g' \
 		|grep bitrate= \
 		|tail -n 1 ; \
 		sleep 10 ; \
