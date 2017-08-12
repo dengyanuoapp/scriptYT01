@@ -75,7 +75,7 @@ speedX:$(FF)
 	while [ 1 ] ; do \
 		echo -n "$${HOSTNAME}:$${PP3}: $$(tail -n 50  $(FF) \
 		|grep -i Duration\
-		|tail -n 2\
+		|tail -n 1\
 		|sed \
 		-e 's;^\s*Duration *: *;;g' \
 		-e 's;^\s*DURATION *: *;;g' \
@@ -83,7 +83,7 @@ speedX:$(FF)
 		-e 's;time\s*=\s*;;g' \
 		-e 's;\..*$$;;g'  \
 		-e 's; \+; ;g') " \
-		| tail -n 2 \
+		| tail -n 1 \
 		;  \
 		echo -n " $$(cat $(FF) |grep -i ' pp4 '|tail -n 1 |awk '{printf $$4}') " ; \
 		tail $(FF) \
