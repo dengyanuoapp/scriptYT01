@@ -331,6 +331,7 @@ gr git_reset_to_remote:
 	git branch --set-upstream-to=origin/master master
 
 AOVO:
+	rm -f `find -name "yy_*.txt"`
 	@echo "make t1 XX=$(aovo1)o MM3=$(aovo2)  MM4=$(aovo3) "
 	       make t1 XX=$(aovo1)o MM3=$(aovo2)  MM4=$(aovo3)  
 
