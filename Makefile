@@ -328,7 +328,7 @@ AOVO:
 define AOVOtemplate1
 $(eval MMav0:=$(3)$(4)$(5))
 $(eval MMav1:=$$(shell date -d '$(MMav0) - 0  day' +%Y%m%d ))
-$(eval MMav2:=$$(shell date -d '$(MMav0) + 15 day' +%Y%m%d ))
+$(eval MMav2:=$$(shell date -d '$(MMav0) + 16 day' +%Y%m%d ))
 $(1)$(3)$(4)$(5) :
 	@echo "<$$@>--"
 	@echo "while [ 1 ] ; do make AOVO aovo1=$(2) aovo2=$(MMav1)  aovo3=$(MMav2) && sleep 5m || sleep 12m ; done"
@@ -342,12 +342,12 @@ yearS:=2017 2018
 AoHHxx:=
 VoHHxx:=
 xx1:=$(foreach yy1,$(yearS),$(foreach mm2,$(monthS),\
-$(eval AoHHxx += Ao_$(yy1)$(mm2)01 Ao_$(yy1)$(mm2)15 )\
-$(eval VoHHxx += Vo_$(yy1)$(mm2)01 Vo_$(yy1)$(mm2)15 )\
+$(eval AoHHxx += Ao_$(yy1)$(mm2)01 Ao_$(yy1)$(mm2)16 )\
+$(eval VoHHxx += Vo_$(yy1)$(mm2)01 Vo_$(yy1)$(mm2)16 )\
 $(eval $(call AOVOtemplate1,Ao_,ao,$(yy1),$(mm2),01))\
-$(eval $(call AOVOtemplate1,Ao_,ao,$(yy1),$(mm2),15))\
+$(eval $(call AOVOtemplate1,Ao_,ao,$(yy1),$(mm2),16))\
 $(eval $(call AOVOtemplate1,Vo_,vo,$(yy1),$(mm2),01))\
-$(eval $(call AOVOtemplate1,Vo_,vo,$(yy1),$(mm2),15))\
+$(eval $(call AOVOtemplate1,Vo_,vo,$(yy1),$(mm2),16))\
 ))
 
 
