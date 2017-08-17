@@ -15,7 +15,7 @@ endif
 
 uri81:=$(shell cat FileSet|sed -e 's;[\r\n\t];;g'|grep -v ^gitUSERNAME |grep -v ^$$ | awk -F: '{print $$1}')
 
-$(info === $(uri81) ===)
+$(info ===-= $(uri81) ===)
 
 include ./FileSet
 #$(error debuging)
@@ -198,6 +198,16 @@ $(info --- $(foreach aa1,$(xxYT),$($(aa1))) --1--- )
 $(info --- $(foreach aa1,$(ddYT),$($(aa1))) --2--- )
 endif
 
+$(info === XX : $(XX) )
+$(info === XX1 : $(XX1) )
+$(info === XX2 : $(XX2) )
+$(info === DD : $(DD) )
+$(info === DD21:$(DD21) )
+$(info === DD22:$(DD22) )
+$(info === MM1:$(MM1) )
+$(info === MM2:$(MM2) )
+$(info === MM3:$(MM3) )
+$(info === MM4:$(MM4) ===-=)
 
 c clean : 
 	rm -f $(wildcard $(xxYT)) 
