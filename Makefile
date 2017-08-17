@@ -21,7 +21,7 @@ include ./FileSet
 #$(error debuging)
 
 
-all : README.md help01
+all : README.md help01 showHHtop
 
 help01:
 	@echo
@@ -320,13 +320,48 @@ gr git_reset_to_remote:
 	git reset --hard origin/master
 	git branch --set-upstream-to=origin/master master
 
+AOVO:
+	@echo "make t1 XX=$(aovo1)o MM3=$(aovo2)  MM4=$(aovo3) "
+	       make t1 XX=$(aovo1)o MM3=$(aovo2)  MM4=$(aovo3)  
+
+#	make vo MM2=201708
+define AOVOtemplate1
+$(eval MMav0:=$(3)$(4)$(5))
+$(eval MMav1:=$$(shell date -d '$(MMav0) - 0  day' +%Y%m%d ))
+$(eval MMav2:=$$(shell date -d '$(MMav0) + 15 day' +%Y%m%d ))
+$(1)$(3)$(4)$(5) :
+	@echo "<$$@>--"
+	@echo "while [ 1 ] ; do make AOVO aovo1=$(2) aovo2=$(MMav1)  aovo3=$(MMav2) && sleep 5m || sleep 12m ; done"
+	@      while [ 1 ] ; do make AOVO aovo1=$(2) aovo2=$(MMav1)  aovo3=$(MMav2) && sleep 5m || sleep 12m ; done 
+
+endef
+
 monthS:=01 02 03 04 05 06 07 08 09 10 11 12
-year:=2017 2018
+yearS:=2017 2018
 
 AoHHxx:=
-#$(eval $(for
+VoHHxx:=
+xx1:=$(foreach yy1,$(yearS),$(foreach mm2,$(monthS),\
+$(eval AoHHxx += Ao_$(yy1)$(mm2)01 Ao_$(yy1)$(mm2)15 )\
+$(eval VoHHxx += Vo_$(yy1)$(mm2)01 Vo_$(yy1)$(mm2)15 )\
+$(eval $(call AOVOtemplate1,Ao_,ao,$(yy1),$(mm2),01))\
+$(eval $(call AOVOtemplate1,Ao_,ao,$(yy1),$(mm2),15))\
+$(eval $(call AOVOtemplate1,Vo_,vo,$(yy1),$(mm2),01))\
+$(eval $(call AOVOtemplate1,Vo_,vo,$(yy1),$(mm2),15))\
+))
 
 
 
 
 
+showHHtop:
+	@echo showHHvo
+	@echo showHHao
+showHHao:
+	@echo =---- AoHHxx 1
+	@for aa1 in $(AoHHxx) ; do echo $${aa1} ; done
+	@echo =---- AoHHxx 2
+showHHvo:
+	@echo =---- VoHHxx 1
+	@for aa1 in $(VoHHxx) ; do echo $${aa1} ; done
+	@echo =---- VoHHxx 2
