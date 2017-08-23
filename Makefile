@@ -373,7 +373,12 @@ for aa1 in \$(EOL)\
 $(foreach bb1,$1,$(bb1) \$(EOL))
 do
 	echo "=== $${aa1} start "
-	make $${aa1} ONCE=1
+	if [ 2 = 2 ] 
+	then
+		rsync -a --delete /scriptYT01/vvvv/$${aa1}/ 
+	else
+		make -C $${aa1} $${aa1} ONCE=1
+	fi
 	echo "=== $${aa1} end "
 done
 
