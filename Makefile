@@ -383,13 +383,13 @@ do
 		git add .
 		git commit -m "first commit $${aa1}"
 		git remote add origin https://github.com/youtube01/$${aa1}.git
-		[ -z "$$1" ] || sed -i -e "s;github.com;youtube01:$$1@github.com" .git/config
+		[ -z "$$1" ] || sed -i -e "s;/github.com;/youtube01:$$1@github.com;g" .git/config
 		)
 	else
 		make -C $${aa1} $${aa1} ONCE=1
 	fi
 	echo "=== $${aa1} end "
-	echo find . -name config
+	echo 'grep github `find . -name config`'
 done
 
 endef
