@@ -336,14 +336,15 @@ AOVO:
 	       make t1 XX=$(aovo1)o MM3=$(aovo2)  MM4=$(aovo3)  
 
 #	make vo MM2=201708
+#	make vo MM2=201708 ONCE=1
 define AOVOtemplate1
 $(eval MMav0:=$(3)$(4)$(5))
 $(eval MMav1:=$$(shell date -d '$(MMav0) - 0  day' +%Y%m%d ))
 $(eval MMav2:=$$(shell date -d '$(MMav0) + 16 day' +%Y%m%d ))
 $(1)$(3)$(4)$(5) :
 	@echo "<$$@>--"
-	@echo "while [ 1 ] ; do make AOVO aovo1=$(2) aovo2=$(MMav1)  aovo3=$(MMav2) && sleep 5m || sleep 12m ; done"
-	@      while [ 1 ] ; do make AOVO aovo1=$(2) aovo2=$(MMav1)  aovo3=$(MMav2) && sleep 5m || sleep 12m ; done 
+	@echo "while [ 1 ] ; do make AOVO aovo1=$(2) aovo2=$(MMav1)  aovo3=$(MMav2) && sleep 5m || sleep 12m ; [ -z \"$(ONCE)\" ] || exit ; done"
+	@      while [ 1 ] ; do make AOVO aovo1=$(2) aovo2=$(MMav1)  aovo3=$(MMav2) && sleep 5m || sleep 12m ; [ -z  "$(ONCE)"  ] || exit ; done 
 
 endef
 
