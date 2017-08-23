@@ -1,0 +1,33 @@
+gitUSERNAME:=youtube01
+
+########################### ###########################
+###
+### 时事热点, 更新周期大约每1小时,保留3天
+###
+### you can use phone to download directly from China mainland
+###
+### https://github.com/youtube01/Ao_20170701/   # 201707
+### https://github.com/youtube01/Ao_20170716/
+### https://github.com/youtube01/Ao_20170701/commits/master
+### https://github.com/youtube01/Ao_20170716/commits/master
+###
+### https://github.com/youtube01/Vo_20170801/
+### https://github.com/youtube01/Vo_20170801/commits/master
+###
+### note : the old file , go to : 
+###
+### https://github.com/youtube01/hotest/
+###
+### OGG player : https://github.com/youtube01/player/tree/master/ogg_player__Pulsar
+### OGG player : https://github.com/youtube01/player/tree/master/ogg_good_player__vlc_2.0.6
+###
+###
+########################### ###########################
+
+
+#####################################################
+
+########### automatic update every 30 minuts ########
+
+#####################################################
+
