@@ -362,13 +362,33 @@ $(eval $(call AOVOtemplate1,Vo_,vo,$(yy1),$(mm2),01))\
 $(eval $(call AOVOtemplate1,Vo_,vo,$(yy1),$(mm2),16))\
 ))
 
+export AoHHxx
+export VoHHxx
 
+
+define AoVoSH
+#!/bin/sh
+
+for aa1 in \$(EOL)\
+$(foreach bb1,$1,$(bb1) \$(EOL))
+do
+	echo "=== $${aa1} start "
+	make $${aa1} ONCE=1
+	echo "=== $${aa1} end "
+done
+
+endef
+
+AoSH:=$(call AoVoSH,$(AoHHxx))
+VoSH:=$(call AoVoSH,$(VoHHxx))
+export AoSH
+export VoSH
 
 
 
 showHHtop:
-	@echo showHHvo
-	@echo showHHao
+	@echo showHHvo showHHvoX
+	@echo showHHao showHHaoX
 showHHao:
 	@echo =---- AoHHxx 1
 	@for aa1 in $(AoHHxx) ; do echo $${aa1} ; done
@@ -377,5 +397,14 @@ showHHvo:
 	@echo =---- VoHHxx 1
 	@for aa1 in $(VoHHxx) ; do echo $${aa1} ; done
 	@echo =---- VoHHxx 2
+
+showHHaoX:
+	@echo "$${AoSH}" > 1.txt
+	@echo ; echo 'see  1.txt for details.' ; echo
+showHHvoX:
+	@echo "$${VoSH}" > 2.txt
+	@echo ; echo 'see  2.txt for details.' ; echo
+
+
 
 .PHONY: $(uri81)
