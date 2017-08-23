@@ -376,10 +376,20 @@ do
 	if [ 2 = 2 ] 
 	then
 		rsync -a --delete /scriptYT01/vvvv/   $${aa1}/ 
+		( 
+		cd $${aa1}/ 
+		make
+		git init
+		git add .
+		git commit -m "first commit $${aa1}"
+		git remote add origin https://github.com/youtube01/$${aa1}.git
+		[ -z "$$1" ] || sed -i -e "s;github.com;youtube01:$$1@github.com" .git/config
+		)
 	else
 		make -C $${aa1} $${aa1} ONCE=1
 	fi
 	echo "=== $${aa1} end "
+	echo find . -name config
 done
 
 endef
