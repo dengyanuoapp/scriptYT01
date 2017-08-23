@@ -375,7 +375,7 @@ do
 	echo "=== $${aa1} start "
 	if [ 2 = 2 ] 
 	then
-		rsync -a --delete /scriptYT01/vvvv/$${aa1}/ 
+		rsync -a --delete /scriptYT01/vvvv/   $${aa1}/ 
 	else
 		make -C $${aa1} $${aa1} ONCE=1
 	fi
