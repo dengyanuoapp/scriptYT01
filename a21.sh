@@ -9,6 +9,7 @@ then
     echo
     echo
     echo "a10.txt don't exist . should be copy from /scriptYT01/aoaoao.txt. exit. "
+    echo "you should copy /scriptYT01/a21.sh to /tmp/ , modify it and run it."
     echo
     exit
 fi
