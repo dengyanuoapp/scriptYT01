@@ -39,7 +39,7 @@ do
             | sed -e "s;Ao_201703;${AV}_${year}${a22};g" \
             > a11.txt 
         cat a11.txt  \
-            sed -e 's;2 = 2;2 = 3;g'   \
+            | sed -e 's;2 = 2;2 = 3;g'   \
             > a12.txt 
         sh ./a11.txt "${pass01}"
     )
@@ -47,8 +47,8 @@ do
     echo ''                         >> a15.txt
     echo '('                        >> a15.txt
     echo "cd ${a21}"                >> a15.txt
-    echo "nohup sh ./a12.txt"       >> a15.txt
-    echo "slee 2"                   >> a15.txt
+    echo "nohup sh ./a12.txt &"     >> a15.txt
+    echo "sleep 2"                   >> a15.txt
     echo ')'                        >> a15.txt
 
 done
