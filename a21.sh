@@ -8,7 +8,7 @@ if [ ! -f a10.txt ]
 then
     echo
     echo
-    echo "a10.txt don't exist . should be copy from /scriptYT01/aoaoao.txt. exit. "
+    echo "a10.txt don't exist . should be copy from /scriptYT01/aoaoao.txt . exit. "
     echo "you should copy /scriptYT01/a21.sh to /tmp/ , modify it and run it."
     echo
     exit
@@ -30,7 +30,7 @@ for a21 in \
     12 \
 
 do
-    a22=$(printf "${year}%02d" ${a21})
+    a22=$(printf "%02d" ${a21})
     rm -fr ${a21}
     mkdir ${a21}
     (
