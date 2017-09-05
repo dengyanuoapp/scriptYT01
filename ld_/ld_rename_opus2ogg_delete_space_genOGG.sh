@@ -90,11 +90,20 @@ bb3="_$(echo -n "$1"|   \
     -e 's;\.webm$;;g' \
     -e 's;\.opus$;;g')"
 
+ls 00_*.ogg    &> /dev/null && ls_00_ogg=1 || ls_00_ogg=2 
 
-#author=`ls 00*.ogg|head -n 1|sed -e 's;^00_;;g' -e 's;\.ogg;;g'`_`echo -n "$1"|sed -e 's;_.*$;;g'`
-author=$(ls 00*.ogg|head -n 1|sed -e 's;^00_;;g' -e 's;\.ogg;;g')
+if [ "${ls_00_ogg}" = "1" ]
+then
+    #author=`ls 00_*.ogg|head -n 1|sed -e 's;^00_;;g' -e 's;\.ogg;;g'`_`echo -n "$1"|sed -e 's;_.*$;;g'`
+    author=$(ls 00_*.ogg|head -n 1|sed -e 's;^00_;;g' -e 's;\.ogg;;g')
+else
+    author=hotest01
+fi
+
 title1=$(echo -n "${bb3}"|sed -e 's;__*[^_]*$;;g' -e 's;^.*_;;g')
+title2=$(echo -n "${bb3}"|tr -d ' '|tr -d '_'|tr -d '-'|tr -d '@'|tr -d '|'|tr -d '+'|tr -d '.')
 title=${title1}
+[ -n "${title}" ] || title="${title2}"
 
 # -metadata title="kkk" 
 # -metadata author="aaa" 
@@ -106,6 +115,7 @@ skipName1="$(echo -n "${bb3}"|   \
 
 echo
 echo "change from 11 <$1>  to <${bb3}> , size <${bb2}> , skipName1<${skipName1}> "
+echo "change from 12 author<${author}> title<${title}>"
 
 if [ -n "${skipName1}" ]
 then
@@ -170,6 +180,7 @@ then
     conv_mkv=1    ### 
     conv_ogg=1    ### 
 fi
+echo "change from 13 conv_mkv<${conv_mkv}> conv_ogg<${conv_ogg}>"
 
 if [ -z "${conv_mkv}" ]
 then
@@ -184,7 +195,8 @@ mLen=$((${ppL}/60))
 ppX="${ppX1}:${ppX2}:${ppX3}"
 echo "ppL:${ppL} ppX1:${ppX1} ppX2:${ppX2} ppX3:${ppX3} ppX:${ppX} mLen:${mLen}"
 
-if [ "${mLen}" = "0" ]
+#if [ "${mLen}" = "0" ]
+if [ "${ppL}" = "0" ]
 then
     echo " len is 0 ,  delete skip/skip_${skipName1} "
     delete_the_origin_file
