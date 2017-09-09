@@ -1,0 +1,4 @@
+#!/bin/sh
+
+    git add "$1"
+    git commit -m "`basename $1`"
