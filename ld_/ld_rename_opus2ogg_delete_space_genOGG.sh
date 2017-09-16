@@ -14,6 +14,9 @@ usage01() {
     exit
 }
 
+echo ; echo " tit01 -->>>  ${tit01}" ; echo
+set > set.env.01.txt
+
 kill_youtube(){
         echo " skiped needed, try to kill 2"
         grep '' ../pid_now_yt.txt
