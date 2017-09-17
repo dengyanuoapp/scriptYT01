@@ -136,6 +136,7 @@ DD22:= --dateafter $(MM3)
 DD21:= --datebefore $(MM4)
 endif
 
+#	--write-sub --write-auto-sub --all-subs  \
 
 rate:=16k
 freq:=24000
@@ -343,8 +344,8 @@ $(eval MMav1:=$$(shell date -d '$(MMav0) - 0  day' +%Y%m%d ))
 $(eval MMav2:=$$(shell date -d '$(MMav0) + 16 day' +%Y%m%d ))
 $(1)$(3)$(4)$(5) :
 	@echo "<$$@>--"
-	@echo "while [ 1 ] ; do make AOVO aovo1=$(2) aovo2=$(MMav1)  aovo3=$(MMav2) && sleep 5m || sleep 12m ; [ -z \"$(ONCE)\" ] || exit ; done"
-	@      while [ 1 ] ; do make AOVO aovo1=$(2) aovo2=$(MMav1)  aovo3=$(MMav2) && sleep 5m || sleep 12m ; [ -z  "$(ONCE)"  ] || exit ; done 
+	@echo "while [ 1 ] ; do make AOVO aovo1=$(2) aovo2=$(MMav1)  aovo3=$(MMav2) && sleep 15m || sleep 12m ; [ -z \"$(ONCE)\" ] || exit ; done"
+	@      while [ 1 ] ; do make AOVO aovo1=$(2) aovo2=$(MMav1)  aovo3=$(MMav2) && sleep 15m || sleep 12m ; [ -z  "$(ONCE)"  ] || exit ; done 
 
 endef
 
