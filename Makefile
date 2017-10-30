@@ -309,7 +309,7 @@ loopLOOP:
 	while [ 1 ] ; do make c  ; make $(LOOP) ; \
 		[ -f stop.txt_loop ] && echo && echo "stop.txt_loop met, exit " && echo && exit 32 ; \
 		aa1="$$(cat New_add_gen1.txt|wc -l)" ; \
-		[ "$${aa1}" = '0' ] && sleep 13m || sleep 6m ; \
+		[ "$${aa1}" = '0' ] && sleep 23m || sleep 26m ; \
 		done ; echo
 loopAO:
 	make loopLOOP LOOP=ao
@@ -344,7 +344,7 @@ $(eval MMav1:=$$(shell date -d '$(MMav0) - 0  day' +%Y%m%d ))
 $(eval MMav2:=$$(shell date -d '$(MMav0) + 16 day' +%Y%m%d ))
 $(1)$(3)$(4)$(5) :
 	@echo "<$$@>--"
-	@echo "while [ 1 ] ; do make AOVO aovo1=$(2) aovo2=$(MMav1)  aovo3=$(MMav2) && sleep 15m || sleep 12m ; [ -z \"$(ONCE)\" ] || exit ; done"
+	@echo "while [ 1 ] ; do make AOVO aovo1=$(2) aovo2=$(MMav1)  aovo3=$(MMav2) && sleep 25m || sleep 22m ; [ -z \"$(ONCE)\" ] || exit ; done"
 	@      while [ 1 ] ; do make AOVO aovo1=$(2) aovo2=$(MMav1)  aovo3=$(MMav2) && sleep 15m || sleep 12m ; [ -z  "$(ONCE)"  ] || exit ; done 
 
 endef
