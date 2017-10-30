@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 while [ 1 = 1 ]
 do
@@ -6,7 +6,13 @@ do
     df -h .
     du -sh .
 
-    git pull
+    if [ -z "$1" ]
+    then
+        git pull
+    else
+        echo "https_proxy=${1}:22224"
+              https_proxy=${1}:22224 git pull
+    fi
 
     echo ; echo 'end pull , sleep 30 minutes ' ; echo
     df -h .
