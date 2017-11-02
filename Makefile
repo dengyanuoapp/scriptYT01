@@ -210,10 +210,12 @@ $(info === MM2:$(MM2) )
 $(info === MM3:$(MM3) )
 $(info === MM4:$(MM4) ===-=)
 
+ccList02:=Loop.log.txt New_add_gen1.txt Start_stop_log.txt nohup.out pid_now_yt.txt
 c clean : 
-	rm -f $(wildcard $(xxYT)) 
+	rm -f $(wildcard $(xxYT) $(ccList02)) 
 
 up:
+	@echo 'https://{username:password@}github.com/{owner}/{repo}'
 	nice -n 15 git push -u origin master
 #	nice -n 15 git push 
 gs:
