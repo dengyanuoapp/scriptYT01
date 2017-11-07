@@ -102,11 +102,13 @@ then
 else
     author=hotest01
 fi
+author="直下音频:${author}"
 
 title1=$(echo -n "${bb3}"|sed -e 's;__*[^_]*$;;g' -e 's;^.*_;;g')
-title2=$(echo -n "${bb3}"|tr -d ' '|tr -d '_'|tr -d '-'|tr -d '@'|tr -d '|'|tr -d '+'|tr -d '.')
+title2=$(echo -n "${bb3}"|tr -d ' '|tr -d '_'|tr -d '-'|tr -d '@'|tr -d '|'|tr -d '+'|tr -d '.'|tr -d '('|tr -d ')')
 title=${title1}
 [ -n "${title}" ] || title="${title2}"
+title="直下音频:${title}"
 
 # -metadata title="kkk" 
 # -metadata author="aaa" 
