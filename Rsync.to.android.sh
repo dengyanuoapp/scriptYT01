@@ -12,4 +12,4 @@ nice -n 19 \
     --delete --inplace --omit-dir-times --no-perms --size-only \
     -e "ssh -p 22225"  \
     ./  \
-    aa@${aaa1}:{aaa2}
+    aa@${aaa1}:${aaa2}
