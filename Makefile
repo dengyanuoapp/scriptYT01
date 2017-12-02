@@ -347,7 +347,7 @@ $(eval MMav2:=$$(shell date -d '$(MMav0) + 16 day' +%Y%m%d ))
 $(1)$(3)$(4)$(5) :
 	@echo "<$$@>--"
 	@echo "while [ 1 ] ; do make AOVO aovo1=$(2) aovo2=$(MMav1)  aovo3=$(MMav2) && sleep 25m || sleep 22m ; [ -z \"$(ONCE)\" ] || exit ; done"
-	@      while [ 1 ] ; do make AOVO aovo1=$(2) aovo2=$(MMav1)  aovo3=$(MMav2) && sleep 15m || sleep 12m ; [ -z  "$(ONCE)"  ] || exit ; done 
+	@      while [ 1 ] ; do make AOVO aovo1=$(2) aovo2=$(MMav1)  aovo3=$(MMav2) && sleep 26m || sleep 23m ; [ -z  "$(ONCE)"  ] || exit ; done 
 
 endef
 
