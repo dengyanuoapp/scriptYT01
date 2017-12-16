@@ -6,8 +6,18 @@ aaa2=/sdcard/9/
 
 echo 
 echo " to .... ${aaa1} ${aaa2} "
+echo " you can use the parameter 1 as the dst ip"
 
-nice -n 19 \
+echo '\
+    nice -n 19 \
+    rsync -r -v -l -c \
+    --delete --inplace --omit-dir-times --no-perms --size-only \
+    -e "ssh -p 22225"  \
+    ./  \
+    ' \
+    aa@${aaa1}:${aaa2}
+
+    nice -n 19 \
     rsync -r -v -l -c \
     --delete --inplace --omit-dir-times --no-perms --size-only \
     -e "ssh -p 22225"  \
