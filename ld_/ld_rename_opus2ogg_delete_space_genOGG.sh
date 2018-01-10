@@ -289,8 +289,6 @@ then
 # -r 12 
 
 if [ 1 = 1 ] ; then
-#echo   "nice -n 19 ffmpeg -i \"${bb1}\" -vcodec libx265 -r 15 -vf scale=\"${pp4}\" -maxrate ${ppZ8} -bufsize ${ppZ9} -acodec ${AHcode} -ac 1 -ar ${AHfreq} -ab ${AHrate}  -metadata title=\"${title}\" -metadata author=\"${author}_${pp5}\" -y \"${bb4}\""
-#        nice -n 19 ffmpeg -i  "${bb1}"  -vcodec libx265 -r 15 -vf  scale="${pp4}"  -maxrate ${ppZ8} -bufsize ${ppZ9} -acodec ${AHcode} -ac 1 -ar ${AHfreq} -ab ${AHrate}   -metadata title="${title}"  -metadata  author="${author}_${pp5}"  -y  "${bb4}" &
 echo   "nice -n 19 ffmpeg -i \"${bb1}\" -vcodec libx265 -r 10 -vf scale=\"${pp4}\" -acodec ${AHcode} -ac 1 -ar ${AHfreq} -ab ${AHrate}  -metadata title=\"${title}\" -metadata author=\"${author}_${pp5}\" -y \"${bb4}\""
         nice -n 19 ffmpeg -i  "${bb1}"  -vcodec libx265 -r 10 -vf  scale="${pp4}"  -acodec ${AHcode} -ac 1 -ar ${AHfreq} -ab ${AHrate}   -metadata title="${title}"  -metadata  author="${author}_${pp5}"  -y  "${bb4}" &
         export pid1=$! ; echo ${pid1} > ../../pid_now_ff.txt ; sleep 2 ; echo "pid1->${pid1}" ; echo -n ${pid1} | nc 127.0.0.1 33778 ; wait ${pid1}
@@ -316,17 +314,16 @@ fi
 if [ "${conv_ogg}" = 1 ] 
 then
     #bb4="${bb3}.ogg"
-    bb4="${bb3}.amr"
-    if [ -f "${bb4}".ogg -o -f "X${bb4}".ogg ] ; then
+    #bb4="${bb3}.amr"
+    bb4="X${bb3}.ogg"
+    if [ -f "${bb4}" -o -f "X${bb4}" -o -f "${bb4}".ogg -o -f "X${bb4}".ogg -o -f "${bb4}".ogg.ogg -o -f "X${bb4}".ogg.ogg ] ; then
         echo " already exist . skip ${bb4}"
         audio_skiped=1
     else 
         cput1=$(date +%s)
 if [ 1 = 1 ] ; then
-#echo   "nice -n 19 ffmpeg -i \"${bb1}\" -vn -acodec ${ALcode}               -ac 1 -ar ${ALfreq} -ab ${ALrate}  -metadata title=\"${title}\" -metadata author=\"${author}\" -y \"${bb4}\""
-#        nice -n 19 ffmpeg -i  "${bb1}"  -vn -acodec ${ALcode} -ac 1 -ar ${ALfreq} -ab ${ALrate}   -metadata title="${title}"  -metadata  author="${author}"  -y  "${bb4}" &
-#export  pid1=$! ; echo ${pid1} > ../../pid_now_ff.txt ; sleep 2 ; echo "pid1->${pid1}" ; echo -n ${pid1} | nc 127.0.0.1 33778 ; wait ${pid1}
-        nice -n 19 ffmpeg -i  "${bb1}"  -vn -acodec ${AHcode} -ac 1 -ar ${AHfreq} -ab ${AHrate}   -metadata title="${title}"  -metadata  author="${author}"  -y  "X${bb4}.ogg" &
+        nice -n 19 ffmpeg -i  "${bb1}"  -vn -acodec ${AHcode} -ac 1 -ar ${AHfreq} -ab ${AHrate}   -metadata title="${title}"  \
+            -metadata  author="${author}"  -y  "${bb4}" &
 export  pid1=$! ; echo ${pid1} > ../../pid_now_ff.txt ; sleep 2 ; echo "pid1->${pid1}" ; echo -n ${pid1} | nc 127.0.0.1 33778 ; wait ${pid1}
 sizeAA41="`ls -lh  "${bb4}"     |head -n 1|awk '{print $5}'`"
 sizeAA42="`ls -lh X"${bb4}".ogg |head -n 1|awk '{print $5}'`"
