@@ -29,7 +29,9 @@ do
     rm -f `find -name "*.amr"`
     pwd
 
+    grep https:// .git/config
     sleep 30m
+    grep https:// .git/config
 
     sleep 5
 
