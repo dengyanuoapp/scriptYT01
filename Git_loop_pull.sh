@@ -22,7 +22,7 @@ do
         fi
     fi
 
-    echo ; echo 'end pull , sleep 30 minutes ' ; echo
+    echo ; echo 'end pull , sleep 30 minutes :$( date ) ' ; echo
     df -h .
     du -sh .
 
