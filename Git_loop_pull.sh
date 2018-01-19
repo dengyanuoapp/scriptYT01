@@ -22,6 +22,9 @@ pro01=
 if [ -n "$1" ]
 then
     case $1 in
+        h|-h|help|-help)
+            exit
+            ;;
         1)
             pro01=${p01}
             ;;
