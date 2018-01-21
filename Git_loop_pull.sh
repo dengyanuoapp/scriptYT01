@@ -54,7 +54,7 @@ do
     echo    "https_proxy=${pro01}       git pull"
     echo    "https_proxy=${pro01}"
 
-    echo ; echo 'end pull , sleep 30 minutes :$( date ) ' ; echo
+    echo ; echo "end pull , sleep 30 minutes :$( date ) " ; echo
     df -h .
     du -sh .
 
