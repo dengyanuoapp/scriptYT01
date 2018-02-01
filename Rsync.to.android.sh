@@ -75,10 +75,9 @@ echo '\
     nice -n 19 \
     rsync -r -v -l -c \
     --delete --inplace --omit-dir-times --no-perms --size-only \
-    -e "ssh -p ${pro02}"  \
+    -e "ssh -p '${pro02}'"  \
     ./  \
-    ' \
-    aa@${pro01}:${aaa2}
+    'aa@${pro01}:${aaa2} 
 
     nice -n 19 \
     rsync -r -v -l -c \
