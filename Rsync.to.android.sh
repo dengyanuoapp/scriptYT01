@@ -18,16 +18,16 @@ then
     nc02=/sys/class/net/${nc01}/address
 fi
 
-echo "--->> ${nc02} <<--"
+echo "--->> ${nc02}, ${nc01} <<--"
 if [ ! -f ${nc02} ]
 then
     echo
     echo "why eth0 don't exist ? exit"
-    echo
+    echo "nc02 -> ${nc02}"
     exit
 fi
 
-rrr1=$( ip a show br0|grep inet |head -n 1|awk '{print $2}'|sed -e 's;\.[0-9]\+/[0-9]\+$;;g' )
+rrr1=$( ip a show ${nc01}|grep inet |head -n 1|awk '{print $2}'|sed -e 's;\.[0-9]\+/[0-9]\+$;;g' )
 
 p01=${rrr1}.51
 
@@ -60,11 +60,11 @@ then
                 pro02=22225
             else
                 pro01="${rrr1}.${1}"
-                pro02=22225
             fi
             ;;
     esac
 fi
+[ -n "${pro02}" ] || pro02=22225
 
 
 echo 
