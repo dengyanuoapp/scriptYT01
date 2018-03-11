@@ -31,6 +31,12 @@ then
         2)
             pro01=${p02}
             ;;
+        3)
+            pro01=${p03}
+            ;;
+        4)
+            pro01=${p04}
+            ;;
         *)
             if echo ${1}|grep -q ':'
             then
