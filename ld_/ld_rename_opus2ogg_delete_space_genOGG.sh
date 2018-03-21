@@ -87,9 +87,11 @@ bb3="_$(echo -n "$1"|   \
     -e 's;__*;_;g' \
     -e 's;^201;1;g' \
     -e 's;\.mp4$;;g' \
+    -e 's;\.mp3$;;g' \
+    -e 's;\.mp2$;;g' \
     -e 's;\.mkv$;;g' \
+    -e 's;\.ogg$;;g' \
     -e 's;\.m4a$;;g' \
-    -e 's;\.mp[234]$;;g' \
     -e 's;\.webm$;;g' \
     -e 's;\.opus$;;g')"
 
@@ -102,7 +104,7 @@ then
 else
     author=hotest01
 fi
-author="直下音频:${author}"
+#author="直下音频:${author}"
 
 title1=$(echo -n "${bb3}"|sed -e 's;__*[^_]*$;;g' -e 's;^.*_;;g')
 title2=$(echo -n "${bb3}"|tr -d ' '|tr -d '_'|tr -d '-'|tr -d '@'|tr -d '|'|tr -d '+'|tr -d '.'|tr -d '('|tr -d ')')
