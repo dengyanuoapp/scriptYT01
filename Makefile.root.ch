@@ -32,16 +32,16 @@ um :
 	@echo ; mount |grep rootX ; echo 
 mm mmount :
 	grep -q /home/rootX/rootY/dev /proc/mounts  || mount -t devtmpfs none rootY/dev/
-	grep -q /home/rootX/rootY/tmp /proc/mounts  || mount -o bind,uid=dyn,gid=dyn Data01/ rootY/tmp/
+	grep -q /home/rootX/rootY/tmp /proc/mounts  || mount -o bind,uid=yt,gid=yt Data01/ rootY/tmp/
 	-[ -d rootY/tmp/1        ] || mkdir rootY/tmp/1         
 	#-[ -d rootY/tmp/scriptS  ] || mkdir rootY/tmp/scriptS         
-	-chown -R dyn:dyn rootY/tmp rootY/scriptYT01/
+	-chown -R yt:yt rootY/tmp rootY/scriptYT01/
 	@echo ; mount |grep rootX ; echo
 ch        chroot  : mm
 #	chroot rootY/
 	cat /etc/resolv.conf > rootY/etc/resolv.conf
-	chown -R dyn:dyn rootY/home/dyn
-	chroot rootY/ su - dyn
+	chown -R yt:yt rootY/home/yt
+	chroot rootY/ su - yt
 	@echo ; mount |grep rootX ; echo 
 
 
@@ -51,10 +51,10 @@ new :
 	mv     tmp1/$(T)      srcROOT/ 
 	ls  srcROOT/$(T)    > Nnow_root_file_name.txt
 kill:
-	-ps auxf |grep ^dyn |grep make   									|awk '{print $$2}'|xargs -n 1 kill
-	-ps auxf |grep ^dyn |grep ld_rename_opus2ogg_delete_space_genOGG.sh |awk '{print $$2}'|xargs -n 1 kill
-	-ps auxf |grep ^dyn |grep ffmpeg 									|awk '{print $$2}'|xargs -n 1 kill
-	 ps auxf |grep ^dyn
+	-ps auxf |grep ^yt |grep make   									|awk '{print $$2}'|xargs -n 1 kill
+	-ps auxf |grep ^yt |grep ld_rename_opus2ogg_delete_space_genOGG.sh |awk '{print $$2}'|xargs -n 1 kill
+	-ps auxf |grep ^yt |grep ffmpeg 									|awk '{print $$2}'|xargs -n 1 kill
+	 ps auxf |grep ^yt
 	@echo ; mount |grep rootX ; echo
 
 speed: rootY/tmp/noW/Loop.log.txt 
@@ -96,7 +96,7 @@ speedX:$(FF)
 		done
 
 ps:
-	ps auxf |grep ^dyn
+	ps auxf |grep ^yt
 	@[ ! -f rootY/tmp/noW/Start_stop_log.txt ] || ( echo ; tail -n 3 rootY/tmp/noW/Start_stop_log.txt )
 	@[ ! -f rootY/tmp/noW/New_add_gen1.txt   ] || ( echo ; tail -n 3 rootY/tmp/noW/New_add_gen1.txt   )
 	@echo ; mount |grep rootX ; echo
@@ -112,7 +112,7 @@ ll:
 
 cpu:
 	[ -f /proc/cpuinfo ] || ( echo ; echo 'cpuinfo do NOT exist. exit.' ; echo ;echo ; exit 33 )
-	[ "$${USER}" = 'dyn' ] || ( echo ; echo 'yould should run by dyn only.' ;echo ; exit 44 )
+	[ "$${USER}" = 'yt' ] || ( echo ; echo 'yould should run by yt only.' ;echo ; exit 44 )
 	while [ 1 ] ; do \
 		sleep 1 ; \
 		sh rootY/scriptYT01/Cpu_limit.sh `nc -l  127.0.0.1 33778 ` ; \
