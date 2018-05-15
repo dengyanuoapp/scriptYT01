@@ -39,7 +39,9 @@ mm mmount :
 	@echo ; mount |grep rootX ; echo
 ch        chroot  : mm
 #	chroot rootY/
-	cat /etc/resolv.conf > rootY/etc/resolv.conf
+	test -f /etc/resolv.conf \
+		&& cat /etc/resolv.conf > rootY/etc/resolv.conf \
+		|| echo 'nameserver 8.8.8.8' > rootY/etc/resolv.conf
 	chown -R yt:yt rootY/home/yt
 	chroot rootY/ su - yt
 	@echo ; mount |grep rootX ; echo 
